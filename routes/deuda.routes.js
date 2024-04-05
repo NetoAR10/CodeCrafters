@@ -1,9 +1,9 @@
+
 const express = require('express');
 const router = express.Router();
-const isAuth = require('../util/is-auth');
+const deudaController = require('../controllers/deudaController');
 
-router.get('/deuda', isAuth, (request, response, next) => {
-    response.render('deuda');
-})
+// Existing or new routes for Deuda handling can go here
+router.get('/', deudaController.getCrearDeuda);  // Example of a possible listing or managing route for Deudas
 
 module.exports = router;
