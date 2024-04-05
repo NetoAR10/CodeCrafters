@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset = "UTF-8">
+        <meta name = "viewport" content="width-device-width, initial-scale=1.0">
+        <title> <% if(registrar) {%> Registrarse <%} else {%> Iniciar Sesión <% } %></title>
+        <link rel="stylesheet" href="/css/style.css">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <form action="/user/<% if(registrar) { %>signup<% }else { %>login <% } %>" autocomplete="OFF" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                <a href="https://ivd.edu.mx/">
+                    <img src="/viadisenologo.png" alt="logo" class="logo">
+                </a>
+                <% if (error) { %> 
+                    <strong><%= error %></strong>
+                <% } %>
+                
+                <div class="input-box">
+                    <input name="correo" id="correo" type="input" placeholder="Correo electrónico" required>
+                    <i class='bx bx-universal-access' ></i>
+                </div>
+                <%if(registrar) {%>
+                    <div class="input-box">
+                        <input name="nombre" id="nombre" type="input" placeholder="Nombre" required>
+                        <i class='bx bx-id-card'></i>
+                    </div>
+                    <div class="input-box">
+                        <input name="matricula" id="matricula" type="input" placeholder="Matrícula" required>
+                        <i class='bx bx-universal-access' ></i>
+                    </div>
+                    <div class="input-box">
+                        <input name="beca" id="beca" type="input" placeholder="Beca" required>
+                        <i class='bx bx-universal-access' ></i>
+                    </div>
+                    <div class="input-box">
+                        <input name="ref" id="ref" type="input" placeholder="Referencia" required>
+                        <i class='bx bx-universal-access' ></i>
+                    </div>
+
+                <%}%>
+                <div class="input-box">
+                    <input name="password" id="password" type="password" placeholder="Contraseña" required>
+                    <i class='bx bx-lock-alt' ></i>
+                </div>
+
+
+                <div class="remember-forgot">
+                    <label><input type="checkbox"> Recordar</label>
+                    <a href="#">¿Olvidaste tu contraseña?</a>
+                </div>
+                <div class="space">
+
+                </div>
+
+                
+                <button type="submit" class="btn"><% if(registrar){ %>Registrarse <% } else { %> Iniciar sesión <% }%></button><br>
+                <% if(!registrar) { %> 
+                    <a href="/user/signup"> Registrarse </a> 
+                    <% } %>
+            </form>
+        </div>
+        <div class="circle_image">
+            <img src="/circle.png" alt="circle">
+        </div>
+    </body>
+</html>
