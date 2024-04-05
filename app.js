@@ -1,34 +1,33 @@
 const express = require('express');
 const app = express();
 
-app.set('view engine','ejs');
-app.set('views','views');
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 
 const session = require('express-session');
-
-app.use(session({
-    secret: 'mi string secreto que debe ser un string aleatorio muy largo, no como éste', 
-    resave: false, //La sesión no se guardará en cada petición, sino sólo se guardará si algo cambió 
-    saveUninitialized: false, //Asegura que no se guarde una sesión para una petición que no lo necesita
-  }));
-
+const csrf = require('csurf');
+const bodyParser = require('body-parser');
 const path = require('path');
 
+// Configuración de la sesión
+app.use(session({
+  secret: 'mi string secreto que debe ser un string aleatorio muy largo, no como éste',
+  resave: false,
+  saveUninitialized: false,
+}));
+
+// Middlewares
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
-
-const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({extended:false}));
-
-const csrf = require('csurf');
 const csrfProtection = csrf();
-app.use(csrfProtection); 
+app.use(csrfProtection);
 
 app.use((request, response, next) => {
-    console.log('Start!');
+    response.locals.csrfToken = request.csrfToken(); // Asegúrate de enviar el token CSRF a las vistas
     next();
-})
+});
 
-
+// Rutas
 const rutasUsuario = require('./routes/usuario.routes');
 app.use('/user', rutasUsuario);
 
@@ -41,8 +40,18 @@ app.use('/user', rutasDeuda);
 const rutasPagoAlumno = require('./routes/pago_alumno.routes');
 app.use('/user/alumno', rutasPagoAlumno);
 
-const admin_dasboard = require('./routes/admin_dashboard.routes');
-app.use('/user/admin', admin_dasboard);
+const rutasPago = require('./routes/pago.routes'); // Asegúrate de que la ruta sea correcta
+app.use('/pagos', rutasPago);
 
+const adminDashboardRoutes = require('./routes/admin_dashboard.routes');
+app.use('/user/admin', adminDashboardRoutes);
 
-app.listen(2050);
+// Manejo de errores de 404
+app.use((request, response, next) => {
+    response.status(404).send('Error 404: La página que buscas no existe');
+});
+
+// Iniciar el servidor
+app.listen(2050, () => {
+  console.log('El servidor está corriendo en el puerto 2050');
+});
