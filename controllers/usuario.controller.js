@@ -26,6 +26,7 @@ exports.get_home = (request, response, next) => {
 }
 
 exports.post_login = (request, response, next) => {
+
     Usuario.fetchOne(request.body.correo)
     .then(([users, fieldData]) => {
         console.log(request.body.correo)
@@ -78,7 +79,16 @@ exports.get_signup = (request, response, next) => {
 }
 
 exports.post_signup = (request, response, next) => {
-    const nuevo_usuario = new Usuario(request.body.correo, request.body.nombre, request.body.matricula, request.body.beca, request.body.ref ,request.body.password, );
+
+    const confirmar = request.body.confirmpassword;
+    console.log('Confirmar:', confirmar);
+
+    if (confirmar != request.body.password){
+        request.session.error = 'No has confirmado tu contraseña correctamente. Intenta de nuevo.';
+        response.redirect('/user/signup');
+    }
+    
+    const nuevo_usuario = new Usuario(request.body.correo, request.body.nombre, request.body.matricula, request.body.beca, request.body.ref ,request.body.password);
     nuevo_usuario.save()
     .then(([rows, fieldData]) => {
         response.redirect('/user/login');
