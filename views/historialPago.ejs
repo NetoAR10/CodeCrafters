@@ -1,5 +1,4 @@
-<%- include('includes/sidebar.ejs') %>
-
+<%- include ('includes/sidebar.ejs') %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -53,35 +52,36 @@
   </style>
 </head>
 <body>
-  <div class="main-content">
-    <h1>Historial de Pagos</h1>
+    <% include('includes/sidebar.ejs') %>
+    <div class="main-content">
+        <h1>Historial de Pagos</h1>
 
-    <table>
-      <thead>
-        <tr>
-          <th>ID Pago</th>
-          <th>ID Usuario</th>
-          <th>Cantidad Pagada</th>
-          <th>Fecha de Pago</th>
-          <th>Método</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% for (var i = 0; i < 10; i++) { %>
-          <tr>
-            <td><%= i + 1 %></td>
-            <td><%= Math.floor(Math.random() * 1000) %></td>
-            <td>$<%= (Math.random() * 1000).toFixed(2) %></td>
-            <td><%= new Date(new Date() - Math.floor(Math.random() * 10000000000)).toLocaleDateString() %></td>
-            <td><%= ['Tarjeta de crédito', 'PayPal', 'Transferencia bancaria'][Math.floor(Math.random() * 3)] %></td>
-          </tr>
-        <% } %>
-      </tbody>
-    </table>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Pago</th>
+                    <th>ID Usuario</th>
+                    <th>Cantidad Pagada</th>
+                    <th>Fecha de Pago</th>
+                    <th>Método</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% payments.forEach(pago => { %>
+                    <tr>
+                        <td><%= pago.IDPago %></td>
+                        <td><%= pago.IDUsuario %></td>
+                        <td>$<%= pago.Cant_pagada.toFixed(2) %></td>
+                        <td><%= new Date(pago.Fecha_de_pago).toLocaleDateString() %></td>
+                        <td><%= pago.Metodo %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
 
-    <form action="/pagos/descargar-historial/<%= userID %>" method="GET">
-      <button type="submit">Descargar como PDF</button>
-    </form>
-  </div>
+        <form action="/pagos/descargar-historial/<%= userID %>" method="GET">
+            <button type="submit">Descargar como PDF</button>
+        </form>
+    </div>
 </body>
 </html>
