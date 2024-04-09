@@ -2,12 +2,12 @@ const PDFDocument = require('pdfkit');
 const db = require('../util/database');
 
 exports.getPaymentHistory = (req, res) => {
-    const userID = req.params.userID;
-    db.execute('SELECT * FROM pago WHERE IDUsuario = ?', [userID]) 
+    const userID = parseInt(req.params.userID, 10);
+    db.execute('SELECT * FROM pago WHERE IDUsuario = ?', [userID])
         .then(([rows]) => {
             res.render('historialPago', {
                 pageTitle: 'Historial de Pagos',
-                payments: rows, 
+                payments: rows,
                 userID: userID
             });
         })
@@ -18,10 +18,14 @@ exports.getPaymentHistory = (req, res) => {
 };
 
 exports.downloadPaymentHistory = (req, res) => {
-    const userID = req.params.userID;
-    db.execute('SELECT * FROM pago WHERE IDUsuario = ?', [userID]) 
+    const userID = parseInt(req.params.userID, 10);
+    console.log("UserID para descargar historial:", userID);
+
+    db.execute('SELECT * FROM pago WHERE IDUsuario = ?', [userID])
         .then(([rows]) => {
-            if(rows.length > 0) {
+            console.log("Filas obtenidas:", rows);
+
+            if (rows.length > 0) {
                 const doc = new PDFDocument();
                 const filename = `Historial_Pagos_${userID}.pdf`;
 
@@ -35,11 +39,11 @@ exports.downloadPaymentHistory = (req, res) => {
 
                 rows.forEach(pago => {
                     doc.fontSize(12)
-                       .text(`ID Pago: ${pago.IDPago}`, { align: 'left' })
-                       .text(`ID Usuario: ${pago.IDUsuario}`, { align: 'left' })
-                       .text(`Cantidad Pagada: $${pago.Cant_pagada.toFixed(2)}`, { align: 'left' })
-                       .text(`Fecha de Pago: ${pago.Fecha_de_pago.toISOString()}`, { align: 'left' }) 
-                       .text(`Método: ${pago.Metodo}`, { align: 'left' })
+                       .text(`ID Pago: ${pago.IDPago}`)
+                       .text(`ID Usuario: ${pago.IDUsuario}`)
+                       .text(`Cantidad Pagada: $${pago.Cant_pagada.toFixed(2)}`)
+                       .text(`Fecha de Pago: ${pago.Fecha_de_pago.toISOString().split('T')[0]}`)
+                       .text(`Método: ${pago.Metodo}`)
                        .moveDown();
                 });
 

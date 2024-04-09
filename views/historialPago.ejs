@@ -52,10 +52,9 @@
   </style>
 </head>
 <body>
-    <% include('includes/sidebar.ejs') %>
+    <%- include('includes/sidebar.ejs') %>
     <div class="main-content">
         <h1>Historial de Pagos</h1>
-
         <table>
             <thead>
                 <tr>
@@ -78,7 +77,6 @@
                 <% }) %>
             </tbody>
         </table>
-
         <form action="/pagos/descargar-historial/<%= userID %>" method="GET">
             <button type="submit">Descargar como PDF</button>
         </form>
