@@ -1,9 +1,7 @@
+
 const express = require('express');
 const router = express.Router();
-const isAuth = require('../util/is-auth');
+const deudaController = require('../controllers/deuda.controller');
 
-router.get('/deuda', isAuth, (request, response, next) => {
-    response.render('deuda');
-})
-
+router.get('/', deudaController.getCrearDeuda); 
 module.exports = router;

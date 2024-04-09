@@ -34,9 +34,6 @@ app.use('/user', rutasUsuario);
 const rutasHome = require('./routes/home.routes');
 app.use('/', rutasHome);
 
-const rutasDeuda = require('./routes/deuda.routes');
-app.use('/user', rutasDeuda);
-
 const rutasPagoAlumno = require('./routes/pago_alumno.routes');
 app.use('/user/alumno', rutasPagoAlumno);
 
@@ -51,7 +48,15 @@ app.use((request, response, next) => {
     response.status(404).send('Error 404: La página que buscas no existe');
 });
 
+const rutasRegistrarPago = require('./routes/registrarPago.routes');
+app.use('/user', rutasRegistrarPago);
+
+const rutasDeuda = require('./routes/crearDeuda.routes');
+app.use('/user', rutasDeuda);
+
 // Iniciar el servidor
 app.listen(2050, () => {
   console.log('El servidor está corriendo en el puerto 2050');
 });
+
+
