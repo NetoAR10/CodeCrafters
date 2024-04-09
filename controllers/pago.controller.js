@@ -2,7 +2,7 @@ const PDFDocument = require('pdfkit');
 const db = require('../util/database');
 
 exports.getPaymentHistory = (req, res) => {
-    const userID = parseInt(req.params.userID, 10);
+    const userID = parseInt(req.params.IDUsuario, 10);
     db.execute('SELECT * FROM pago WHERE IDUsuario = ?', [userID])
         .then(([rows]) => {
             res.render('historialPago', {
@@ -19,15 +19,15 @@ exports.getPaymentHistory = (req, res) => {
 
 exports.downloadPaymentHistory = (req, res) => {
     const userID = parseInt(req.params.userID, 10);
-    console.log("UserID para descargar historial:", userID);
+    console.log("UserID para descargar historial:", IDUsuario);
 
-    db.execute('SELECT * FROM pago WHERE IDUsuario = ?', [userID])
+    db.execute('SELECT * FROM pago WHERE IDUsuario = ?', [IDUsuario])
         .then(([rows]) => {
             console.log("Filas obtenidas:", rows);
 
             if (rows.length > 0) {
                 const doc = new PDFDocument();
-                const filename = `Historial_Pagos_${userID}.pdf`;
+                const filename = `Historial_Pagos_${IDUsuario}.pdf`;
 
                 res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
                 res.setHeader('Content-Type', 'application/pdf');

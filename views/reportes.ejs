@@ -1,0 +1,405 @@
+<%- include ('includes/sidebar.ejs') %>
+
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title><%= pageTitle %></title>
+        <link rel="stylesheet" href="/css/stylesb.css">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <style>
+            body {
+              margin: 0;
+              font-family: Arial, sans-serif;
+            }
+            .main-content {
+              margin-left: auto;
+              margin-right: auto;
+              max-width: calc(100% - 300px); 
+              padding: 20px;
+            }
+            .main-content h1 {
+              text-align: center;
+              color: #333;
+            }
+            .main-content table {
+              width: 100%; 
+              margin-top: 20px;
+              border-collapse: collapse;
+            }
+            .main-content th, .main-content td {
+              padding: 8px;
+              text-align: left;
+              border-bottom: 1px solid #ddd;
+            }
+            .main-content th {
+              background-color: #f2f2f2;
+            }
+            .main-content form {
+              text-align: center; 
+              margin-top: 20px;
+            }
+            .main-content button {
+              padding: 10px 20px;
+              border: none;
+              background-color: #007bff;
+              color: white;
+              text-transform: uppercase;
+              cursor: pointer;
+            }
+            .main-content button:hover {
+              background-color: #0056b3;
+            }
+          </style>
+    </head>
+    <div class="container mx-auto px-4 py-8">
+        <% if (canDownloadPDF) { %>
+        <div class="flex">
+            <h1 class="text-2xl font-bold mb-6">Gráficas Dinámicas 📊</h1>
+            <button class="bg-blue-500 text-white rounded-md right-20 absolute w-40 h-10" id="pdf" onclick="generatePDF()">Generar reporte 📑</button>
+        </div>
+        <% } %>
+        <br>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Gráfica 1: Total de Leads -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-bold mb-4">Total de Leads 📈</h3>
+                <p class="text-sm mb-4">Comparación entre leads totales y leads llegados.</p>
+                <canvas id="leadsChart" width="400" height="200"></canvas>
+            </div>
+    
+            <!-- Gráfica 2: Leads por Mes -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-bold mb-4">Leads por Mes 🗓️</h3>
+                <p class="text-sm mb-4">Número de leads generados cada mes.</p>
+                <canvas id="leadsPerMonthChart" width="400" height="200"></canvas>
+            </div>
+    
+            <!-- Gráfica 3: Leads Creados Manualmente -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-bold mb-4">Leads Creados Manualmente ✍️</h3>
+                <p class="text-sm mb-4">Distribución entre leads creados manualmente y no manualmente.</p>
+                <canvas id="manuallyCreatedChart" width="400" height="200"></canvas>
+            </div>
+    
+            <!-- Gráfica 4: Leads por Hora -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-bold mb-4">Leads por Hora ⏰</h3>
+                <p class="text-sm mb-4">Leads generados cada hora del día.</p>
+                <canvas id="hourlyActivityChart" width="400" height="200"></canvas>
+            </div>
+    
+            <!-- Gráfica 5: Leads Archivados -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-bold mb-4">Leads Archivados 📦</h3>
+                <p class="text-sm mb-4">Comparación entre leads archivados y no archivados.</p>
+                <canvas id="archivedChart" width="400" height="200"></canvas>
+            </div>
+    
+            <!-- Gráfica 6: Ganancias Totales -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-bold mb-4">Ganancias Totales 💰</h3>
+                <p class="text-sm mb-4">Muestra el total de ganancias acumuladas.</p>
+                <canvas id="totalGainChart" width="400" height="200"></canvas>
+            </div>
+    
+            <!-- Gráfica 7: Estado de Leads -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-bold mb-4">Estado de Leads 🚦</h3>
+                <p class="text-sm mb-4">Distribución de leads según su estado (neutro, urgente, etc.).</p>
+                <canvas id="statusChart" width="400" height="200"></canvas>
+            </div>
+    
+            <!-- Gráfica 8: Valor y Ganancias por Compañía -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-bold mb-4">Valor y Ganancias por Compañía 🏢💵</h3>
+                <p class="text-sm mb-4">Comparación de valor total y ganancias totales por compañía.</p>
+                <canvas id="valueAndGainPerCompanyChart" width="400" height="200"></canvas>
+            </div>
+    
+            <!-- Gráfica 9: Leads por Etapa -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-bold mb-4">Leads por Etapa 🚶‍♂️➡️🏃‍♂️</h3>
+                <p class="text-sm mb-4">Número de leads según su etapa en el proceso de venta.</p>
+                <canvas id="leadsPerStageChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- CHARTS LOGIC -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.3/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="/pdfLogic.js"></script>
+    
+    
+    
+        <script>
+            // CHART 1
+            // Total Leads
+            const ctxLeads = document.getElementById('leadsChart').getContext('2d');
+            const chartLeads = new Chart(ctxLeads, {
+                type: 'bar',
+                data: {
+                    labels: ['Total Leads', 'Arrived Leads'],
+                    datasets: [{
+                        label: 'Number of Leads',
+                        data: [<%= totalLeads %>, <%= arrivedLeads %>],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(255, 99, 132, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(255, 99, 132, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    animation: {
+                        duration: 1000,
+                        easing: "easeOutBounce",
+                        delay: 500
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+    
+            // CHART 2
+            // CHART de leads por mes
+            const ctxLeadsPerMonth = document.getElementById('leadsPerMonthChart').getContext('2d');
+    
+            const months = [<%- leadsPerMonth.map(item => `'${item.month}'`).join(", ") %>];
+            const leadsCounts = [<%- leadsPerMonth.map(item => item.leadsCount).join(", ") %>];
+    
+            const chartLeadsPerMonth = new Chart(ctxLeadsPerMonth, {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [{
+                        label: 'Leads por Mes',
+                        data: leadsCounts,
+                        fill: false,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeInOutCubic'
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+    
+            // CHART 3
+            // Leads creados manuealmente vs. no creados manualmente
+            const ctxManuallyCreated = document.getElementById('manuallyCreatedChart').getContext('2d');
+            const chartManuallyCreated = new Chart(ctxManuallyCreated, {
+                type: 'pie',
+                data: {
+                    labels: ['Creado Manualmente', 'No Creado Manualmente'],
+                    datasets: [{
+                        label: 'Leads Creados Manualmente',
+                        data: [<%= manuallyCreatedTrue %>, <%= manuallyCreatedFalse %>],
+                        backgroundColor: ['#FF5733', '#33FF57'],
+                    }]
+                },
+                options: {
+                    animation: {
+                        duration: 800,
+                        easing: 'linear'
+                }
+            }
+    
+            });
+    
+            // CHART 4
+            // Leads por hora
+            const ctxHourlyActivity = document.getElementById('hourlyActivityChart').getContext('2d');
+            const chartHourlyActivity = new Chart(ctxHourlyActivity, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'],
+                datasets: [{
+                    label: 'Leads por Hora',
+                    data: <%= JSON.stringify(hourlyActivity) %>,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                animation: {
+                    duration: 500,
+                    easing: 'easeInExpo'
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+            // CHART 5
+            // Leads archivados vs no archivados
+            const ctxArchived = document.getElementById('archivedChart').getContext('2d');
+            const chartArchived = new Chart(ctxArchived, {
+                type: 'pie',
+                data: {
+                    labels: ['Archivados', 'No Archivados'],
+                    datasets: [{
+                        label: 'Leads Archivados',
+                        data: [<%= archived %>, <%= notArchived %>],
+                        backgroundColor: [' #ff380d ', ' #2a88e5 '],
+                    }]
+                },
+                options: {
+                elements: {
+                    point: {
+                        radius: 10,
+                        borderWidth: 2,
+                        hoverRadius: 15,
+                        hoverBorderWidth: 3,
+                        animation: {
+                            duration: 500,
+                            easing: 'easeOutElastic'
+                        }
+                    }
+                }
+            }
+    
+            });
+    
+            // CHART 6
+            // Ganancias totales
+        const ctxTotalGain = document.getElementById('totalGainChart').getContext('2d');
+        const chartTotalGain = new Chart(ctxTotalGain, {
+            type: 'bar',
+            data: {
+                labels: ['Total Ganado'],
+                datasets: [{
+                    label: 'Ganancias Totales',
+                    data: [<%= totalGain %>],
+                    backgroundColor: [
+                        'rgba(153, 102, 255, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        animate: true
+                    },
+                    y: {
+                        animate: true
+                    }
+                }
+            }
+    
+        });
+            //CHART 7
+            //Status de Leads
+            const ctxStatus = document.getElementById('statusChart').getContext('2d');
+            const chartStatus = new Chart(ctxStatus, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Neutro', 'Urgente', 'Importante', 'Pendiente', 'Atorado'],
+                    datasets: [{
+                        label: 'Leads', 
+                        data: [<%= neutral %>, <%= urgent %>, <%= important %>, <%= pending %>, <%= stuck %>],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(153, 102, 255, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                
+            });
+            
+    
+            //Chart 8
+            const valueAndGainPerCompanyData = <%- JSON.stringify(valueAndGainPerCompany[0]) %>;
+                    const companyLabels = valueAndGainPerCompanyData.map(data => data.company);
+                    const totalValues = valueAndGainPerCompanyData.map(data => data.totalValue);
+                    const totalGains = valueAndGainPerCompanyData.map(data => data.totalGain);
+    
+                    const ctxValueAndGain = document.getElementById('valueAndGainPerCompanyChart').getContext('2d');
+                    new Chart(ctxValueAndGain, {
+                        type: 'line',
+                        data: {
+                            labels: companyLabels,
+                            datasets: [{
+                                label: 'Total Value',
+                                data: totalValues,
+                                borderColor: 'rgba(75, 192, 192, 0.8)', // color for the line
+                                fill: false, // optional, to not fill the area below the line
+                                borderWidth: 2
+                            }, {
+                                label: 'Total Gain',
+                                data: totalGains,
+                                borderColor: 'rgba(255, 206, 86, 0.8)', // color for the line
+                                fill: false, // optional, to not fill the area below the line
+                                borderWidth: 2
+                            }]
+                        },
+                    });
+    
+    
+    
+    
+    
+            //Chart 9
+            const leadsPerStageData = <%- JSON.stringify(leadsPerStage[0]) %>;
+                const stageLabels = leadsPerStageData.map(data => data.stage);
+                const leadCounts = leadsPerStageData.map(data => data.leadsCount);
+    
+                const ctxLeadsPerStage = document.getElementById('leadsPerStageChart').getContext('2d');
+                new Chart(ctxLeadsPerStage, {
+                    type: 'bar',
+                    data: {
+                        labels: stageLabels,
+                        datasets: [{
+                            label: 'Leads Count',
+                            data: leadCounts,
+                            backgroundColor: 'rgba(153, 102, 255, 0.2)'
+                        }]
+                    },
+    
+                    options: {
+                        animation: {
+                            animateScale: true
+                        }
+                    }
+    
+                });
+    
+        </script>
+    
+</html>
