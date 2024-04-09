@@ -79,23 +79,27 @@ exports.get_signup = (request, response, next) => {
 }
 
 exports.post_signup = (request, response, next) => {
+    const nuevo_usuario = new Usuario(request.body.correo, request.body.nombre, request.body.matricula, request.body.beca, request.body.ref, request.body.password);
 
     const confirmar = request.body.confirmpassword;
-    console.log('Confirmar:', confirmar);
-
-    if (confirmar != request.body.password){
+    if (confirmar !== request.body.password) {
         request.session.error = 'No has confirmado tu contraseña correctamente. Intenta de nuevo.';
-        response.redirect('/user/signup');
+        return response.redirect('/user/signup');
     }
-    
-    const nuevo_usuario = new Usuario(request.body.correo, request.body.nombre, request.body.matricula, request.body.beca, request.body.ref ,request.body.password);
+
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!passwordRegex.test(request.body.password)) {
+        request.session.error = 'Tu contraseña debe contener al menos 8 caracteres, un número y una mayúscula.';
+        return response.redirect('/user/signup');
+    }
+
     nuevo_usuario.save()
-    .then(([rows, fieldData]) => {
-        response.redirect('/user/login');
-    })
-    .catch((error) => {
-        console.log(error);
-        request.session.error = 'Nombre de usuario inválido.';
-        response.redirect('/user/signup');
-    })
-}
+        .then(([rows, fieldData]) => {
+            response.redirect('/user/login');
+        })
+        .catch((error) => {
+            console.log(error);
+            request.session.error = 'Correo inválido.';
+            response.redirect('/user/signup');
+        });
+};
