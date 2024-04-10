@@ -15,10 +15,19 @@ exports.get_login = (request, response, next) => {
 exports.get_home = (request, response, next) => {
     Usuario.fetch(request.params.correo)
     .then(([users, fieldData]) => {
-        response.render('home', {
-            usuariosDB: users,
-            correo: request.session.correo || '',
-        });
+        if (users.IDRol === 1) {
+            response.render('home_admin', {
+                usuariosDB: users,
+                correo: request.session.correo || '',
+            });
+        } else {
+
+            response.render('home', {
+                usuariosDB: users,
+                correo: request.session.correo || '',
+            });
+            console.log(users)
+        }
     })
     .catch(error => {
         console.log(error)
@@ -26,18 +35,6 @@ exports.get_home = (request, response, next) => {
 }
 
 
-exports.get_homeAdmin = (request, response, next) => {
-    Usuario.fetch(request.params.correo)
-    .then(([users, fieldData]) => {
-        response.render('home_admin', {
-            usuariosDB: users,
-            correo: request.session.correo || '',
-        });
-    })
-    .catch(error => {
-        console.log(error)
-    })
-}
 
 exports.post_login = (request, response, next) => {
 
