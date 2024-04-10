@@ -137,14 +137,14 @@ INSERT INTO `cicloescolar` (`IDCiclo`, `Ciclo`, `Fecha_Inicio`, `Fecha_Fin`, `Ci
 CREATE TABLE `contiene` (
   `IDContiene` int(11) NOT NULL,
   `IDRol` int(11) DEFAULT NULL,
-  `IDPrivilegios` int(11) DEFAULT NULL
+  `IDPrivilegio` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `contiene`
 --
 
-INSERT INTO `contiene` (`IDContiene`, `IDRol`, `IDPrivilegios`) VALUES
+INSERT INTO `contiene` (`IDContiene`, `IDRol`, `IDPrivilegio`) VALUES
 (1, 3, 9),
 (2, 1, 1),
 (3, 4, 9),

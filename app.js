@@ -46,6 +46,9 @@ app.use('/pagos', rutasPago);
 const adminDashboardRoutes = require('./routes/admin_dashboard.routes');
 app.use('/user/admin', adminDashboardRoutes);
 
+const reportesRoutes = require('./routes/reportes.routes');
+app.use('/reportes', reportesRoutes);
+
 // Manejo de errores de 404
 app.use((request, response, next) => {
     response.status(404).send('Error 404: La página que buscas no existe');
