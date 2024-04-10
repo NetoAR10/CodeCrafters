@@ -15,18 +15,18 @@ exports.get_login = (request, response, next) => {
 exports.get_home = (request, response, next) => {
     Usuario.fetch(request.params.correo)
     .then(([users, fieldData]) => {
-        if (users.IDRol === 1) {
+        const isAdmin = users.some(user => user.IDRol === 1);
+
+        if(isAdmin) {
             response.render('home_admin', {
                 usuariosDB: users,
                 correo: request.session.correo || '',
             });
         } else {
-
             response.render('home', {
                 usuariosDB: users,
                 correo: request.session.correo || '',
             });
-            console.log(users)
         }
     })
     .catch(error => {
