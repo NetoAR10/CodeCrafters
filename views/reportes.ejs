@@ -1,104 +1,74 @@
-<%- include ('includes/sidebar.ejs') %>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title><%= pageTitle %></title>
-    <link rel="stylesheet" href="/css/stylesb.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <style>
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-      }
-      .main-content {
-        margin-left: auto;
-        margin-right: auto;
-        max-width: calc(100% - 300px); 
-        padding: 20px;
-      }
-      .main-content h1 {
-        text-align: center;
-        color: #333;
-      }
-      .main-content table {
-        width: 100%; 
-        margin-top: 20px;
-        border-collapse: collapse;
-      }
-      .main-content th, .main-content td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-      }
-      .main-content th {
-        background-color: #f2f2f2;
-      }
-      .main-content form {
-        text-align: center; 
-        margin-top: 20px;
-      }
-      .main-content button {
-        padding: 10px 20px;
-        border: none;
-        background-color: #007bff;
-        color: white;
-        text-transform: uppercase;
-        cursor: pointer;
-      }
-      .main-content button:hover {
-        background-color: #0056b3;
-      }
-    </style>
-    <meta charset="UTF-8">
-    <title>Reportes del Sistema Educativo</title>
-    <link rel="stylesheet" href="/css/stylesb.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <style>
-        /* Tus estilos aquí. Considera mover esto a un archivo CSS externo */
-    </style>
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Asegúrate de que el camino a tus CSS sea correcto -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Inclusión de Chart.js -->
 </head>
 <body>
+    <%- include('includes/header.ejs') %> <!-- Asume que tienes un archivo de encabezado para incluir -->
     <div class="main-content">
-        <h1>Reportes del Sistema Educativo</h1>
-
-        <!-- Ejemplo de Gráfica: Distribución de Deudas por Ciclo Escolar -->
+        <h1><%= pageTitle %></h1>
         <div>
-            <h2>Distribución de Deudas por Ciclo Escolar</h2>
-            <canvas id="debtDistributionChart"></canvas>
+            <h2>Deuda Total</h2>
+            <canvas id="deudaTotalChart"></canvas>
         </div>
-
-        <!-- Otros contenedores de gráficas aquí -->
-
+        <div>
+            <h2>Historial de Pagos</h2>
+            <canvas id="historialPagosChart"></canvas>
+        </div>
     </div>
 
-    <!-- CHARTS LOGIC -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        const ctxDebtDistribution = document.getElementById('debtDistributionChart').getContext('2d');
-        new Chart(ctxDebtDistribution, {
-            type: 'pie',
+        // Gráfica de Deuda Total
+        const ctxDeudaTotal = document.getElementById('deudaTotalChart').getContext('2d');
+        const deudaTotalChart = new Chart(ctxDeudaTotal, {
+            type: 'bar',
             data: {
-                labels: <%= JSON.stringify(pageData.debtDistribution.labels) %>,
+                labels: ['Deuda Total'],
                 datasets: [{
-                    label: 'Deuda por Ciclo Escolar',
-                    data: <%= JSON.stringify(pageData.debtDistribution.data) %>,
-                    backgroundColor: [
-                        /* Colores para cada segmento */
-                    ],
-                    borderColor: [
-                        /* Borde para cada segmento */
-                    ],
+                    label: 'Cantidad Total de Deuda',
+                    data: [<%= totalDeuda %>],
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1
                 }]
             },
             options: {
-                responsive: true
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
             }
         });
 
-        // Agrega aquí más lógica para otras gráficas basadas en tus datos
+        // Gráfica del Historial de Pagos
+        const ctxHistorialPagos = document.getElementById('historialPagosChart').getContext('2d');
+        const fechasPagos = <%= JSON.stringify(pagos.map(pago => pago.Fecha_de_pago)) %>;
+        const cantidadesPagadas = <%= JSON.stringify(pagos.map(pago => pago.Cant_pagada)) %>;
+        const historialPagosChart = new Chart(ctxHistorialPagos, {
+            type: 'line',
+            data: {
+                labels: fechasPagos,
+                datasets: [{
+                    label: 'Pagos Realizados',
+                    data: cantidadesPagadas,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    fill: false,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
     </script>
 </body>
 </html>

@@ -47,7 +47,7 @@ const adminDashboardRoutes = require('./routes/admin_dashboard.routes');
 app.use('/user/admin', adminDashboardRoutes);
 
 const reportesRoutes = require('./routes/reportes.routes');
-app.use('/reportes', reportesRoutes);
+app.use('/reportes/reporteDeudas', reportesRoutes);
 
 // Manejo de errores de 404
 app.use((request, response, next) => {

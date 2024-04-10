@@ -3,6 +3,6 @@ const router = express.Router();
 
 const reportesController = require('../controllers/reportes.controller');
 
-router.get('/reportes', reportesController.getReport);
+router.get('/reporteDeudas/:userID', reportesController.getReporteDeudas);
 
 module.exports = router;
