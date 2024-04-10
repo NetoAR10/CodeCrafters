@@ -1,29 +1,18 @@
-const db = require('../util/database');
-const mysql = require('mysql2');
+// models/reportes.model.js
+const db = require('../util/database'); // Asegúrate de que este camino sea correcto.
 
-module.exports = {
-    getTotalDebtByUser: function(userID) {
-        return db.execute(`
-            SELECT SUM(Total_deuda) AS TotalDeuda
-            FROM deuda
-            WHERE IDUsuario = ?
-        `, [userID]);
-    },
+const ReportesModel = {
+    async getFinancialDataByUser(userID) {
+        const totalDeudaQuery = 'SELECT SUM(Total_deuda) AS TotalDeuda FROM deuda WHERE IDUsuario = ?';
+        const totalPagadoQuery = 'SELECT SUM(Cant_pagada) AS TotalPagado FROM pago WHERE IDUsuario = ?';
 
-    getPaymentsByUser: function(userID) {
-        return db.execute(`
-            SELECT * FROM pago
-            WHERE IDUsuario = ?
-        `, [userID]);
-    },
+        const [[{TotalDeuda}], [{TotalPagado}]] = await Promise.all([
+            db.query(totalDeudaQuery, [userID]),
+            db.query(totalPagadoQuery, [userID])
+        ]);
 
-    getSubjectsByUserAndCycle: function(userID, cycleID) {
-        return db.execute(`
-            SELECT materias.Nombre_mat, materias.Creditos
-            FROM pertenece
-            JOIN materias ON pertenece.IDMateria = materias.IDMateria
-            WHERE pertenece.IDUsuario = ? AND pertenece.IDCiclo = ?
-        `, [userID, cycleID]);
-    },
-
+        return { TotalDeuda, TotalPagado };
+    }
 };
+
+module.exports = ReportesModel;

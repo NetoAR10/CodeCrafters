@@ -1,74 +1,150 @@
+<%- include('includes/sidebar.ejs') %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title><%= pageTitle %></title>
-    <link rel="stylesheet" href="/css/styles.css"> <!-- Asegúrate de que el camino a tus CSS sea correcto -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Inclusión de Chart.js -->
+  <meta charset="UTF-8">
+  <title>Reportes Financieros</title>
+  <link rel="stylesheet" href="/css/stylesb.css">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .main-content {
+      margin-left: 300px; /* Ajuste según el ancho de tu sidebar */
+      padding: 40px 20px 20px 20px; /* Añade más espacio en la parte superior */
+    }
+    .main-content > h1 {
+      margin-bottom: 40px; /* Añade espacio debajo del título */
+    }
+    .chart-container {
+      width: calc(50% - 10px); /* Ajusta la anchura para dos gráficos por fila */
+      margin-bottom: 20px;
+    }
+    .chart-container:nth-child(odd) {
+      margin-right: 20px; /* Añade espacio a la derecha para los gráficos en la columna izquierda */
+    }
+    canvas {
+      width: 100% !important;
+      height: auto !important; /* Ajusta la altura de forma automática */
+      max-height: 400px; /* Altura máxima para los gráficos */
+    }
+  </style>
 </head>
 <body>
-    <%- include('includes/header.ejs') %> <!-- Asume que tienes un archivo de encabezado para incluir -->
-    <div class="main-content">
-        <h1><%= pageTitle %></h1>
-        <div>
-            <h2>Deuda Total</h2>
-            <canvas id="deudaTotalChart"></canvas>
-        </div>
-        <div>
-            <h2>Historial de Pagos</h2>
-            <canvas id="historialPagosChart"></canvas>
-        </div>
+  <%- include('includes/sidebar.ejs') %>
+  <div class="main-content">
+    <h1>Reportes Financieros</h1>
+    <div class="chart-container">
+      <canvas id="financeChart"></canvas>
     </div>
+    <div class="chart-container">
+      <canvas id="incomeChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="debtChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="paymentMethodChart"></canvas>
+    </div>
+  </div>
 
-    <script>
-        // Gráfica de Deuda Total
-        const ctxDeudaTotal = document.getElementById('deudaTotalChart').getContext('2d');
-        const deudaTotalChart = new Chart(ctxDeudaTotal, {
-            type: 'bar',
-            data: {
-                labels: ['Deuda Total'],
-                datasets: [{
-                    label: 'Cantidad Total de Deuda',
-                    data: [<%= totalDeuda %>],
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
+  <script>
+    // Inicialización del gráfico de Finanzas
+    const ctxFinance = document.getElementById('financeChart').getContext('2d');
+    new Chart(ctxFinance, {
+      type: 'line',
+      data: {
+        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+        datasets: [{
+          label: 'Ingresos',
+          data: [2000, 2400, 2200, 2600, 2500],
+          backgroundColor: 'rgba(54, 162, 235, 0.2)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
 
-        // Gráfica del Historial de Pagos
-        const ctxHistorialPagos = document.getElementById('historialPagosChart').getContext('2d');
-        const fechasPagos = <%= JSON.stringify(pagos.map(pago => pago.Fecha_de_pago)) %>;
-        const cantidadesPagadas = <%= JSON.stringify(pagos.map(pago => pago.Cant_pagada)) %>;
-        const historialPagosChart = new Chart(ctxHistorialPagos, {
-            type: 'line',
-            data: {
-                labels: fechasPagos,
-                datasets: [{
-                    label: 'Pagos Realizados',
-                    data: cantidadesPagadas,
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    fill: false,
-                    tension: 0.1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
+    // Ingresos
+    const ctxIncome = document.getElementById('incomeChart').getContext('2d');
+    new Chart(ctxIncome, {
+      type: 'bar',
+      data: {
+        labels: ['Junio', 'Julio', 'Agosto'],
+        datasets: [{
+          label: 'Ingresos por Mes',
+          data: [2500, 2600, 2700],
+          backgroundColor: 'rgba(255, 206, 86, 0.2)',
+          borderColor: 'rgba(255, 206, 86, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    // Distribución de Deuda
+    const ctxDebt = document.getElementById('debtChart').getContext('2d');
+    new Chart(ctxDebt, {
+      type: 'pie',
+      data: {
+        labels: ['Deuda A', 'Deuda B', 'Deuda C'],
+        datasets: [{
+          data: [120, 150, 180],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)'
+          ],
+          borderWidth: 1
+        }]
+      }
+    });
+
+    // Métodos de Pago
+    const ctxPaymentMethod = document.getElementById('paymentMethodChart').getContext('2d');
+    new Chart(ctxPaymentMethod, {
+      type: 'doughnut',
+      data: {
+        labels: ['Efectivo', 'Tarjeta', 'Transferencia'],
+        datasets: [{
+          data: [500, 300, 200],
+          backgroundColor: [
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255,159,64,1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true
+      }
+    });
+  </script>
 </body>
 </html>

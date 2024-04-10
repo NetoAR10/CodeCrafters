@@ -1,8 +1,8 @@
+// routes/reportes.routes.js
 const express = require('express');
+const reportesController = require('../controllers/reportes.controller');
 const router = express.Router();
 
-const reportesController = require('../controllers/reportes.controller');
-
-router.get('/reporteDeudas/:userID', reportesController.getReporteDeudas);
+router.get('/reporteDeudas', reportesController.displayReport);
 
 module.exports = router;
