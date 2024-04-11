@@ -34,12 +34,16 @@ exports.post_login = (request, response, next) => {
             bcrypt.compare(request.body.password, user.Contrasena)
             .then(doMatch => {
                 if (doMatch) {
-                    request.session.isLoggedIn = true;
-                    request.session.correo = user.Correo_electronico;
-                    console.log('Correo:', user.Correo_electronico)
-                    return request.session.save(err => {
-                        response.redirect('/');
-                    });
+                    Usuario.getPermisos(user.Correo_electronico).then(([permisos, fieldData]) => {
+                        request.session.isLoggedIn = true;
+                        request.session.permisos = permisos;
+                        console.log(request.session.permisos);
+                        request.session.correo = user.Correo_electronico;
+                        console.log('Correo:', user.Correo_electronico)
+                        return request.session.save(err => {
+                            response.redirect('/');
+                        });
+                    }).catch((error) => {console.log(error);});
                 } else {
                     request.session.error = 'El correo y/o contraseña son incorrectos.';
                     return response.redirect('/user/login')
@@ -73,7 +77,7 @@ exports.get_signup = (request, response, next) => {
         registrar: true,
         error: error,
         csrfToken: request.csrfToken(),
-
+        permisos: request.session.permisos || [],
     })
 }
 

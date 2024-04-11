@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Apr 08, 2024 at 06:15 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 11-04-2024 a las 04:48:42
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `viadisenio`
+-- Base de datos: `viadisenio`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `causan`
+-- Estructura de tabla para la tabla `causan`
 --
 
 CREATE TABLE `causan` (
@@ -34,10 +34,53 @@ CREATE TABLE `causan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `causan`
+-- Volcado de datos para la tabla `causan`
 --
 
 INSERT INTO `causan` (`IDCausan`, `IDDeuda`, `IDMateria`) VALUES
+(94, 111, 126),
+(154, 767, 55),
+(219, 119, 768),
+(261, 588, 293),
+(280, 550, 605),
+(478, 566, 524),
+(499, 328, 269),
+(535, 572, 483),
+(554, 181, 677),
+(600, 825, 264),
+(702, 675, 526),
+(743, 660, 583),
+(803, 894, 82),
+(856, 617, 327),
+(886, 253, 586),
+(894, 857, 909),
+(903, 882, 693),
+(957, 290, 319),
+(1001, 449, 300),
+(1002, 956, 800),
+(1003, 21, 217),
+(1004, 76, 513),
+(1005, 305, 556),
+(1006, 445, 249),
+(1007, 529, 749),
+(1008, 750, 195),
+(1009, 702, 139),
+(1010, 596, 991),
+(1011, 683, 922),
+(1012, 87, 419),
+(1013, 885, 554),
+(1014, 385, 745),
+(1015, 185, 44),
+(1016, 48, 954),
+(1017, 839, 120),
+(1018, 309, 268),
+(1019, 175, 866),
+(1020, 806, 676),
+(1021, 29, 646),
+(1022, 412, 224),
+(1023, 58, 838),
+(1024, 174, 487),
+(1025, 787, 778),
 (94, 111, 126),
 (154, 767, 55),
 (219, 119, 768),
@@ -85,7 +128,7 @@ INSERT INTO `causan` (`IDCausan`, `IDDeuda`, `IDMateria`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cicloescolar`
+-- Estructura de tabla para la tabla `cicloescolar`
 --
 
 CREATE TABLE `cicloescolar` (
@@ -98,7 +141,7 @@ CREATE TABLE `cicloescolar` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `cicloescolar`
+-- Volcado de datos para la tabla `cicloescolar`
 --
 
 INSERT INTO `cicloescolar` (`IDCiclo`, `Ciclo`, `Fecha_Inicio`, `Fecha_Fin`, `Ciclo_activo`, `Precio_credito`) VALUES
@@ -131,50 +174,47 @@ INSERT INTO `cicloescolar` (`IDCiclo`, `Ciclo`, `Fecha_Inicio`, `Fecha_Fin`, `Ci
 -- --------------------------------------------------------
 
 --
--- Table structure for table `contiene`
+-- Estructura de tabla para la tabla `contiene`
 --
 
 CREATE TABLE `contiene` (
   `IDContiene` int(11) NOT NULL,
   `IDRol` int(11) DEFAULT NULL,
-  `IDPrivilegios` int(11) DEFAULT NULL
+  `IDPrivilegio` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `contiene`
+-- Volcado de datos para la tabla `contiene`
 --
 
-INSERT INTO `contiene` (`IDContiene`, `IDRol`, `IDPrivilegios`) VALUES
-(1, 3, 9),
-(2, 1, 1),
-(3, 4, 9),
-(4, 3, 2),
-(5, 3, 7),
-(6, 2, 3),
-(7, 1, 1),
-(8, 4, 6),
-(9, 4, 7),
-(10, 1, 7),
-(11, 4, 7),
-(12, 3, 1),
-(13, 5, 7),
-(14, 3, 2),
-(15, 4, 3),
-(16, 1, 10),
-(17, 4, 9),
-(18, 1, 8),
-(19, 2, 9),
-(20, 2, 5),
-(21, 3, 7),
-(22, 1, 3),
-(23, 1, 6),
-(24, 1, 2),
-(25, 3, 5);
+INSERT INTO `contiene` (`IDContiene`, `IDRol`, `IDPrivilegio`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 1, 4),
+(5, 1, 5),
+(6, 1, 6),
+(7, 1, 7),
+(8, 1, 8),
+(9, 1, 9),
+(10, 1, 10),
+(11, 1, 11),
+(12, 1, 12),
+(13, 1, 13),
+(14, 1, 14),
+(15, 2, 10),
+(16, 2, 14),
+(17, 3, 1),
+(18, 3, 2),
+(19, 3, 4),
+(20, 3, 9),
+(21, 3, 10),
+(22, 3, 12);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `deuda`
+-- Estructura de tabla para la tabla `deuda`
 --
 
 CREATE TABLE `deuda` (
@@ -188,7 +228,7 @@ CREATE TABLE `deuda` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `deuda`
+-- Volcado de datos para la tabla `deuda`
 --
 
 INSERT INTO `deuda` (`IDDeuda`, `IDUsuario`, `Total_deuda`, `Plan_pago`, `Concepto`, `Mes`, `IDCiclo`) VALUES
@@ -226,7 +266,7 @@ INSERT INTO `deuda` (`IDDeuda`, `IDUsuario`, `Total_deuda`, `Plan_pago`, `Concep
 -- --------------------------------------------------------
 
 --
--- Table structure for table `materias`
+-- Estructura de tabla para la tabla `materias`
 --
 
 CREATE TABLE `materias` (
@@ -241,7 +281,7 @@ CREATE TABLE `materias` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Dumping data for table `materias`
+-- Volcado de datos para la tabla `materias`
 --
 
 INSERT INTO `materias` (`IDMateria`, `idSEP`, `Nombre_mat`, `Creditos`, `Activa`, `MateriaRequisito`, `HorasDocente`, `HorasIndependientes`) VALUES
@@ -406,7 +446,7 @@ INSERT INTO `materias` (`IDMateria`, `idSEP`, `Nombre_mat`, `Creditos`, `Activa`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pago`
+-- Estructura de tabla para la tabla `pago`
 --
 
 CREATE TABLE `pago` (
@@ -422,7 +462,7 @@ CREATE TABLE `pago` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `pago`
+-- Volcado de datos para la tabla `pago`
 --
 
 INSERT INTO `pago` (`IDPago`, `IDUsuario`, `IDDeuda`, `Cant_pagada`, `Fecha_de_pago`, `Metodo`, `Banco`, `Nota`, `Prorroga`) VALUES
@@ -460,7 +500,7 @@ INSERT INTO `pago` (`IDPago`, `IDUsuario`, `IDDeuda`, `Cant_pagada`, `Fecha_de_p
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pertenece`
+-- Estructura de tabla para la tabla `pertenece`
 --
 
 CREATE TABLE `pertenece` (
@@ -472,7 +512,7 @@ CREATE TABLE `pertenece` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `pertenece`
+-- Volcado de datos para la tabla `pertenece`
 --
 
 INSERT INTO `pertenece` (`IDPertenece`, `IDMateria`, `IDCiclo`, `Beca`, `IDUsuario`) VALUES
@@ -505,7 +545,7 @@ INSERT INTO `pertenece` (`IDPertenece`, `IDMateria`, `IDCiclo`, `Beca`, `IDUsuar
 -- --------------------------------------------------------
 
 --
--- Table structure for table `privilegios`
+-- Estructura de tabla para la tabla `privilegios`
 --
 
 CREATE TABLE `privilegios` (
@@ -514,40 +554,29 @@ CREATE TABLE `privilegios` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `privilegios`
+-- Volcado de datos para la tabla `privilegios`
 --
 
 INSERT INTO `privilegios` (`IDPrivilegio`, `Actividades`) VALUES
-(1, 'Admin'),
-(2, 'Alumno'),
-(3, 'Lector'),
-(4, 'Admin 2'),
-(5, 'Alumno 2'),
-(6, 'Lector 2'),
-(7, 'Admin 3'),
-(8, 'Alumno 3'),
-(9, 'Lector 3'),
-(10, 'Admin 4'),
-(11, 'Alumno 4'),
-(12, 'Lector 4'),
-(13, 'Admin 5'),
-(14, 'Alumno 5'),
-(15, 'Lector 5'),
-(16, 'Admin 6'),
-(17, 'Alumno 6'),
-(18, 'Lector 6'),
-(19, 'Admin 7'),
-(20, 'Alumno 7'),
-(21, 'Lector 7'),
-(22, 'Admin 8'),
-(23, 'Alumno 8'),
-(24, 'Lector 8'),
-(25, 'Admin 9');
+(1, 'generar ficha'),
+(2, 'modificar ficha'),
+(3, 'modificar pago'),
+(4, 'modificar prorroga'),
+(5, 'modificar usuario'),
+(6, 'registrar ciclo'),
+(7, 'registrar pago'),
+(8, 'registrar usuario'),
+(9, 'pedir pago'),
+(10, 'restaurar contrasena'),
+(11, 'subir transferencias'),
+(12, 'ver historial todos'),
+(13, 'ver historial propio'),
+(14, 'ver materias');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rol`
+-- Estructura de tabla para la tabla `rol`
 --
 
 CREATE TABLE `rol` (
@@ -556,20 +585,43 @@ CREATE TABLE `rol` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `rol`
+-- Volcado de datos para la tabla `rol`
 --
 
 INSERT INTO `rol` (`IDRol`, `Tipo_rol`) VALUES
+(1, 'Administrador'),
 (2, 'Alumno'),
-(3, 'Lector'),
-(26, 'Administrador'),
-(27, 'Lector'),
-(28, 'Alumno');
+(3, 'Lector');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `usuario`
+-- Estructura de tabla para la tabla `tiene`
+--
+
+CREATE TABLE `tiene` (
+  `IDTiene` int(11) NOT NULL,
+  `IDUsuario` int(11) NOT NULL,
+  `IDRol` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `tiene`
+--
+
+INSERT INTO `tiene` (`IDTiene`, `IDUsuario`, `IDRol`) VALUES
+(1, 33, 1),
+(2, 34, 2),
+(3, 38, 2),
+(4, 35, 1),
+(5, 36, 1),
+(6, 37, 1),
+(7, 39, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
 --
 
 CREATE TABLE `usuario` (
@@ -579,175 +631,181 @@ CREATE TABLE `usuario` (
   `Correo_electronico` varchar(255) DEFAULT NULL,
   `Contrasena` varchar(255) DEFAULT NULL,
   `Beca_actual` int(11) DEFAULT NULL,
-  `Referencia` int(11) DEFAULT NULL,
-  `IDRol` int(11) DEFAULT NULL
+  `Referencia` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `usuario`
+-- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`IDUsuario`, `Nombre`, `Matricula`, `Correo_electronico`, `Contrasena`, `Beca_actual`, `Referencia`, `IDRol`) VALUES
-(1, 'Juan', 123456, 'juan@example.com', 'contraseña123', 0, 0, NULL),
-(2, 'María', 234567, 'maria@example.com', 'abc123', 0, 0, NULL),
-(3, 'Carlos', 345678, 'carlos@example.com', 'password', 0, 0, NULL),
-(4, 'Ana', 456789, 'ana@example.com', 'pass123', 0, 0, NULL),
-(5, 'Luis', 567890, 'luis@example.com', 'securepass', 0, 0, NULL),
-(6, 'Laura', 678901, 'laura@example.com', 'userpass', 0, 0, NULL),
-(7, 'Pedro', 789012, 'pedro@example.com', '123abc', 0, 0, NULL),
-(8, 'Sofía', 890123, 'sofia@example.com', 'letmein', 0, 0, NULL),
-(9, 'Daniel', 901234, 'daniel@example.com', 'password123', 0, 0, NULL),
-(10, 'Alejandra', 123, 'alejandra@example.com', 'abc123', 0, 0, NULL),
-(11, 'Javier', 234, 'javier@example.com', 'qwerty', 0, 0, NULL),
-(12, 'Paula', 345, 'paula@example.com', 'password', 0, 0, NULL),
-(13, 'Roberto', 456, 'roberto@example.com', 'pass123', 0, 0, NULL),
-(14, 'Elena', 567, 'elena@example.com', 'securepass', 0, 0, NULL),
-(15, 'Marta', 678, 'marta@example.com', 'userpass', 0, 0, NULL),
-(16, 'Héctor', 789, 'hector@example.com', '123abc', 0, 0, NULL),
-(17, 'Carmen', 890, 'carmen@example.com', 'letmein', 0, 0, NULL),
-(18, 'Diego', 901, 'diego@example.com', 'password123', 0, 0, NULL),
-(19, 'Ana', 123456789, 'ana2@example.com', 'abc123', 0, 0, NULL),
-(20, 'María', 234567890, 'maria2@example.com', 'qwerty', 0, 0, NULL),
-(21, 'Carlos', 345678901, 'carlos2@example.com', 'password', 0, 0, NULL),
-(22, 'Ana', 456789012, 'ana3@example.com', 'pass123', 0, 0, NULL),
-(23, 'Luis', 567890123, 'luis2@example.com', 'securepass', 0, 0, NULL),
-(24, 'Laura', 678901234, 'laura2@example.com', 'userpass', 0, 0, NULL),
-(25, 'Pedro', 789012345, 'pedro2@example.com', '123abc', 0, 0, NULL),
-(26, 'Arturo', 1275427, 'arturo@gmail.com', '$2a$12$medFPjiMnK8DaJK.1eicveqN2e9c3jCCL1EcfwPRn4/ABZpXv6MKS', 0, 0, NULL),
-(27, 'ejemplo', 123456789, 'ejemplo@gmail.com', '$2a$12$Jf5YITGVYsV31hG3cyCdWOBJb5AVrTyQp/OhBWYsctRKQJUx5QeR2', 0, 0, NULL),
-(28, 'Roberta Espinoza', 200001, 'roberta@example.com', 'contraseñaRoberta', 0, 0, NULL),
-(29, 'Miguel Ángel Torres', 200002, 'miguel@example.com', 'contraseñaMiguel', 0, 0, NULL),
-(30, 'Samantha Ruiz', 200003, 'samantha@example.com', 'contraseñaSamantha', 0, 0, NULL),
-(31, 'Alejandro Mendoza', 200004, 'alejandro@example.com', 'contraseñaAlejandro', 0, 0, NULL),
-(32, 'Patricia Solano', 200005, 'patricia@example.com', 'contraseñaPatricia', 0, 0, NULL);
+INSERT INTO `usuario` (`IDUsuario`, `Nombre`, `Matricula`, `Correo_electronico`, `Contrasena`, `Beca_actual`, `Referencia`) VALUES
+(1, 'Juan', 123456, 'juan@example.com', 'contraseña123', 0, 0),
+(2, 'María', 234567, 'maria@example.com', 'abc123', 0, 0),
+(3, 'Carlos', 345678, 'carlos@example.com', 'password', 0, 0),
+(4, 'Ana', 456789, 'ana@example.com', 'pass123', 0, 0),
+(5, 'Luis', 567890, 'luis@example.com', 'securepass', 0, 0),
+(6, 'Laura', 678901, 'laura@example.com', 'userpass', 0, 0),
+(7, 'Pedro', 789012, 'pedro@example.com', '123abc', 0, 0),
+(8, 'Sofía', 890123, 'sofia@example.com', 'letmein', 0, 0),
+(9, 'Daniel', 901234, 'daniel@example.com', 'password123', 0, 0),
+(10, 'Alejandra', 123, 'alejandra@example.com', 'abc123', 0, 0),
+(11, 'Javier', 234, 'javier@example.com', 'qwerty', 0, 0),
+(12, 'Paula', 345, 'paula@example.com', 'password', 0, 0),
+(13, 'Roberto', 456, 'roberto@example.com', 'pass123', 0, 0),
+(14, 'Elena', 567, 'elena@example.com', 'securepass', 0, 0),
+(15, 'Marta', 678, 'marta@example.com', 'userpass', 0, 0),
+(16, 'Héctor', 789, 'hector@example.com', '123abc', 0, 0),
+(17, 'Carmen', 890, 'carmen@example.com', 'letmein', 0, 0),
+(18, 'Diego', 901, 'diego@example.com', 'password123', 0, 0),
+(19, 'Ana', 123456789, 'ana2@example.com', 'abc123', 0, 0),
+(20, 'María', 234567890, 'maria2@example.com', 'qwerty', 0, 0),
+(21, 'Carlos', 345678901, 'carlos2@example.com', 'password', 0, 0),
+(22, 'Ana', 456789012, 'ana3@example.com', 'pass123', 0, 0),
+(23, 'Luis', 567890123, 'luis2@example.com', 'securepass', 0, 0),
+(24, 'Laura', 678901234, 'laura2@example.com', 'userpass', 0, 0),
+(25, 'Pedro', 789012345, 'pedro2@example.com', '123abc', 0, 0),
+(26, 'Arturo', 1275427, 'arturo@gmail.com', '$2a$12$medFPjiMnK8DaJK.1eicveqN2e9c3jCCL1EcfwPRn4/ABZpXv6MKS', 0, 0),
+(27, 'ejemplo', 123456789, 'ejemplo@gmail.com', '$2a$12$Jf5YITGVYsV31hG3cyCdWOBJb5AVrTyQp/OhBWYsctRKQJUx5QeR2', 0, 0),
+(28, 'Roberta Espinoza', 200001, 'roberta@example.com', 'contraseñaRoberta', 0, 0),
+(29, 'Miguel Ángel Torres', 200002, 'miguel@example.com', 'contraseñaMiguel', 0, 0),
+(30, 'Samantha Ruiz', 200003, 'samantha@example.com', 'contraseñaSamantha', 0, 0),
+(31, 'Alejandro Mendoza', 200004, 'alejandro@example.com', 'contraseñaAlejandro', 0, 0),
+(32, 'Patricia Solano', 200005, 'patricia@example.com', 'contraseñaPatricia', 0, 0),
+(33, 'Ernesto Acosta', 1364982, 'neto@gmail.com', '$2a$12$z8h.xsnjJZjAoU5vhBjDlOBiKZ6KP6Us4a3F.eVkUIG456dFkrrwm', 50, 13649821),
+(34, 'alumno', 12345678, 'alumno@edu.mx', '$2a$12$kCBfPQ395MgXIu/ii5IxYOamqZPsf28Q.RRbU9isS95e76NpU62da', 10, 123456781),
+(35, 'Levi', 1234567, 'levi@correo.com', '$2a$12$474BO8FQf3BiTL4JjomlIeUgYnuMZBnS92Dymmyx1tNQXErzxoSFy', 0, 0),
+(36, 'Arturo', 1275427, 'arturo@gmail.com', '$2a$12$38i/IeL3JGN4gJ2q4Friu.I54cHkhWJWziHi4NZ4/rJ8HIfg9ZCt.', 0, 0),
+(37, 'daniel', 1234, 'hola@gmail.com', '$2a$12$yc02XJjfPceyDI39jzG6luAS3jxFCkzkj4s9SfpaLSZqE5ix6Wn6S', 0, 0),
+(38, 'wqesd', 12313, 'test@edu.mx', '$2a$12$DueRfYp7c86EQqtjGbGqf.Mj.iVtk3iUYwad.gBwX3nSqsrpU0Um6', 12, 2131231),
+(39, 'lector', 12321, 'lector@edu.mx', '$2a$12$4xx64y6THqvvjDhfKaAnGewdwZssZn3aJiOIq3PbdgkulMW44JGAa', 111, 111);
 
 --
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `causan`
---
-ALTER TABLE `causan`
-  ADD PRIMARY KEY (`IDCausan`);
-
---
--- Indexes for table `cicloescolar`
+-- Indices de la tabla `cicloescolar`
 --
 ALTER TABLE `cicloescolar`
   ADD PRIMARY KEY (`IDCiclo`);
 
 --
--- Indexes for table `contiene`
+-- Indices de la tabla `contiene`
 --
 ALTER TABLE `contiene`
   ADD PRIMARY KEY (`IDContiene`);
 
 --
--- Indexes for table `deuda`
+-- Indices de la tabla `deuda`
 --
 ALTER TABLE `deuda`
   ADD PRIMARY KEY (`IDDeuda`);
 
 --
--- Indexes for table `materias`
+-- Indices de la tabla `materias`
 --
 ALTER TABLE `materias`
   ADD PRIMARY KEY (`IDMateria`);
 
 --
--- Indexes for table `pago`
+-- Indices de la tabla `pago`
 --
 ALTER TABLE `pago`
   ADD PRIMARY KEY (`IDPago`);
 
 --
--- Indexes for table `pertenece`
+-- Indices de la tabla `pertenece`
 --
 ALTER TABLE `pertenece`
   ADD PRIMARY KEY (`IDPertenece`);
 
 --
--- Indexes for table `privilegios`
+-- Indices de la tabla `privilegios`
 --
 ALTER TABLE `privilegios`
   ADD PRIMARY KEY (`IDPrivilegio`);
 
 --
--- Indexes for table `rol`
+-- Indices de la tabla `rol`
 --
 ALTER TABLE `rol`
   ADD PRIMARY KEY (`IDRol`);
 
 --
--- Indexes for table `usuario`
+-- Indices de la tabla `tiene`
+--
+ALTER TABLE `tiene`
+  ADD PRIMARY KEY (`IDTiene`);
+
+--
+-- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`IDUsuario`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `causan`
---
-ALTER TABLE `causan`
-  MODIFY `IDCausan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1026;
-
---
--- AUTO_INCREMENT for table `cicloescolar`
+-- AUTO_INCREMENT de la tabla `cicloescolar`
 --
 ALTER TABLE `cicloescolar`
   MODIFY `IDCiclo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT for table `contiene`
+-- AUTO_INCREMENT de la tabla `contiene`
 --
 ALTER TABLE `contiene`
   MODIFY `IDContiene` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT for table `deuda`
+-- AUTO_INCREMENT de la tabla `deuda`
 --
 ALTER TABLE `deuda`
   MODIFY `IDDeuda` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
--- AUTO_INCREMENT for table `materias`
+-- AUTO_INCREMENT de la tabla `materias`
 --
 ALTER TABLE `materias`
   MODIFY `IDMateria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
 
 --
--- AUTO_INCREMENT for table `pago`
+-- AUTO_INCREMENT de la tabla `pago`
 --
 ALTER TABLE `pago`
   MODIFY `IDPago` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
--- AUTO_INCREMENT for table `pertenece`
+-- AUTO_INCREMENT de la tabla `pertenece`
 --
 ALTER TABLE `pertenece`
   MODIFY `IDPertenece` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT for table `privilegios`
+-- AUTO_INCREMENT de la tabla `privilegios`
 --
 ALTER TABLE `privilegios`
   MODIFY `IDPrivilegio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT for table `rol`
+-- AUTO_INCREMENT de la tabla `rol`
 --
 ALTER TABLE `rol`
   MODIFY `IDRol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
--- AUTO_INCREMENT for table `usuario`
+-- AUTO_INCREMENT de la tabla `tiene`
+--
+ALTER TABLE `tiene`
+  MODIFY `IDTiene` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `IDUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `IDUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

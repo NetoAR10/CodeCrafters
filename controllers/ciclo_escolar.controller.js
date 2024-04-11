@@ -1,7 +1,9 @@
 const Ciclo_escolar = require('../models/ciclo_escolar.model');
 
 exports.get_nuevo_ciclo = (request, response, next) => {
-    response.render('admin_dashboard')
+    response.render('admin_dashboard', {
+        permisos: request.session.permisos || [],
+    })
 }
 
 exports.post_nuevo_ciclo = (request, response, next) => {
