@@ -1,6 +1,8 @@
 <%- include ('head.ejs', {
     correo: correo,
     permisos: permisos,
+    roles: roles,
+    nombre: nombre
 })%>
     <body>
         <div class="sidebar">
@@ -38,13 +40,52 @@
                         </a>
                         <span class="tooltip">Historial</span>
                     </li>
-                    <li>
-                        <a href="/user/alumno/pago">
-                            <i class='bx bx-cart' ></i>
-                            <span class="links_name">Pago</span>
-                        </a>
-                        <span class="tooltip">Pago</span>
-                    </li>
+                    <% for (let permiso of permisos) {%>
+                        <% if (permiso.Actividades == 'generar ficha') { %>
+
+                            <li>
+                                <a href="/user/alumno/pago">
+                                    <i class='bx bx-cart' ></i>
+                                    <span class="links_name">Ficha</span>
+                                </a>
+                                <span class="tooltip">Ficha</span>
+                            </li>
+
+                        <% } %>
+                        <% if (permiso.Actividades == 'registrar pago') { %>
+
+                            <li>
+                                <a href="/user/alumno/pago">
+                                    <i class='bx bx-money-withdraw'></i>
+                                    <span class="links_name">Pagos</span>
+                                </a>
+                                <span class="tooltip">Pagos</span>
+                            </li>
+
+                        <% } %>
+                        <% if (permiso.Actividades == 'ver historial todos') { %>
+
+                            <li>
+                                <a href="/user/alumno/pago">
+                                    <i class='bx bxs-bank'></i>
+                                    <span class="links_name">Historial General</span>
+                                </a>
+                                <span class="tooltip">H. General</span>
+                            </li>
+
+                        <% } %>
+                        <% if (permiso.Actividades == 'ver historial propio') { %>
+
+                            <li>
+                                <a href="/user/alumno/pago">
+                                    <i class='bx bx-wallet' ></i>
+                                    <span class="links_name">Historial</span>
+                                </a>
+                                <span class="tooltip">Historial</span>
+                            </li>
+
+                        <% } %>
+                    <% } %>
                     <li>
                         <a href="#">
                             <i class='bx bxs-cog' ></i>
@@ -62,9 +103,15 @@
                             <img src="profile.png" alt="">
                             <div class="name_role">
                                 <div class="name">
-                                        Nombre
+                                        
+                                        <%= nombre %>
+                                        
                                     </div>
-                                    <div class="role">Usuario</div>
+                                    <div class="role">
+                                        <% for (let rol of roles) { %>
+                                            <%=rol.Tipo_rol%>
+                                        <% } %>
+                                    </div>
                                 </div>
                             </div>
                             <a href="/user/logout">

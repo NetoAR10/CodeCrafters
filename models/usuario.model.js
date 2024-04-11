@@ -71,5 +71,13 @@ module.exports = class Usuario {
             `,
             [correo]);
     }
+    
+    static getName(correo) {
+        return db.execute(
+            `SELECT Nombre
+            FROM usuario u
+            WHERE u.Correo_electronico = ?`,
+            [correo]);
+    }
 
 }
