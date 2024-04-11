@@ -16,13 +16,14 @@ exports.get_home = (request, response, next) => {
     Usuario.fetch(request.params.correo)
     .then(([users, fieldData]) => {
         const isAdmin = users.some(user => user.IDRol === 1);
+        const isStudent = users.some(user => user.IDRol === 2);
 
         if(isAdmin) {
             response.render('home_admin', {
                 usuariosDB: users,
                 correo: request.session.correo || '',
             });
-        } else {
+        } else if (isStudent) {
             response.render('home', {
                 usuariosDB: users,
                 correo: request.session.correo || '',
@@ -99,13 +100,13 @@ exports.post_signup = (request, response, next) => {
     const confirmar = request.body.confirmpassword;
     if (confirmar !== request.body.password) {
         request.session.error = 'No has confirmado tu contraseña correctamente. Intenta de nuevo.';
-        return response.redirect('/user/signup');
+        return response.redirect('/user/register');
     }
 
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
     if (!passwordRegex.test(request.body.password)) {
         request.session.error = 'Tu contraseña debe contener al menos 8 caracteres, un número y una mayúscula.';
-        return response.redirect('/user/signup');
+        return response.redirect('/user/register');
     }
 
     nuevo_usuario.save()
@@ -115,6 +116,6 @@ exports.post_signup = (request, response, next) => {
         .catch((error) => {
             console.log(error);
             request.session.error = 'Correo inválido.';
-            response.redirect('/user/signup');
+            response.redirect('/user/register');
         });
 };

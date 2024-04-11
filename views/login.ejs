@@ -1,3 +1,7 @@
+<% if (registrar) {%>
+    <%-include('includes/sidebar_admin.ejs')%>
+<%}%>
+
 <!DOCTYPE html>
 <html>
 
@@ -5,13 +9,14 @@
         <meta charset = "UTF-8">
         <meta name = "viewport" content="width-device-width, initial-scale=1.0">
         <title> <% if(registrar) {%> Registrarse <%} else {%> Iniciar Sesión <% } %></title>
+        <link rel="stylesheet" href="/css/stylesb.css">
         <link rel="stylesheet" href="/css/style.css">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     </head>
 
     <body>
         <div class="wrapper">
-            <form action="/user/<% if(registrar) { %>signup<% }else { %>login <% } %>" autocomplete="OFF" method="POST">
+            <form action="/user/<% if(registrar) { %>register<% }else { %>login <% } %>" autocomplete="OFF" method="POST">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
                 <a href="https://ivd.edu.mx/">
                     <img src="/viadisenologo.png" alt="logo" class="logo">
@@ -73,15 +78,12 @@
 
                 
                 <button type="submit" class="btn"><% if(registrar){ %>Registrarse <% } else { %> Iniciar sesión <% }%></button><br>
-                <% if(!registrar) { %> 
-                    <a href="/user/signup"> Registrarse </a> 
-                    <% } else { %>
-                        <a href="/user/login"> Login </a>
-                        <% } %>
             </form>
         </div>
-        <div class="circle_image">
-            <img src="/circle.png" alt="circle">
-        </div>
+        <% if (!registrar) { %>
+            <div class="circle_image">
+                <img src="/circle.png" alt="circle">
+            </div>
+        <% } %>
     </body>
 </html>
