@@ -26,26 +26,21 @@ exports.post_login = (request, response, next) => {
             .then(doMatch => {
                 if (doMatch) {
                     Usuario.getPermisos(user.Correo_electronico).then(([permisos, fieldData]) => {
+                        const rol = permisos[0];
                         request.session.isLoggedIn = true;
                         request.session.permisos = permisos;
                         console.log(request.session.permisos);
                         request.session.correo = user.Correo_electronico;
-                        request.session.nombre = user.Nombre;
+                        request.session.nombre = user.Nombre; 
+                        request.session.roles = rol.Tipo_Rol;
                         console.log('Correo:', user.Correo_electronico)
+                        console.log('Rol: ', rol.Tipo_Rol)
                         return request.session.save(err => {
                             response.redirect('/');
                         });
                     }).catch((error) => {console.log(error);});
-                    Usuario.getRol(user.Correo_electronico).then(([roles, fieldData]) => {
-                        request.session.isLoggedIn = true;
-                        request.session.roles = roles;
-                        console.log(roles);
-                    }).catch((error) => {console.log(error);});
-                    Usuario.getName(user.Correo_electronico).then(([nombres, fieldData]) => {
-                        request.session.isLoggedIn = true;
-                        request.session.nombres = nombres;
-                        console.log(nombres);
-                    }).catch((error) => {console.log(error);});
+
+                    
                 } else {
                     request.session.error = 'El correo y/o contraseña son incorrectos.';
                     return response.redirect('/user/login')
@@ -71,7 +66,7 @@ exports.get_home = (request, response, next) => {
                 usuariosDB: users,
                 correo: request.session.correo || '',
                 permisos: request.session.permisos || [],
-                roles: request.session.roles || '',
+                rol: request.session.roles || '',
                 nombre: request.session.nombre || '',
             });
         }

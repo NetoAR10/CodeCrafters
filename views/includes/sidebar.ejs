@@ -1,7 +1,7 @@
 <%- include ('head.ejs', {
     correo: correo,
     permisos: permisos,
-    roles: roles,
+    rol: rol,
     nombre: nombre
 })%>
     <body>
@@ -108,9 +108,9 @@
                                         
                                     </div>
                                     <div class="role">
-                                        <% for (let rol of roles) { %>
-                                            <%=rol.Tipo_rol%>
-                                        <% } %>
+                       
+                                            <%= rol %>
+            
                                     </div>
                                 </div>
                             </div>

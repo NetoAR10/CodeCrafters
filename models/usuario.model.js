@@ -52,7 +52,7 @@ module.exports = class Usuario {
 
     static getPermisos(correo) {
         return db.execute(
-            `SELECT Actividades 
+            `SELECT Actividades, Tipo_Rol 
             FROM usuario u, tiene t, rol r, contiene c, privilegios p
             WHERE u.Correo_electronico = ? AND u.IDUsuario = t.IDUsuario
             AND t.IDRol = r.IDRol AND r.IDRol = c.IDRol 
