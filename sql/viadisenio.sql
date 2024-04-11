@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-04-2024 a las 18:50:33
+-- Tiempo de generación: 11-04-2024 a las 04:48:42
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -611,7 +611,12 @@ CREATE TABLE `tiene` (
 
 INSERT INTO `tiene` (`IDTiene`, `IDUsuario`, `IDRol`) VALUES
 (1, 33, 1),
-(2, 34, 2);
+(2, 34, 2),
+(3, 38, 2),
+(4, 35, 1),
+(5, 36, 1),
+(6, 37, 1),
+(7, 39, 3);
 
 -- --------------------------------------------------------
 
@@ -626,52 +631,53 @@ CREATE TABLE `usuario` (
   `Correo_electronico` varchar(255) DEFAULT NULL,
   `Contrasena` varchar(255) DEFAULT NULL,
   `Beca_actual` int(11) DEFAULT NULL,
-  `Referencia` int(11) DEFAULT NULL,
-  `IDRol` int(11) DEFAULT NULL
+  `Referencia` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`IDUsuario`, `Nombre`, `Matricula`, `Correo_electronico`, `Contrasena`, `Beca_actual`, `Referencia`, `IDRol`) VALUES
-(1, 'Juan', 123456, 'juan@example.com', 'contraseña123', 0, 0, NULL),
-(2, 'María', 234567, 'maria@example.com', 'abc123', 0, 0, NULL),
-(3, 'Carlos', 345678, 'carlos@example.com', 'password', 0, 0, NULL),
-(4, 'Ana', 456789, 'ana@example.com', 'pass123', 0, 0, NULL),
-(5, 'Luis', 567890, 'luis@example.com', 'securepass', 0, 0, NULL),
-(6, 'Laura', 678901, 'laura@example.com', 'userpass', 0, 0, NULL),
-(7, 'Pedro', 789012, 'pedro@example.com', '123abc', 0, 0, NULL),
-(8, 'Sofía', 890123, 'sofia@example.com', 'letmein', 0, 0, NULL),
-(9, 'Daniel', 901234, 'daniel@example.com', 'password123', 0, 0, NULL),
-(10, 'Alejandra', 123, 'alejandra@example.com', 'abc123', 0, 0, NULL),
-(11, 'Javier', 234, 'javier@example.com', 'qwerty', 0, 0, NULL),
-(12, 'Paula', 345, 'paula@example.com', 'password', 0, 0, NULL),
-(13, 'Roberto', 456, 'roberto@example.com', 'pass123', 0, 0, NULL),
-(14, 'Elena', 567, 'elena@example.com', 'securepass', 0, 0, NULL),
-(15, 'Marta', 678, 'marta@example.com', 'userpass', 0, 0, NULL),
-(16, 'Héctor', 789, 'hector@example.com', '123abc', 0, 0, NULL),
-(17, 'Carmen', 890, 'carmen@example.com', 'letmein', 0, 0, NULL),
-(18, 'Diego', 901, 'diego@example.com', 'password123', 0, 0, NULL),
-(19, 'Ana', 123456789, 'ana2@example.com', 'abc123', 0, 0, NULL),
-(20, 'María', 234567890, 'maria2@example.com', 'qwerty', 0, 0, NULL),
-(21, 'Carlos', 345678901, 'carlos2@example.com', 'password', 0, 0, NULL),
-(22, 'Ana', 456789012, 'ana3@example.com', 'pass123', 0, 0, NULL),
-(23, 'Luis', 567890123, 'luis2@example.com', 'securepass', 0, 0, NULL),
-(24, 'Laura', 678901234, 'laura2@example.com', 'userpass', 0, 0, NULL),
-(25, 'Pedro', 789012345, 'pedro2@example.com', '123abc', 0, 0, NULL),
-(26, 'Arturo', 1275427, 'arturo@gmail.com', '$2a$12$medFPjiMnK8DaJK.1eicveqN2e9c3jCCL1EcfwPRn4/ABZpXv6MKS', 0, 0, NULL),
-(27, 'ejemplo', 123456789, 'ejemplo@gmail.com', '$2a$12$Jf5YITGVYsV31hG3cyCdWOBJb5AVrTyQp/OhBWYsctRKQJUx5QeR2', 0, 0, NULL),
-(28, 'Roberta Espinoza', 200001, 'roberta@example.com', 'contraseñaRoberta', 0, 0, NULL),
-(29, 'Miguel Ángel Torres', 200002, 'miguel@example.com', 'contraseñaMiguel', 0, 0, NULL),
-(30, 'Samantha Ruiz', 200003, 'samantha@example.com', 'contraseñaSamantha', 0, 0, NULL),
-(31, 'Alejandro Mendoza', 200004, 'alejandro@example.com', 'contraseñaAlejandro', 0, 0, NULL),
-(32, 'Patricia Solano', 200005, 'patricia@example.com', 'contraseñaPatricia', 0, 0, NULL),
-(33, 'Ernesto Acosta', 1364982, 'neto@gmail.com', '$2a$12$z8h.xsnjJZjAoU5vhBjDlOBiKZ6KP6Us4a3F.eVkUIG456dFkrrwm', 50, 13649821, 1),
-(34, 'alumno', 12345678, 'alumno@edu.mx', '$2a$12$kCBfPQ395MgXIu/ii5IxYOamqZPsf28Q.RRbU9isS95e76NpU62da', 10, 123456781, NULL),
-(35, 'Levi', 1234567, 'levi@correo.com', '$2a$12$474BO8FQf3BiTL4JjomlIeUgYnuMZBnS92Dymmyx1tNQXErzxoSFy', 0, 0, 1),
-(36, 'Arturo', 1275427, 'arturo@gmail.com', '$2a$12$38i/IeL3JGN4gJ2q4Friu.I54cHkhWJWziHi4NZ4/rJ8HIfg9ZCt.', 0, 0, 1),
-(37, 'daniel', 1234, 'hola@gmail.com', '$2a$12$yc02XJjfPceyDI39jzG6luAS3jxFCkzkj4s9SfpaLSZqE5ix6Wn6S', 0, 0, 1);
+INSERT INTO `usuario` (`IDUsuario`, `Nombre`, `Matricula`, `Correo_electronico`, `Contrasena`, `Beca_actual`, `Referencia`) VALUES
+(1, 'Juan', 123456, 'juan@example.com', 'contraseña123', 0, 0),
+(2, 'María', 234567, 'maria@example.com', 'abc123', 0, 0),
+(3, 'Carlos', 345678, 'carlos@example.com', 'password', 0, 0),
+(4, 'Ana', 456789, 'ana@example.com', 'pass123', 0, 0),
+(5, 'Luis', 567890, 'luis@example.com', 'securepass', 0, 0),
+(6, 'Laura', 678901, 'laura@example.com', 'userpass', 0, 0),
+(7, 'Pedro', 789012, 'pedro@example.com', '123abc', 0, 0),
+(8, 'Sofía', 890123, 'sofia@example.com', 'letmein', 0, 0),
+(9, 'Daniel', 901234, 'daniel@example.com', 'password123', 0, 0),
+(10, 'Alejandra', 123, 'alejandra@example.com', 'abc123', 0, 0),
+(11, 'Javier', 234, 'javier@example.com', 'qwerty', 0, 0),
+(12, 'Paula', 345, 'paula@example.com', 'password', 0, 0),
+(13, 'Roberto', 456, 'roberto@example.com', 'pass123', 0, 0),
+(14, 'Elena', 567, 'elena@example.com', 'securepass', 0, 0),
+(15, 'Marta', 678, 'marta@example.com', 'userpass', 0, 0),
+(16, 'Héctor', 789, 'hector@example.com', '123abc', 0, 0),
+(17, 'Carmen', 890, 'carmen@example.com', 'letmein', 0, 0),
+(18, 'Diego', 901, 'diego@example.com', 'password123', 0, 0),
+(19, 'Ana', 123456789, 'ana2@example.com', 'abc123', 0, 0),
+(20, 'María', 234567890, 'maria2@example.com', 'qwerty', 0, 0),
+(21, 'Carlos', 345678901, 'carlos2@example.com', 'password', 0, 0),
+(22, 'Ana', 456789012, 'ana3@example.com', 'pass123', 0, 0),
+(23, 'Luis', 567890123, 'luis2@example.com', 'securepass', 0, 0),
+(24, 'Laura', 678901234, 'laura2@example.com', 'userpass', 0, 0),
+(25, 'Pedro', 789012345, 'pedro2@example.com', '123abc', 0, 0),
+(26, 'Arturo', 1275427, 'arturo@gmail.com', '$2a$12$medFPjiMnK8DaJK.1eicveqN2e9c3jCCL1EcfwPRn4/ABZpXv6MKS', 0, 0),
+(27, 'ejemplo', 123456789, 'ejemplo@gmail.com', '$2a$12$Jf5YITGVYsV31hG3cyCdWOBJb5AVrTyQp/OhBWYsctRKQJUx5QeR2', 0, 0),
+(28, 'Roberta Espinoza', 200001, 'roberta@example.com', 'contraseñaRoberta', 0, 0),
+(29, 'Miguel Ángel Torres', 200002, 'miguel@example.com', 'contraseñaMiguel', 0, 0),
+(30, 'Samantha Ruiz', 200003, 'samantha@example.com', 'contraseñaSamantha', 0, 0),
+(31, 'Alejandro Mendoza', 200004, 'alejandro@example.com', 'contraseñaAlejandro', 0, 0),
+(32, 'Patricia Solano', 200005, 'patricia@example.com', 'contraseñaPatricia', 0, 0),
+(33, 'Ernesto Acosta', 1364982, 'neto@gmail.com', '$2a$12$z8h.xsnjJZjAoU5vhBjDlOBiKZ6KP6Us4a3F.eVkUIG456dFkrrwm', 50, 13649821),
+(34, 'alumno', 12345678, 'alumno@edu.mx', '$2a$12$kCBfPQ395MgXIu/ii5IxYOamqZPsf28Q.RRbU9isS95e76NpU62da', 10, 123456781),
+(35, 'Levi', 1234567, 'levi@correo.com', '$2a$12$474BO8FQf3BiTL4JjomlIeUgYnuMZBnS92Dymmyx1tNQXErzxoSFy', 0, 0),
+(36, 'Arturo', 1275427, 'arturo@gmail.com', '$2a$12$38i/IeL3JGN4gJ2q4Friu.I54cHkhWJWziHi4NZ4/rJ8HIfg9ZCt.', 0, 0),
+(37, 'daniel', 1234, 'hola@gmail.com', '$2a$12$yc02XJjfPceyDI39jzG6luAS3jxFCkzkj4s9SfpaLSZqE5ix6Wn6S', 0, 0),
+(38, 'wqesd', 12313, 'test@edu.mx', '$2a$12$DueRfYp7c86EQqtjGbGqf.Mj.iVtk3iUYwad.gBwX3nSqsrpU0Um6', 12, 2131231),
+(39, 'lector', 12321, 'lector@edu.mx', '$2a$12$4xx64y6THqvvjDhfKaAnGewdwZssZn3aJiOIq3PbdgkulMW44JGAa', 111, 111);
 
 --
 -- Índices para tablas volcadas
@@ -793,13 +799,13 @@ ALTER TABLE `rol`
 -- AUTO_INCREMENT de la tabla `tiene`
 --
 ALTER TABLE `tiene`
-  MODIFY `IDTiene` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `IDTiene` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `IDUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `IDUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
