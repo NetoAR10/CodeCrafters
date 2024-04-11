@@ -58,6 +58,18 @@ module.exports = class Usuario {
             AND t.IDRol = r.IDRol AND r.IDRol = c.IDRol 
             AND p.IDPrivilegio = c.IDPrivilegio `,
             [correo]);
-    } 
+    }
+    
+    static getRol(correo) {
+        return db.execute(
+            `
+            SELECT Tipo_rol
+            FROM usuario u, tiene t, rol r
+            WHERE u.Correo_electronico = ?
+            AND u.IDUsuario = t.IDUsuario
+            AND t.IDRol = r.IDRol
+            `,
+            [correo]);
+    }
 
 }

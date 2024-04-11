@@ -8,6 +8,6 @@ router.get('/pago', isAuth, (request, response, next) => {
     response.render('pago_alumno');
 })
 
-router.get('/pago', isAuth, usuariosController.get_home);
+router.get('/pago', isAuth, usuariosController.get_homeUser);
 
 module.exports = router;

@@ -12,33 +12,11 @@ exports.get_login = (request, response, next) => {
     });
 };
 
-exports.get_home = (request, response, next) => {
-    Usuario.fetch(request.params.correo)
-    .then(([users, fieldData]) => {
-        const isAdmin = users.some(user => user.IDRol === 1);
-        const isStudent = users.some(user => user.IDRol === 2);
-
-        if(isAdmin) {
-            response.render('home_admin', {
-                usuariosDB: users,
-                correo: request.session.correo || '',
-            });
-        } else if (isStudent) {
-            response.render('home', {
-                usuariosDB: users,
-                correo: request.session.correo || '',
-            });
-        }
-    })
-    .catch(error => {
-        console.log(error)
-    })
-}
 
 
 
 exports.post_login = (request, response, next) => {
-
+    
     Usuario.fetchOne(request.body.correo)
     .then(([users, fieldData]) => {
         console.log(request.body.correo)
@@ -57,6 +35,11 @@ exports.post_login = (request, response, next) => {
                             response.redirect('/');
                         });
                     }).catch((error) => {console.log(error);});
+                    Usuario.getRol(user.Correo_electronico).then(([roles, fieldData]) => {
+                        request.session.isLoggedIn = true;
+                        request.session.roles = roles;
+                        console.log(roles);
+                    })
                 } else {
                     request.session.error = 'El correo y/o contraseña son incorrectos.';
                     return response.redirect('/user/login')
@@ -72,6 +55,34 @@ exports.post_login = (request, response, next) => {
             request.session.error = 'El correo y/o contraseña son incorrectos.'
             response.redirect('/user/login');
         }
+    })
+}
+
+exports.get_homeAdmin = (request, response, next) => {
+    Usuario.fetch(request.params.correo)
+    .then(([users, fieldData]) => {
+            response.render('home_admin', {
+                usuariosDB: users,
+                correo: request.session.correo || '',
+            });
+        }
+    )
+    .catch(error => {
+        console.log(error)
+    })
+}
+
+exports.get_homeUser = (request, response, next) => {
+    Usuario.fetch(request.params.correo)
+    .then(([users, fieldData]) => {
+            response.render('home', {
+                usuariosDB: users,
+                correo: request.session.correo || '',
+            });
+        }
+    )
+    .catch(error => {
+        console.log(error)
     })
 }
 
