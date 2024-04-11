@@ -42,7 +42,7 @@ const admin_dasboard = require('./routes/admin_dashboard.routes');
 app.use('/user/admin', admin_dasboard);
 
 const rutasRegistrarPago = require('./routes/registrarPago.routes');
-app.use('/user', rutasRegistrarPago);
+app.use('/user/admin', rutasRegistrarPago);
 
 const rutasDeuda = require('./routes/crearDeuda.routes');
 app.use('/user', rutasDeuda);
