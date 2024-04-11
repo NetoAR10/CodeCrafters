@@ -6,8 +6,8 @@ const isStudent = require('../util/is-student');
 
 const usuariosController = require('../controllers/usuario.controller');
 
-router.get('/', isAuth, isAdmin, usuariosController.get_homeAdmin);
-router.get('/', isAuth, isStudent, usuariosController.get_homeUser);
+
+router.get('/', isAuth, usuariosController.get_home);
 
 
 module.exports = router;

@@ -58,21 +58,7 @@ exports.post_login = (request, response, next) => {
     })
 }
 
-exports.get_homeAdmin = (request, response, next) => {
-    Usuario.fetch(request.params.correo)
-    .then(([users, fieldData]) => {
-            response.render('home_admin', {
-                usuariosDB: users,
-                correo: request.session.correo || '',
-            });
-        }
-    )
-    .catch(error => {
-        console.log(error)
-    })
-}
-
-exports.get_homeUser = (request, response, next) => {
+exports.get_home = (request, response, next) => {
     Usuario.fetch(request.params.correo)
     .then(([users, fieldData]) => {
             response.render('home', {
