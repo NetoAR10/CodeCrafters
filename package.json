@@ -21,8 +21,11 @@
     "csurf": "^1.11.0",
     "ejs": "^3.1.9",
     "express": "^4.19.2",
+    "express-async-handler": "^1.2.0",
     "express-session": "^1.18.0",
-    "mysql2": "^3.9.3",
-    "pdfkit": "^0.15.0"
+    "json2csv": "^6.0.0-alpha.2",
+    "mysql2": "^3.9.4",
+    "pdfkit": "^0.15.0",
+    "sequelize": "^6.37.2"
   }
 }

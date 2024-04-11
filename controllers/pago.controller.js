@@ -1,80 +1,60 @@
-const PDFDocument = require('pdfkit');
+// pago.controller.js
+const Pago = require('../models/pago.model');
+const Usuario = require('../models/usuario.model'); // Asegúrate de que el modelo de Usuario se importa correctamente
+const { parse } = require('json2csv');
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
+const { promisify } = require('util');
 
-// Función para mostrar el historial de pagos (datos hardcodeados)
-exports.getPaymentHistory = (req, res) => {
+const writeFileAsync = promisify(fs.writeFile);
+const unlinkAsync = promisify(fs.unlink);
+
+exports.downloadPaymentHistory = async (req, res) => {
     const userID = parseInt(req.params.userID, 10);
 
-    // Hardcoded data for testing
-    const payments = [
-        { IDPago: 1, IDUsuario: 123, Cant_pagada: 50.00, Fecha_de_pago: '2024-04-10', Metodo: 'Tarjeta' },
-        { IDPago: 2, IDUsuario: 123, Cant_pagada: 70.00, Fecha_de_pago: '2024-04-05', Metodo: 'Efectivo' },
-        { IDPago: 3, IDUsuario: 456, Cant_pagada: 60.00, Fecha_de_pago: '2024-04-15', Metodo: 'Transferencia' },
-        { IDPago: 4, IDUsuario: 456, Cant_pagada: 80.00, Fecha_de_pago: '2024-04-20', Metodo: 'Tarjeta' },
-        { IDPago: 5, IDUsuario: 789, Cant_pagada: 90.00, Fecha_de_pago: '2024-04-25', Metodo: 'Efectivo' },
-        { IDPago: 6, IDUsuario: 789, Cant_pagada: 100.00, Fecha_de_pago: '2024-04-30', Metodo: 'Transferencia' },
-        { IDPago: 7, IDUsuario: 1011, Cant_pagada: 110.00, Fecha_de_pago: '2024-05-05', Metodo: 'Tarjeta' },
-        { IDPago: 8, IDUsuario: 1011, Cant_pagada: 120.00, Fecha_de_pago: '2024-05-10', Metodo: 'Efectivo' },
-        { IDPago: 9, IDUsuario: 1213, Cant_pagada: 130.00, Fecha_de_pago: '2024-05-15', Metodo: 'Transferencia' },
-        { IDPago: 10, IDUsuario: 1213, Cant_pagada: 140.00, Fecha_de_pago: '2024-05-20', Metodo: 'Tarjeta' }
-    ];
-
-    res.render('historialPago', {
-        pageTitle: 'Historial de Pagos',
-        payments: payments,
-        userID: userID
-    });
-};
-
-// Función para descargar el historial de pagos como PDF (datos hardcodeados)
-exports.downloadPaymentHistory = (req, res) => {
-    const userID = parseInt(req.params.userID, 10);
-
-    // Hardcoded data for testing
-    const rows = [
-        { IDPago: 1, IDUsuario: 123, Cant_pagada: 50.00, Fecha_de_pago: '2024-04-10', Metodo: 'Tarjeta' },
-        { IDPago: 2, IDUsuario: 123, Cant_pagada: 70.00, Fecha_de_pago: '2024-04-05', Metodo: 'Efectivo' },
-        { IDPago: 3, IDUsuario: 456, Cant_pagada: 60.00, Fecha_de_pago: '2024-04-15', Metodo: 'Transferencia' },
-        { IDPago: 4, IDUsuario: 456, Cant_pagada: 80.00, Fecha_de_pago: '2024-04-20', Metodo: 'Tarjeta' },
-        { IDPago: 5, IDUsuario: 789, Cant_pagada: 90.00, Fecha_de_pago: '2024-04-25', Metodo: 'Efectivo' },
-        { IDPago: 6, IDUsuario: 789, Cant_pagada: 100.00, Fecha_de_pago: '2024-04-30', Metodo: 'Transferencia' },
-        { IDPago: 7, IDUsuario: 1011, Cant_pagada: 110.00, Fecha_de_pago: '2024-05-05', Metodo: 'Tarjeta' },
-        { IDPago: 8, IDUsuario: 1011, Cant_pagada: 120.00, Fecha_de_pago: '2024-05-10', Metodo: 'Efectivo' },
-        { IDPago: 9, IDUsuario: 1213, Cant_pagada: 130.00, Fecha_de_pago: '2024-05-15', Metodo: 'Transferencia' },
-        { IDPago: 10, IDUsuario: 1213, Cant_pagada: 140.00, Fecha_de_pago: '2024-05-20', Metodo: 'Tarjeta' }
-    ];
-
-    if (rows.length > 0) {
-        const doc = new PDFDocument();
-        const filename = `Historial_Pagos_${userID}.pdf`;
-
-        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-        res.setHeader('Content-Type', 'application/pdf');
-
-        doc.pipe(res);
-
-        doc.fontSize(20).text('Historial de Pagos', { align: 'center' });
-        doc.moveDown();
-
-        rows.forEach(pago => {
-            doc.fontSize(12)
-                .text(`ID Pago: ${pago.IDPago}`)
-                .text(`ID Usuario: ${pago.IDUsuario}`)
-                .text(`Cantidad Pagada: $${parseFloat(pago.Cant_pagada).toFixed(2)}`)
-                .text(`Fecha de Pago: ${new Date(pago.Fecha_de_pago).toISOString().split('T')[0]}`)
-                .text(`Método: ${pago.Metodo}`)
-                .moveDown();
+    try {
+        // Incluir el modelo de usuario al buscar los pagos
+        const payments = await Pago.findAll({
+            where: { IDUsuario: userID },
+            include: [{ 
+                model: Usuario,
+                as: 'usuario',
+                attributes: ['Nombre'] // Asume que 'Nombre' es un campo en el modelo de Usuario
+            }],
+            order: [['Fecha_de_pago', 'ASC']]
         });
 
-        // Agregar información adicional al PDF (hardcodeado para demostración)
-        doc.fontSize(16).text('Información adicional:', { align: 'center' }).moveDown();
-        doc.fontSize(12).text('Este es un documento de prueba generado automáticamente.', { align: 'center' });
+        if (payments.length > 0) {
+            const csvData = payments.map(p => ({
+                'Pago': p.fecha_de_pago.toLocaleString('es-ES', { month: 'long' }),
+                '%': '100', // Por defecto a 100% si no hay otro cálculo
+                'Referencia': p.usuario.Nombre.split(' ').slice(-1) + p.IDPago.toString().padStart(4, '0'), // Construir la referencia a partir del apellido y IDPago
+                'Nombre': p.usuario.Nombre,
+                'Fecha': p.fecha_de_pago.toLocaleDateString(),
+                'Monto': `$${p.Cant_pagada.toFixed(2)}`,
+                'Metodo': p.Metodo,
+                'Banco': p.Banco,
+                'Nota': p.Nota || 'N/A'
+            }));
 
-        // Agregar más información (hardcodeado para demostración)
-        doc.fontSize(14).text('Más información:', { align: 'center' }).moveDown();
-        doc.fontSize(10).text('Este es un PDF de prueba generado desde una aplicación web.', { align: 'center' });
+            const fields = ['Pago', '%', 'Referencia', 'Nombre', 'Fecha', 'Monto', 'Metodo', 'Banco', 'Nota'];
+            const csv = parse(csvData, { fields });
 
-        doc.end();
-    } else {
-        res.send('No hay registros de pago para este usuario.');
+            const tempDir = os.tmpdir();
+            const filePath = path.join(tempDir, `Historial_Pagos_${userID}.csv`);
+
+            await writeFileAsync(filePath, csv);
+
+            res.download(filePath, (err) => {
+                if (err) console.error('Error al enviar el archivo:', err);
+                unlinkAsync(filePath).catch((err) => console.error('Error al eliminar el archivo temporal:', err));
+            });
+        } else {
+            res.status(404).send('No hay registros de pago para este usuario.');
+        }
+    } catch (error) {
+        console.error('Error al generar el archivo CSV:', error);
+        res.status(500).send('Error al procesar la solicitud.');
     }
 };
