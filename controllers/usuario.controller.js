@@ -64,6 +64,7 @@ exports.get_home = (request, response, next) => {
             response.render('home', {
                 usuariosDB: users,
                 correo: request.session.correo || '',
+                permisos: request.session.permisos || [],
             });
         }
     )
