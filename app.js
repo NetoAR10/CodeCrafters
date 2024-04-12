@@ -45,6 +45,7 @@ const rutasPago = require('./routes/pago.routes');
 const adminDashboardRoutes = require('./routes/admin_dashboard.routes');
 const rutasRegistrarPago = require('./routes/registrarPago.routes');
 const rutasDeuda = require('./routes/crearDeuda.routes');
+const rutasListaUsuarios = require('./routes/lista_usuarios.routes');
 
 app.use('/user', rutasUsuario);
 app.use('/', rutasHome);
@@ -53,9 +54,8 @@ app.use('/pagos', rutasPago);
 app.use('/user/admin', adminDashboardRoutes);
 app.use('/user', rutasRegistrarPago);
 app.use('/user', rutasDeuda);
+app.use('/user/admin', rutasListaUsuarios);
 
-const rutasUsuario = require('./routes/usuario.routes');
-app.use('/user', rutasUsuario);
 // Manejo de errores de 404
 app.use((req, res) => {
   res.status(404).send('Error 404: La página que buscas no existe');
@@ -64,7 +64,6 @@ app.use((req, res) => {
 // Ruta de ejemplo para el historial de pagos
 app.get('/historial-pagos', async (req, res) => {
   try {
-    // Ajusta la consulta SQL según tus necesidades
     const [rows, fields] = await pool.query('SELECT * FROM pago');
     res.render('historialPago', { pageTitle: 'Historial de Pagos', payments: rows });
   } catch (error) {
@@ -72,15 +71,6 @@ app.get('/historial-pagos', async (req, res) => {
     res.status(500).send('Error al obtener los datos de pagos');
   }
 });
-
-const rutasListaUsuarios = require('./routes/lista_usuarios.routes');
-app.use('/user/admin', rutasListaUsuarios);
-
-// Manejo de errores de 404
-app.use((request, response, next) => {
-  response.status(404).send('Error 404: La página que buscas no existe');
-});
-
 
 // Iniciar el servidor
 app.listen(2050, () => {
