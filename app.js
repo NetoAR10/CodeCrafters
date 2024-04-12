@@ -43,20 +43,18 @@ app.use('/pagos', rutasPago);
 const adminDashboardRoutes = require('./routes/admin_dashboard.routes');
 app.use('/user/admin', adminDashboardRoutes);
 
+const rutasRegistrarPago = require('./routes/registrarPago.routes');
+app.use('/user/admin', rutasRegistrarPago);
+
+const rutasDeuda = require('./routes/crearDeuda.routes');
+app.use('/user/admin', rutasDeuda);
+
 // Manejo de errores de 404
 app.use((request, response, next) => {
     response.status(404).send('Error 404: La página que buscas no existe');
 });
 
-const rutasRegistrarPago = require('./routes/registrarPago.routes');
-app.use('/user', rutasRegistrarPago);
-
-const rutasDeuda = require('./routes/crearDeuda.routes');
-app.use('/user', rutasDeuda);
-
 // Iniciar el servidor
 app.listen(2050, () => {
   console.log('El servidor está corriendo en el puerto 2050');
 });
-
-
