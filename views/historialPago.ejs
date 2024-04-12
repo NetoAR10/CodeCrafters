@@ -38,18 +38,29 @@
   </style>
 </head>
 <body>
-  <% include('includes/sidebar.ejs') %> 
+  <% include('includes/sidebar.ejs') %>
   <div class="main-content">
     <h1>Historial de Pagos</h1>
+    <% if (userRole === 'administrador') { %>
+    <form action="/pagos/descargar-csv" method="GET">
+      <label for="userId">Seleccionar Usuario:</label>
+      <select name="userId" id="userId">
+        <option value="">Todos</option>
+        <% users.forEach(user => { %>
+        <option value="<%= user.IDUsuario %>"><%= user.Nombre %></option>
+        <% }) %>
+      </select>
+      <button type="submit">Descargar CSV</button>
+    </form>
+    <% } %>
     <table>
       <thead>
         <tr>
-          <th>Pago</th>
-          <th>%</th>
+          <th>ID Pago</th>
           <th>Referencia</th>
           <th>Nombre</th>
-          <th>Fecha</th>
-          <th>Monto</th>
+          <th>Fecha de Pago</th>
+          <th>Cantidad Pagada</th>
           <th>Método</th>
           <th>Banco</th>
           <th>Nota</th>
@@ -57,23 +68,19 @@
       </thead>
       <tbody>
         <% payments.forEach(payment => { %>
-          <tr>
-            <td><%= payment.IDPago !== null && payment.IDPago !== undefined ? payment.IDPago : 'N/A' %></td>
-            <td><%= payment.Porcentaje !== undefined ? (payment.Porcentaje * 100).toFixed(2) + '%' : 'N/A' %></td>
-            <td><%= payment.Referencia || 'N/A' %></td>
-            <td><%= payment.Nombre || 'N/A' %></td>
-            <td><%= payment.Fecha_de_pago ? new Date(payment.Fecha_de_pago).toLocaleDateString('es-MX', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A' %></td>
-            <td>$<%= payment.Cant_pagada !== null && payment.Cant_pagada !== undefined ? payment.Cant_pagada.toFixed(2) : '0.00' %></td>
-            <td><%= payment.Metodo || 'N/A' %></td>
-            <td><%= payment.Banco || 'N/A' %></td>
-            <td><%= payment.Nota || 'Ninguna' %></td>
-          </tr>
+        <tr>
+          <td><%= payment.IDPago %></td>
+          <td><%= payment.Referencia %></td>
+          <td><%= payment.Nombre %></td>
+          <td><%= payment.Fecha_de_pago ? new Date(payment.Fecha_de_pago).toLocaleDateString('es-MX') : 'N/A' %></td>
+          <td>$<%= payment.Cant_pagada.toFixed(2) %></td>
+          <td><%= payment.Metodo %></td>
+          <td><%= payment.Banco %></td>
+          <td><%= payment.Nota %></td>
+        </tr>
         <% }) %>
       </tbody>
     </table>
-    <form action="/pagos/descargar-csv" method="GET">
-      <button type="submit">Descargar como CSV</button>
-    </form>
   </div>
 </body>
 </html>
