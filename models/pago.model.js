@@ -1,24 +1,21 @@
 const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../util/database'); 
+const sequelize = require('../database');
 
 class Pago extends Model {}
 
 Pago.init({
-  id: {
+  IDPago: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  monto: {
-    type: DataTypes.DECIMAL(10, 2),
-    allowNull: false
-  },
-  
-}, {
-  sequelize,
-  modelName: 'Pago',
-  tableName: 'pagos',
-  timestamps: false 
-});
+  IDUsuario: DataTypes.INTEGER,
+  IDDeuda: DataTypes.INTEGER,
+  Cant_pagada: DataTypes.FLOAT,
+  Fecha_de_pago: DataTypes.DATEONLY,
+  Metodo: DataTypes.STRING,
+  Banco: DataTypes.STRING,
+  Nota: DataTypes.STRING
+}, { sequelize, modelName: 'pago', tableName: 'pago', timestamps: false });
 
 module.exports = Pago;

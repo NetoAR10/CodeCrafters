@@ -1,15 +1,9 @@
-// En pago.routes.js
 const express = require('express');
 const router = express.Router();
 const pagoController = require('../controllers/pago.controller');
-const isAuth = require('../util/is-auth');
-const canViewHistorialTodos = require('../util/can-view-historial-todos');
+const rbacMiddleware = require('../util/rbac'); // Asegúrate de que la ruta sea correcta
 
-// Ajusta la ruta para incluir el parámetro :userID
-router.get('/historial_pagos/:userID', isAuth, canViewHistorialTodos, pagoController.getPaymentHistory);
-
-// Ajusta la ruta para incluir el parámetro :userID
-router.get('/descargar-historial/:userID', isAuth, canViewHistorialTodos, pagoController.downloadPaymentHistory);
-
+router.get('/descargar-csv', pagoController.descargarCsv);
+router.get('/historial-pagos', pagoController.mostrarHistorialPago);
 
 module.exports = router;
