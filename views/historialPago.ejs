@@ -1,4 +1,4 @@
-<%- include ('includes/sidebar.ejs') %>
+<%- include('includes/sidebar.ejs') %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,9 +12,7 @@
       font-family: Arial, sans-serif;
     }
     .main-content {
-      margin-left: auto;
-      margin-right: auto;
-      max-width: calc(100% - 300px); 
+      margin-left: 240px; 
       padding: 20px;
     }
     .main-content h1 {
@@ -23,65 +21,59 @@
     }
     .main-content table {
       width: 100%; 
-      margin-top: 20px;
       border-collapse: collapse;
     }
     .main-content th, .main-content td {
-      padding: 8px;
+      padding: 10px;
+      border: 1px solid #ddd; 
       text-align: left;
-      border-bottom: 1px solid #ddd;
     }
     .main-content th {
       background-color: #f2f2f2;
+      font-weight: bold;
     }
-    .main-content form {
-      text-align: center; 
-      margin-top: 20px;
-    }
-    .main-content button {
-      padding: 10px 20px;
-      border: none;
-      background-color: #007bff;
-      color: white;
-      text-transform: uppercase;
-      cursor: pointer;
-    }
-    .main-content button:hover {
-      background-color: #0056b3;
+    .main-content td {
+      background-color: #ffffff; 
     }
   </style>
 </head>
 <body>
-    <% include('includes/sidebar.ejs') %>
-    <div class="main-content">
-        <h1>Historial de Pagos</h1>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>ID Pago</th>
-                    <th>ID Usuario</th>
-                    <th>Cantidad Pagada</th>
-                    <th>Fecha de Pago</th>
-                    <th>Método</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% payments.forEach(pago => { %>
-                    <tr>
-                        <td><%= pago.IDPago %></td>
-                        <td><%= pago.IDUsuario %></td>
-                        <td>$<%= pago.Cant_pagada.toFixed(2) %></td>
-                        <td><%= new Date(pago.Fecha_de_pago).toLocaleDateString() %></td>
-                        <td><%= pago.Metodo %></td>
-                    </tr>
-                <% }) %>
-            </tbody>
-        </table>
-
-        <form action="/pagos/descargar-historial/<%= userID %>" method="GET">
-            <button type="submit">Descargar como PDF</button>
-        </form>
-    </div>
+  <% include('includes/sidebar.ejs') %> 
+  <div class="main-content">
+    <h1>Historial de Pagos</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Pago</th>
+          <th>%</th>
+          <th>Referencia</th>
+          <th>Nombre</th>
+          <th>Fecha</th>
+          <th>Monto</th>
+          <th>Método</th>
+          <th>Banco</th>
+          <th>Nota</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% payments.forEach(payment => { %>
+          <tr>
+            <td><%= payment.IDPago !== null && payment.IDPago !== undefined ? payment.IDPago : 'N/A' %></td>
+            <td><%= payment.Porcentaje !== undefined ? (payment.Porcentaje * 100).toFixed(2) + '%' : 'N/A' %></td>
+            <td><%= payment.Referencia || 'N/A' %></td>
+            <td><%= payment.Nombre || 'N/A' %></td>
+            <td><%= payment.Fecha_de_pago ? new Date(payment.Fecha_de_pago).toLocaleDateString('es-MX', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A' %></td>
+            <td>$<%= payment.Cant_pagada !== null && payment.Cant_pagada !== undefined ? payment.Cant_pagada.toFixed(2) : '0.00' %></td>
+            <td><%= payment.Metodo || 'N/A' %></td>
+            <td><%= payment.Banco || 'N/A' %></td>
+            <td><%= payment.Nota || 'Ninguna' %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <form action="/pagos/descargar-csv" method="GET">
+      <button type="submit">Descargar como CSV</button>
+    </form>
+  </div>
 </body>
 </html>

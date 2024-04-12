@@ -1,60 +1,47 @@
-// pago.controller.js
-const Pago = require('../models/pago.model');
-const Usuario = require('../models/usuario.model'); // Asegúrate de que el modelo de Usuario se importa correctamente
-const { parse } = require('json2csv');
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
-const { promisify } = require('util');
+const pool = require('../util/database');
+const { Parser } = require('json2csv');
 
-const writeFileAsync = promisify(fs.writeFile);
-const unlinkAsync = promisify(fs.unlink);
-
-exports.downloadPaymentHistory = async (req, res) => {
-    const userID = parseInt(req.params.userID, 10);
-
+async function obtenerDatosDePagos() {
     try {
-        // Incluir el modelo de usuario al buscar los pagos
-        const payments = await Pago.findAll({
-            where: { IDUsuario: userID },
-            include: [{ 
-                model: Usuario,
-                as: 'usuario',
-                attributes: ['Nombre'] // Asume que 'Nombre' es un campo en el modelo de Usuario
-            }],
-            order: [['Fecha_de_pago', 'ASC']]
-        });
-
-        if (payments.length > 0) {
-            const csvData = payments.map(p => ({
-                'Pago': p.fecha_de_pago.toLocaleString('es-ES', { month: 'long' }),
-                '%': '100', // Por defecto a 100% si no hay otro cálculo
-                'Referencia': p.usuario.Nombre.split(' ').slice(-1) + p.IDPago.toString().padStart(4, '0'), // Construir la referencia a partir del apellido y IDPago
-                'Nombre': p.usuario.Nombre,
-                'Fecha': p.fecha_de_pago.toLocaleDateString(),
-                'Monto': `$${p.Cant_pagada.toFixed(2)}`,
-                'Metodo': p.Metodo,
-                'Banco': p.Banco,
-                'Nota': p.Nota || 'N/A'
-            }));
-
-            const fields = ['Pago', '%', 'Referencia', 'Nombre', 'Fecha', 'Monto', 'Metodo', 'Banco', 'Nota'];
-            const csv = parse(csvData, { fields });
-
-            const tempDir = os.tmpdir();
-            const filePath = path.join(tempDir, `Historial_Pagos_${userID}.csv`);
-
-            await writeFileAsync(filePath, csv);
-
-            res.download(filePath, (err) => {
-                if (err) console.error('Error al enviar el archivo:', err);
-                unlinkAsync(filePath).catch((err) => console.error('Error al eliminar el archivo temporal:', err));
-            });
-        } else {
-            res.status(404).send('No hay registros de pago para este usuario.');
-        }
+        const [rows] = await pool.query("SELECT `IDPago`, `IDUsuario`, `Cant_pagada`, `Fecha_de_pago`, `Metodo`, `Banco`, `Nota` FROM `pago`");
+        return rows;
     } catch (error) {
-        console.error('Error al generar el archivo CSV:', error);
-        res.status(500).send('Error al procesar la solicitud.');
+        console.error("Error al consultar la base de datos: ", error);
+        throw error;
     }
+}
+
+
+exports.descargarCsv = async (req, res) => {
+  try {
+    const query = "SELECT `Pago`, `%`, `Referencia`, `Nombre`, `Fecha`, `Monto`, `Metodo`, `Banco`, `Nota` FROM `pago`";
+    const [rows] = await pool.query(query);
+    const fields = ['Pago', '%', 'Referencia', 'Nombre', 'Fecha', 'Monto', 'Metodo', 'Banco', 'Nota'];
+    const json2csvParser = new Parser({ fields });
+    const csv = json2csvParser.parse(rows);
+    res.header('Content-Type', 'text/csv');
+    res.attachment('pagos.csv');
+    res.send(csv);
+  } catch (error) {
+    console.error("Error al generar el CSV: ", error);
+    res.status(500).send("Error al generar el archivo CSV.");
+  }
 };
+
+exports.mostrarHistorialPago = async (req, res) => {
+    try {
+      const paymentsData = await obtenerDatosDePagos();
+      console.log(paymentsData); 
+      res.render('historialPago', {
+        pageTitle: 'Historial de Pagos',
+        payments: paymentsData,
+        csrfToken: req.csrfToken()
+      });
+    } catch (error) {
+      console.error("Error al mostrar el historial de pagos: ", error);
+      res.status(500).render('error', {
+        pageTitle: 'Error',
+        error: error
+      });
+    }
+  };

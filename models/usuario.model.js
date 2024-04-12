@@ -27,7 +27,7 @@ module.exports = class Usuario {
         })
         .catch((error) => {
             console.log(error);
-            throw Error('Nombre de usuario ya en uso.')
+            throw Error('Error. Corrige.')
         })
     }
 

@@ -16,9 +16,18 @@
                 <a href="https://ivd.edu.mx/">
                     <img src="/viadisenologo.png" alt="logo" class="logo">
                 </a>
+                <% if (registrar) { %>
+                    <% if (error) { %> 
+                        <strong><%= error %></strong>
+                    <% } else { %>
+                        <strong>Bienvendio al registro. Recuerda que tu contraseña debe tener una mayúscula y un número.</strong>
+                        <% } %>
+                    <% } else { %>
                 <% if (error) { %> 
                     <strong><%= error %></strong>
-                <% } %>
+                
+                    <% } 
+                }%>
                 
                 <div class="input-box">
                     <input name="correo" id="correo" type="input" placeholder="Correo electrónico" required>
@@ -30,15 +39,15 @@
                         <i class='bx bx-id-card'></i>
                     </div>
                     <div class="input-box">
-                        <input name="matricula" id="matricula" type="input" placeholder="Matrícula" required>
+                        <input name="matricula" id="matricula" type="number" placeholder="Matrícula" required>
                         <i class='bx bx-universal-access' ></i>
                     </div>
                     <div class="input-box">
-                        <input name="beca" id="beca" type="input" placeholder="Beca" required>
+                        <input name="beca" id="beca" type="number" placeholder="Beca" required>
                         <i class='bx bx-universal-access' ></i>
                     </div>
                     <div class="input-box">
-                        <input name="ref" id="ref" type="input" placeholder="Referencia" required>
+                        <input name="ref" id="ref" type="number" placeholder="Referencia" required>
                         <i class='bx bx-universal-access' ></i>
                     </div>
 
@@ -47,7 +56,12 @@
                     <input name="password" id="password" type="password" placeholder="Contraseña" required>
                     <i class='bx bx-lock-alt' ></i>
                 </div>
-
+                <% if (registrar) {%>
+                    <div class="input-box">
+                        <input name="confirmpassword" id="confirmpassword" type="password" placeholder="Confirmar contraseña" required>
+                        <i class='bx bx-lock-alt' ></i>
+                    </div>
+                <% } %>
 
                 <div class="remember-forgot">
                     <label><input type="checkbox"> Recordar</label>
@@ -61,7 +75,9 @@
                 <button type="submit" class="btn"><% if(registrar){ %>Registrarse <% } else { %> Iniciar sesión <% }%></button><br>
                 <% if(!registrar) { %> 
                     <a href="/user/signup"> Registrarse </a> 
-                    <% } %>
+                    <% } else { %>
+                        <a href="/user/login"> Login </a>
+                        <% } %>
             </form>
         </div>
         <div class="circle_image">
