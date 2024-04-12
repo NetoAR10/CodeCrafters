@@ -1,24 +1,25 @@
 const db = require('../util/database');
 
-module.exports = class Ciclo_escolar {
+module.exports = class cicloescolar {
 
     constructor(mi_ciclo, mi_fecha_inicio, mi_fecha_fin, mi_ciclo_activo, mi_precio_credito){
-        this.ciclo = mi_ciclo
-        this.fecha_inicio = mi_fecha_inicio
-        this.fecha_fin = mi_fecha_fin
-        this.ciclo_activo = mi_ciclo_activo
-        this.mi_precio_credito = mi_precio_credito
+        this.Ciclo = mi_ciclo;
+        this.Fecha_Inicio = mi_fecha_inicio;
+        this.Fecha_Fin = mi_fecha_fin;
+        this.Ciclo_activo = mi_ciclo_activo;
+        this.Precio_credito = mi_precio_credito;
     }
 
     save() {
-        console.log(this.ciclo);
-        console.log(this.fecha_inicio)
-        console.log(this.fecha_fin);
-        console.log(this.ciclo_activo);
-        console.log(this.mi_precio_credito);
+        if (this.Ciclo_activo == 'on') {
+            this.Ciclo_activo = 1;
+        } else {
+            this.Ciclo_activo = 0
+        }
+
         return db.execute(
             'INSERT INTO cicloescolar (Ciclo, Fecha_Inicio, Fecha_Fin, Ciclo_activo, Precio_credito) VALUES (?, ?, ?, ?, ?)',
-            [this.ciclo, this.fecha_inicio, this.fecha_fin, this.ciclo_activo, this.mi_precio_credito]
+            [this.Ciclo, this.Fecha_Inicio, this.Fecha_Fin, this.Ciclo_activo, this.Precio_credito]
         );
     }
 
@@ -40,5 +41,4 @@ module.exports = class Ciclo_escolar {
             return this.fetchAll();
         }
     }
-
 }
