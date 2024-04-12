@@ -1,4 +1,4 @@
-<%- include ('head.ejs', {
+<%- include ('headsb.ejs', {
     correo: correo,
     permisos: permisos,
     rol: rol,
@@ -26,13 +26,7 @@
                         </a>
                         <span class="tooltip">Tablero</span>
                     </li>
-                    <li>
-                        <a href="#">
-                            <i class='bx bxs-user-rectangle'></i>
-                            <span class="links_name">Usuario</span>
-                        </a>
-                        <span class="tooltip">Usuario</span>
-                    </li>
+
                     <li>
                         <a href="/pagos/historial_pagos/123">
                             <i class='bx bx-objects-horizontal-left'></i>
@@ -41,6 +35,17 @@
                         <span class="tooltip">Historial</span>
                     </li>
                     <% for (let permiso of permisos) {%>
+                        <% if (permiso.Actividades == 'modificar usuario') { %>
+
+                            <li>
+                                <a href="/user/admin/usuarios">
+                                    <i class='bx bxs-user-rectangle'></i>
+                                    <span class="links_name">Usuarios</span>
+                                </a>
+                                <span class="tooltip">Usuarios</span>
+                            </li>
+
+                        <% } %>
                         <% if (permiso.Actividades == 'generar ficha') { %>
 
                             <li>

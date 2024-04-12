@@ -28,8 +28,6 @@ app.use((request, response, next) => {
 });
 
 // Rutas
-const rutasUsuario = require('./routes/usuario.routes');
-app.use('/user', rutasUsuario);
 
 const rutasHome = require('./routes/home.routes');
 app.use('/', rutasHome);
@@ -43,16 +41,23 @@ app.use('/pagos', rutasPago);
 const adminDashboardRoutes = require('./routes/admin_dashboard.routes');
 app.use('/user/admin', adminDashboardRoutes);
 
-// Manejo de errores de 404
-app.use((request, response, next) => {
-    response.status(404).send('Error 404: La página que buscas no existe');
-});
+const rutasUsuario = require('./routes/usuario.routes');
+app.use('/user', rutasUsuario);
 
 const rutasRegistrarPago = require('./routes/registrarPago.routes');
 app.use('/user', rutasRegistrarPago);
 
 const rutasDeuda = require('./routes/crearDeuda.routes');
 app.use('/user', rutasDeuda);
+
+const rutasListaUsuarios = require('./routes/lista_usuarios.routes');
+app.use('/user/admin', rutasListaUsuarios);
+
+// Manejo de errores de 404
+app.use((request, response, next) => {
+  response.status(404).send('Error 404: La página que buscas no existe');
+});
+
 
 // Iniciar el servidor
 app.listen(2050, () => {

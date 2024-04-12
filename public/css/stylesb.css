@@ -11,7 +11,7 @@ body {
     position: relative;
     min-height: 100vh;
     width: 100%;
-    overflow: auto;
+    overflow: hidden;
 }
 
 .sidebar{
@@ -23,6 +23,7 @@ body {
     background: #5A0000;
     padding: 6px 14px;
     transition: all 0.5s ease;
+    z-index: 5;
 }
 
 .sidebar.active{
@@ -292,3 +293,24 @@ body {
     /* z-index: -1; */
 }
 
+#USUARIOS, th, td {
+    border: 1px solid #adadad;
+}
+
+
+#USUARIOS {
+    position: relative;
+    width: 95%;
+    border-collapse: collapse;
+    z-index: -1;
+}
+
+#USUARIOS th, #USUARIOS td {
+    padding: 8px;
+}
+
+.title_usuarios {
+
+    font-size: 50px;
+    
+}

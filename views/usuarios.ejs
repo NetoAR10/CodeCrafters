@@ -1,0 +1,56 @@
+<%- include('includes/sidebar.ejs'), {
+    correo: correo,
+    permisos: permisos,
+    rol: rol,
+    nombre: nombre
+} %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Página de Inicio</title>
+    </head>
+    <body>
+        <div class="page_content">
+            <div class="text">
+                <div class="title_usuarios">
+                    USUARIOS
+                </div>
+                <table id="USUARIOS">
+                    <tr>
+                      <th>ID del Usuario</th>
+                      <th>Nombre</th>
+                      <th>Matrícula</th>
+                      <th>Correo electrónico</th>
+                      <th>Beca</th>
+                      <th>Deuda</th>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>Juan</td>
+                      <td>123456</td>
+                      <td>juan@example.com</td>
+                      <td>0</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>María</td>
+                      <td>234567</td>
+                      <td>maria@example.com</td>
+                      <td>0</td>
+                      <td>$0.00</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Carlos</td>
+                        <td>345678</td>
+                        <td>carlos@example.com</td>
+                        <td>0</td>
+                        <td>$0.00</td>
+                    </tr>
+                    
+                  </table>
+            </div>
+        </div>
+        
+    </body>
+</html>
