@@ -37,7 +37,6 @@ app.use((req, res, next) => {
 });
 
 // Rutas
-
 const rutasUsuario = require('./routes/usuario.routes');
 const rutasHome = require('./routes/home.routes');
 const rutasPagoAlumno = require('./routes/pago_alumno.routes');
@@ -45,7 +44,6 @@ const rutasPago = require('./routes/pago.routes');
 const adminDashboardRoutes = require('./routes/admin_dashboard.routes');
 const rutasRegistrarPago = require('./routes/registrarPago.routes');
 const rutasDeuda = require('./routes/crearDeuda.routes');
-const rutasListaUsuarios = require('./routes/lista_usuarios.routes');
 
 app.use('/user', rutasUsuario);
 app.use('/', rutasHome);
@@ -54,7 +52,6 @@ app.use('/pagos', rutasPago);
 app.use('/user/admin', adminDashboardRoutes);
 app.use('/user', rutasRegistrarPago);
 app.use('/user', rutasDeuda);
-app.use('/user/admin', rutasListaUsuarios);
 
 // Manejo de errores de 404
 app.use((req, res) => {
@@ -64,6 +61,7 @@ app.use((req, res) => {
 // Ruta de ejemplo para el historial de pagos
 app.get('/historial-pagos', async (req, res) => {
   try {
+    // Ajusta la consulta SQL según tus necesidades
     const [rows, fields] = await pool.query('SELECT * FROM pago');
     res.render('historialPago', { pageTitle: 'Historial de Pagos', payments: rows });
   } catch (error) {
