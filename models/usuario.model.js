@@ -60,24 +60,5 @@ module.exports = class Usuario {
             [correo]);
     }
     
-    static getRol(correo) {
-        return db.execute(
-            `
-            SELECT Tipo_rol
-            FROM usuario u, tiene t, rol r
-            WHERE u.Correo_electronico = ?
-            AND u.IDUsuario = t.IDUsuario
-            AND t.IDRol = r.IDRol
-            `,
-            [correo]);
-    }
-    
-    static getName(correo) {
-        return db.execute(
-            `SELECT Nombre
-            FROM usuario u
-            WHERE u.Correo_electronico = ?`,
-            [correo]);
-    }
 
 }

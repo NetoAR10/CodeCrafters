@@ -10,6 +10,7 @@ exports.get_listUsers = (request, response, next) => {
                 rol: request.session.roles || '',
                 nombre: request.session.nombre || '',
             });
+            console.log(users);
         }
     )
     .catch(error => {
