@@ -40,8 +40,8 @@ app.use('/user/alumno', rutasPagoAlumno);
 const rutasPago = require('./routes/pago.routes'); // Asegúrate de que la ruta sea correcta
 app.use('/pagos', rutasPago);
 
-const adminDashboardRoutes = require('./routes/admin_dashboard.routes');
-app.use('/user/admin', adminDashboardRoutes);
+const cicloEscolarRoutes = require('./routes/ciclo_escolar.routes');
+app.use('/user/admin', cicloEscolarRoutes);
 
 // Manejo de errores de 404
 app.use((request, response, next) => {
