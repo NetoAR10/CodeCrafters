@@ -1,0 +1,42 @@
+<%- include('includes/sidebar.ejs'), {
+    correo: correo,
+    permisos: permisos,
+    rol: rol,
+    nombre: nombre
+} %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Página de Inicio</title>
+    </head>
+    <body>
+        <div class="page_content">
+            <div class="text">
+                <div class="title_usuarios">
+                   <h1>Usuarios</h1> 
+                </div>
+                <table id="USUARIOS">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Matrícula</th>
+                        <th>Correo electrónico</th>
+                        <th>Beca</th>
+                        <th>Rol</th>
+                    </tr>
+                    <% for (let user of usuariosDB) {%>
+                        <tr>
+                          <td><%= user.Nombre %></td>
+                          <td><%= user.Matricula %></td>
+                          <td><%= user.Correo_electronico %></td>
+                          <td><%= user.Beca_actual %></td>
+                          <td><%= rol %> <a href="#">(Cambiar)</a> </td>
+                        </tr>
+                    <%}%>
+                    
+                    
+                  </table>
+            </div>
+        </div>
+        
+    </body>
+</html>

@@ -1,9 +1,9 @@
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width-device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/stylesb.css">
-        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    </head>
+<%- include ('headsb.ejs', {
+    correo: correo,
+    permisos: permisos,
+    rol: rol,
+    nombre: nombre
+})%>
     <body>
         <div class="sidebar">
             <div class="logo_content">
@@ -26,13 +26,7 @@
                         </a>
                         <span class="tooltip">Tablero</span>
                     </li>
-                    <li>
-                        <a href="#">
-                            <i class='bx bxs-user-rectangle'></i>
-                            <span class="links_name">Usuario</span>
-                        </a>
-                        <span class="tooltip">Usuario</span>
-                    </li>
+
                     <li>
                         <a href="/pagos/historial_pagos/123">
                             <i class='bx bx-objects-horizontal-left'></i>
@@ -40,13 +34,63 @@
                         </a>
                         <span class="tooltip">Historial</span>
                     </li>
-                    <li>
-                        <a href="/user/alumno/pago">
-                            <i class='bx bx-cart' ></i>
-                            <span class="links_name">Pago</span>
-                        </a>
-                        <span class="tooltip">Pago</span>
-                    </li>
+                    <% for (let permiso of permisos) {%>
+                        <% if (permiso.Actividades == 'modificar usuario') { %>
+
+                            <li>
+                                <a href="/user/admin/usuarios">
+                                    <i class='bx bxs-user-rectangle'></i>
+                                    <span class="links_name">Usuarios</span>
+                                </a>
+                                <span class="tooltip">Usuarios</span>
+                            </li>
+
+                        <% } %>
+                        <% if (permiso.Actividades == 'generar ficha') { %>
+
+                            <li>
+                                <a href="/user/alumno/pago">
+                                    <i class='bx bx-cart' ></i>
+                                    <span class="links_name">Ficha</span>
+                                </a>
+                                <span class="tooltip">Ficha</span>
+                            </li>
+
+                        <% } %>
+                        <% if (permiso.Actividades == 'registrar pago') { %>
+
+                            <li>
+                                <a href="/user/alumno/pago">
+                                    <i class='bx bx-money-withdraw'></i>
+                                    <span class="links_name">Pagos</span>
+                                </a>
+                                <span class="tooltip">Pagos</span>
+                            </li>
+
+                        <% } %>
+                        <% if (permiso.Actividades == 'ver historial todos') { %>
+
+                            <li>
+                                <a href="/user/alumno/pago">
+                                    <i class='bx bxs-bank'></i>
+                                    <span class="links_name">Historial General</span>
+                                </a>
+                                <span class="tooltip">H. General</span>
+                            </li>
+
+                        <% } %>
+                        <% if (permiso.Actividades == 'ver historial propio') { %>
+
+                            <li>
+                                <a href="/user/alumno/pago">
+                                    <i class='bx bx-wallet' ></i>
+                                    <span class="links_name">Historial</span>
+                                </a>
+                                <span class="tooltip">Historial</span>
+                            </li>
+
+                        <% } %>
+                    <% } %>
                     <li>
                         <a href="#">
                             <i class='bx bxs-cog' ></i>
@@ -64,9 +108,15 @@
                             <img src="profile.png" alt="">
                             <div class="name_role">
                                 <div class="name">
-                                        Nombre
+                                        
+                                        <%= nombre %>
+                                        
                                     </div>
-                                    <div class="role">Usuario</div>
+                                    <div class="role">
+                       
+                                            <%= rol %>
+            
+                                    </div>
                                 </div>
                             </div>
                             <a href="/user/logout">

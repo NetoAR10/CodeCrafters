@@ -10,4 +10,5 @@ router.get('/logout', usuariosController.get_logout);
 router.get('/register', isAuth, usuariosController.get_signup);
 router.post('/register', isAuth, usuariosController.post_signup);
 
+
 module.exports = router;
