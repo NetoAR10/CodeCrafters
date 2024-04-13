@@ -23,6 +23,14 @@ module.exports = class ListaUsuario {
         )
     }
 
+    static search(valor_busqueda) {
+        return db.execute(
+            `SELECT * FROM usuario u, tiene t, rol r 
+            WHERE u.IDUsuario = t.IDUsuario
+            AND t.IDRol = r.IDRol
+            AND u.Nombre LIKE ?`, ['%' + valor_busqueda + '%']);
+    }
+
 }
 
 
