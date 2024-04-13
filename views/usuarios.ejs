@@ -2,7 +2,8 @@
     correo: correo,
     permisos: permisos,
     rol: rol,
-    nombre: nombre
+    nombre: nombre,
+    rolUser: rolUser,
 } %>
 <!DOCTYPE html>
 <html>
@@ -15,6 +16,7 @@
                 <div class="title_usuarios">
                    <h1>Usuarios</h1> 
                 </div>
+                <input id="buscar" class="buscar" type="text" placeholder="Buscar..."/><br><br>
                 <table id="USUARIOS">
                     <tr>
                         <th>Nombre</th>
@@ -29,7 +31,7 @@
                           <td><%= user.Matricula %></td>
                           <td><%= user.Correo_electronico %></td>
                           <td><%= user.Beca_actual %></td>
-                          <td><%= rol %> <a href="#">(Cambiar)</a> </td>
+                          <td><%= user.Tipo_Rol %> <button class="adminrole" onclick="alert('Cambiar rol')">Cambiar</button> </td>
                         </tr>
                     <%}%>
                     
