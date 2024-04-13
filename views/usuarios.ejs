@@ -11,32 +11,36 @@
         <title>Página de Inicio</title>
     </head>
     <body>
-        <div class="page_content">
-            <div class="text">
-                <div class="title_usuarios">
-                   <h1>Usuarios</h1> 
-                </div>
-                <input id="buscar" class="buscar" type="text" placeholder="Buscar..."/><br><br>
-                <table id="USUARIOS">
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Matrícula</th>
-                        <th>Correo electrónico</th>
-                        <th>Beca</th>
-                        <th>Rol</th>
-                    </tr>
-                    <% for (let user of usuariosDB) {%>
+        <div id="respuesta_ajax">
+
+            <div class="page_content">
+
+                <div class="text">
+                    <div class="title_usuarios">
+                       <h1>Usuarios</h1> 
+                    </div>
+                    <input id="buscar" class="buscar" type="text" placeholder="Buscar..."/><br><br>
+                    <table id="USUARIOS">
                         <tr>
-                          <td><%= user.Nombre %></td>
-                          <td><%= user.Matricula %></td>
-                          <td><%= user.Correo_electronico %></td>
-                          <td><%= user.Beca_actual %></td>
-                          <td><%= user.Tipo_Rol %> <button class="adminrole" onclick="alert('Cambiar rol')">Cambiar</button> </td>
+                            <th>Nombre</th>
+                            <th>Matrícula</th>
+                            <th>Correo electrónico</th>
+                            <th>Beca</th>
+                            <th>Rol</th>
                         </tr>
-                    <%}%>
-                    
-                    
-                  </table>
+                        <% for (let user of usuariosDB) {%>
+                            <tr>
+                              <td><%= user.Nombre %></td>
+                              <td><%= user.Matricula %></td>
+                              <td><%= user.Correo_electronico %></td>
+                              <td><%= user.Beca_actual %></td>
+                              <td><%= user.Tipo_Rol %> <button class="adminrole" onclick="alert('Cambiar rol')">Cambiar</button> </td>
+                            </tr>
+                        <%}%>
+                        
+                        
+                      </table>
+                </div>
             </div>
         </div>
         
@@ -57,13 +61,55 @@
                 return result.json(); //Regresa otra promesa
             }).then((data) => {
                 console.log(data);
-                //Modificamos el DOM de nuestra página de acuerdo a los datos de la segunda promesa
-                //...
+                let html = '';
+
+                
+                if (data.usuariosDB.length < 1) {
+                    html += `
+                    <div class="notification">
+                        <button>No existe la construcción. </button>
+                    </div>`;
+                }
+
+
+                html += `
+                <div class="page_content">
+
+                    <div class="text">
+                        <div class="title_usuarios">
+                        <h1>Usuarios</h1> 
+                        </div>
+                        <input id="buscar" class="buscar" type="text" placeholder="Buscar..."/><br><br>
+                        <table id="USUARIOS">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Matrícula</th>
+                                <th>Correo electrónico</th>
+                                <th>Beca</th>
+                                <th>Rol</th>
+                            </tr>
+                            <% for (let user of usuariosDB) {%>
+                                <tr>
+                                <td>${user.Nombre}</td>
+                                <td>${user.Matricula} %></td>
+                                <td>${user.Correo_electronico} %></td>
+                                <td>${user.Beca_actual}</td>
+                                <td>${user.Tipo_Rol}<button class="adminrole" onclick="alert('Cambiar rol')">Cambiar</button> </td>
+                                </tr>
+                            <%}%>
+                            
+                            
+                        </table>
+                    </div>
+                    </div>
+                `
+
+            document.getElementById('respuesta_ajax').innerHTML = html;
             }).catch(err => {
                 console.log(err);
             });
         };
         document.getElementById('buscar').onkeyup = accion_asincrona;
         </script>
-        
+
 </html>
