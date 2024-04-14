@@ -11,7 +11,6 @@ body {
     position: relative;
     min-height: 100vh;
     width: 100%;
-    z-index: 4;
 }
 
 .sidebar{
@@ -23,7 +22,7 @@ body {
     background: #5A0000;
     padding: 6px 14px;
     transition: all 0.5s ease;
-    z-index: 5;
+    z-index: 2;
 }
 
 .sidebar.active{
@@ -137,19 +136,6 @@ body {
     padding-left: 50px;
     font-size: 18px;
     color: #fff;
-}
-
-.sidebar ul li .bx-search{
-    position: absolute;
-    z-index: 99;
-    color: #fff;
-    font-size: 22px;
-    transition: all 0.5s ease;
-}
-
-.sidebar ul li .bx-search:hover{
-    background:#fff;
-    color: #5A0000;
 }
 
 .sidebar ul li i{
@@ -290,7 +276,7 @@ body {
     padding: 12px;
     justify-content: center;
     color:#484848;
-    /* z-index: -1; */
+    z-index: -1;
 }
 
 #USUARIOS, th, td {
@@ -303,11 +289,40 @@ body {
     position: relative;
     width: 70%;
     border-collapse: collapse;
-    z-index: -1;
 }
 
 #USUARIOS th, #USUARIOS td {
     padding: 8px;
     justify-content: center;
 }
+
+.adminrole {
+    position: relative;
+    background-color: #6c0404;
+    color: #fff;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    font-size: 10px;
+    padding: 4px 4px;
+    left: 10px;
+}
+
+
+.adminrole:hover {
+    background-color: #fff;
+    color: #6c0404;
+    border: 1px solid #6c0404;
+    transition-duration: 0.3s;
+    cursor: pointer;
+}
+
+.buscar {
+    position: relative;
+    width: 70%;
+    padding: 4px 4px;
+}
+
+
+
+
 
