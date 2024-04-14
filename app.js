@@ -47,14 +47,14 @@ app.use('/user/admin', cicloEscolarRoutes);
 const rutasUsuario = require('./routes/usuario.routes');
 app.use('/user', rutasUsuario);
 
-const rutasRegistrarPago = require('./routes/registrarPago.routes');
-app.use('/user', rutasRegistrarPago);
-
-const rutasDeuda = require('./routes/crearDeuda.routes');
-app.use('/user', rutasDeuda);
-
 const rutasListaUsuarios = require('./routes/lista_usuarios.routes');
 app.use('/user/admin', rutasListaUsuarios);
+
+const rutasRegistrarPago = require('./routes/registrarPago.routes');
+app.use('/user/admin', rutasRegistrarPago);
+
+const rutasCrearDeuda = require('./routes/crearDeuda.routes');
+app.use('/user/admin', rutasCrearDeuda);
 
 // Manejo de errores de 404
 app.use((request, response, next) => {
@@ -64,10 +64,7 @@ app.use((request, response, next) => {
   );
 });
 
-
 // Iniciar el servidor
 app.listen(2050, () => {
   console.log('El servidor está corriendo en el puerto 2050');
 });
-
-
