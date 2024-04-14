@@ -46,8 +46,8 @@ app.use('/user/admin', adminDashboardRoutes);
 const rutasRegistrarPago = require('./routes/registrarPago.routes');
 app.use('/user/admin', rutasRegistrarPago);
 
-const rutasDeuda = require('./routes/crearDeuda.routes');
-app.use('/user/admin', rutasDeuda);
+const rutasCrearDeuda = require('./routes/crearDeuda.routes');
+app.use('/user/admin', rutasCrearDeuda);
 
 // Manejo de errores de 404
 app.use((request, response, next) => {
