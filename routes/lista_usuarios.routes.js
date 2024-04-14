@@ -5,5 +5,6 @@ const listaUsuariosController = require('../controllers/lista_usuarios.controlle
 
 router.get('/usuarios', isAuth, listaUsuariosController.get_listUsers);
 router.get('/buscar/:valor_busqueda', isAuth, listaUsuariosController.get_buscar);
+router.get('/buscar', isAuth, listaUsuariosController.get_buscar);
 
 module.exports = router;

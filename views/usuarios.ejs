@@ -27,6 +27,7 @@
                             <th>Correo electrónico</th>
                             <th>Beca</th>
                             <th>Rol</th>
+                            <th></th>
                         </tr>
                         <% for (let user of usuariosDB) {%>
                             <tr>
@@ -34,8 +35,10 @@
                               <td><%= user.Matricula %></td>
                               <td><%= user.Correo_electronico %></td>
                               <td><%= user.Beca_actual %></td>
-                              <td><%= user.Tipo_Rol %> <button class="adminrole" onclick="alert('Cambiar rol')">Cambiar</button> </td>
-                            </tr>
+                              <td><%= user.Tipo_Rol %></td> 
+                              <td><button class="adminrole" onclick="alert('Cambiar rol')">Modificar</button> </td>
+                            </tr></td>
+                              
                         <%}%>
                         
                         
@@ -67,7 +70,7 @@
                 if (data.usuariosDB.length < 1) {
                     html += `
                     <div class="notification">
-                        <button>No existe la construcción. </button>
+                        <strong>No existe el dato.</strong>
                     </div>`;
                 }
 
