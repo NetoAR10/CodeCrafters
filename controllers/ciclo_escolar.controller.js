@@ -16,5 +16,4 @@ exports.post_nuevo_ciclo = async (request, response, next) => {
         response.status(500).send('error al mandar datos');
         csrfToken: request.csrfToken();
     }
-
-}
+};

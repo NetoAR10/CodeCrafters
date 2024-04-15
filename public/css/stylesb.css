@@ -311,3 +311,44 @@ body {
     justify-content: center;
 }
 
+.button-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espacio entre los botones */
+}
+
+.btn {
+    padding: 10px 20px;        /* Espaciado interno */
+    font-size: 16px;           /* Tamaño del texto */
+    font-weight: bold;         /* Peso de la fuente */
+    color: white;              /* Color del texto */
+    background-color: #5A0000; /* Color de fondo azul */
+    border: none;              /* Sin bordes */
+    border-radius: 5px;        /* Bordes redondeados */
+    cursor: pointer;           /* Cursor en forma de mano */
+    outline: none;             /* Elimina el contorno al enfocar */
+    transition: all 0.3s ease; /* Transición suave para efectos */
+}
+
+/* Efecto cuando el mouse pasa sobre el botón */
+.btn:hover {
+    background-color: #e40c0c; /* Oscurece el botón */
+}
+
+/* Efecto cuando el botón está siendo presionado */
+.btn:active {
+    background-color: #aa0505; /* Color aún más oscuro */
+    transform: translateY(2px); /* Mueve ligeramente el botón hacia abajo */
+}
+
+/* Contenedor para alinear botones si se utilizan múltiples formularios o elementos */
+.button-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espacio entre botones */
+}
+
+/* Ajustes de margen entre formularios para que no estén demasiado juntos */
+form {
+    margin-right: 10px;
+}
