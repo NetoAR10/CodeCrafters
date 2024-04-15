@@ -33,3 +33,9 @@ exports.uploadCSV = (request, response) => {
         }
     });
 };
+
+exports.uploadCSV = (req, res) => {
+    
+    res.send('Archivo CSV cargado con éxito.');
+  };
+  
