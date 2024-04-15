@@ -296,7 +296,7 @@ body {
     justify-content: center;
 }
 
-.adminrole {
+.modifyuser {
     position: relative;
     background-color: #6c0404;
     color: #fff;
@@ -308,10 +308,30 @@ body {
 }
 
 
-.adminrole:hover {
+.modifyuser:hover {
     background-color: #fff;
     color: #6c0404;
     border: 1px solid #6c0404;
+    transition-duration: 0.3s;
+    cursor: pointer;
+}
+
+.deleteuser {
+    position: relative;
+    background-color: #c07021;
+    color: #fff;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    font-size: 10px;
+    padding: 4px 4px;
+    left: 10px;
+}
+
+
+.deleteuser:hover {
+    background-color: #fff;
+    color: #c07021;
+    border: 1px solid #c07021;
     transition-duration: 0.3s;
     cursor: pointer;
 }

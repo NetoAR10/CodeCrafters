@@ -4,7 +4,7 @@ exports.get_listUsers = (request, response, next) => {
     ListaUsuario.getVariosRol()
     .then(([rolesUser, fieldData]) => {
         const lista = rolesUser[0];
-        response.render('usuarios', {
+        response.render('lista_usuarios', {
             usuariosDB: rolesUser,
             nombre: request.session.nombre,
             matricula: request.session.matricula,
