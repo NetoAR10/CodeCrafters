@@ -20,7 +20,7 @@ exports.get_listUsers = (request, response, next) => {
 }
 
 exports.get_buscar = (request, response, next) => {
-    Construccion.search(request.params.valor_busqueda || '')
+    ListaUsuario.search(request.params.valor_busqueda || '')
     .then(([rows, fieldData]) => {
         return response.status(200).json({rows: rows})
     })

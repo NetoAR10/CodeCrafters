@@ -32,8 +32,6 @@ app.use((request, response, next) => {
 
 // Rutas
 
-const rutasHome = require('./routes/home.routes');
-app.use('/', rutasHome);
 
 const rutasMaterias = require('./routes/materias.routes');
 app.use('/user/alumno', rutasMaterias);
@@ -55,6 +53,9 @@ app.use('/user/admin', rutasRegistrarPago);
 
 const rutasCrearDeuda = require('./routes/crearDeuda.routes');
 app.use('/user/admin', rutasCrearDeuda);
+
+const rutasHome = require('./routes/home.routes');
+app.use('/', rutasHome);
 
 // Manejo de errores de 404
 app.use((request, response, next) => {
