@@ -35,8 +35,8 @@ app.use((request, response, next) => {
 const rutasHome = require('./routes/home.routes');
 app.use('/', rutasHome);
 
-const rutasPagoAlumno = require('./routes/pago_alumno.routes');
-app.use('/user/alumno', rutasPagoAlumno);
+const rutasMaterias = require('./routes/materias.routes');
+app.use('/user/alumno', rutasMaterias);
 
 const rutasPago = require('./routes/pago.routes'); // Asegúrate de que la ruta sea correcta
 app.use('/pagos', rutasPago);
