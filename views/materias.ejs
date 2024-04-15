@@ -55,12 +55,12 @@
 
                 <br><h4>Total de créditos: <span id="totalCreditos"><%= totalCreditos.toFixed(1) %></span></h4>
                 <br><h4>Total a pagar: $<span id="totalPago"><%= totalPago.toFixed(2) %></span></h4>
-                <br><input type="submit" value="Confirmar materias" class="btn" id="confirmar"></input>
+                <br><input type="submit" value="Confirmar materias" class="btn2" id="confirmar"></input>
             </form>
             <form action="/user/alumno/contactar_admin" method="POST" style="margin-top: 40px;">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <h5>Si requiere cambios, da click en el botón de pedir cambios.</h5>
-                <input type="submit" value="Pedir cambios" class="btn" style="margin-top: 20px;">
+                <input type="submit" value="Pedir cambios" class="btn2" style="margin-top: 20px;">
             </form>
         </div>
     </body>
