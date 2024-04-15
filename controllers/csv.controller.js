@@ -1,5 +1,7 @@
 const fs = require('fs');
 const Papa = require('papaparse');
+const csvParser = require('csv-parser');
+const moment = require('moment');
 const CSV = require('../models/csv.model');
 
 exports.uploadCSV = (request, response) => {
@@ -26,7 +28,7 @@ exports.uploadCSV = (request, response) => {
                 await record.save();
             }
             fs.unlinkSync(filePath); 
-            response.redirect('/path-to-success-page'); 
+            response.redirect('/'); 
         } catch (error) {
             console.error('Error processing data:', error);
             response.status(500).send('Error processing data');
