@@ -1,3 +1,4 @@
+<%- include ('includes/sidebar.ejs') %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,40 +6,50 @@
     <meta name="viewport" content="width-device-width, initial-scale=1.0">
     <title>Registrar Pago</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/stylesb.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body> 
     <div class="wrapper">
-        <form action="/user/registrarPago" method="POST"> 
+          <form action="/user/admin/registrarPago" method="POST"> 
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
 
+	  <label for="IDUsuario">Alumno:</label>
             <div class="input-box">
-                <input type="number" name="IDUsuario" placeholder="ID del Usuario" required>
+                <input type="number" name="IDUsuario" placeholder="120" required>
             </div>
 
+	    <label for="IDDueda ">Total deuda:</label>
             <div class="input-box">
-                <input type="number" name="IDDueda" placeholder="ID de la Deuda" required>
+                <input type="number" name="IDDeuda" placeholder="123" required>
             </div>
 
+	    <label for="Cantidad pagada">Cantidad pagada:</label>
             <div class="input-box">
-                <input type="text" name="Cant_pagada" placeholder="Cantidad Pagada" required>
+                <input type="text" name="Cant_pagada" placeholder="1545" required>
             </div>
 
+	    <label for="Fecha de pago">Fecha de pago:</label> 
             <div class="input-box">
-                <input type="text" name="Fecha_de_pago" placeholder="Fecha de Pago" onfocus="(this.type='datetime')" required>
+                <input type="text" name="Fecha_de_pago" placeholder="2024-04-04" onfocus="(this.type='datetime')" required>
             </div>
 
+	    <label for="Método">Método de pago:</label>
             <div class="input-box">
-                <input type="text" name="Metodo" placeholder="Método de Pago" required>
+                <input type="text" name="Metodo" placeholder="Efectivo" required>
             </div>
 
+	    <label for="Banco">Banco:</label>
             <div class="input-box">
-                <input type="text" name="Banco" placeholder="Banco" required>
+                <input type="text" name="Banco" placeholder="Santander" required>
             </div>
 
+	    <label for="Nota">Nota:</label>
             <div class="input-box">
                 <input type="text" name="Nota" placeholder="Nota" required>
             </div>
 
+	    <label for="Prórroga">Prórroga:</label>
             <div class="input-box">
                 <input type="text" name="Prorroga" placeholder="Prórroga" onfocus="(this.type='datetime')">
             </div>

@@ -1,20 +1,12 @@
 const express = require('express');
-const mysql = require('mysql2/promise'); // Asegúrate de tener este paquete instalado
+const mysql = require('mysql2/promise');
 const session = require('express-session');
 const csrf = require('csurf');
 const bodyParser = require('body-parser');
 const path = require('path');
+const multer = require('multer');
 
 const app = express();
-
-// Configuración de la base de datos
-const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'tu_usuario',
-  database: 'tu_base_de_datos',
-  password: 'tu_contraseña',
-  waitForConnections: true,
-});
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -25,7 +17,9 @@ app.use(session({
   saveUninitialized: false,
 }));
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 const csrfProtection = csrf();
@@ -36,35 +30,32 @@ app.use((req, res, next) => {
   next();
 });
 
-// Rutas
+// Configuración de multer para la carga de archivos CSV
+const csvUpload = multer({ dest: 'uploads/' });
 
+// Rutas
 const rutasUsuario = require('./routes/usuario.routes');
 const rutasHome = require('./routes/home.routes');
 const rutasPagoAlumno = require('./routes/pago_alumno.routes');
 const rutasPago = require('./routes/pago.routes');
-const adminDashboardRoutes = require('./routes/admin_dashboard.routes');
 const rutasRegistrarPago = require('./routes/registrarPago.routes');
-const rutasDeuda = require('./routes/crearDeuda.routes');
+const rutasCrearDeuda = require('./routes/crearDeuda.routes');
+const rutasListaUsuarios = require('./routes/lista_usuarios.routes');
+const csvRoutes = require('./routes/csv.routes'); // Asegúrate de que este archivo esté bien configurado
 
 app.use('/user', rutasUsuario);
 app.use('/', rutasHome);
 app.use('/user/alumno', rutasPagoAlumno);
 app.use('/pagos', rutasPago);
-app.use('/user/admin', adminDashboardRoutes);
-app.use('/user', rutasRegistrarPago);
-app.use('/user', rutasDeuda);
-
-const rutasUsuario = require('./routes/usuario.routes');
-app.use('/user', rutasUsuario);
-// Manejo de errores de 404
-app.use((req, res) => {
-  res.status(404).send('Error 404: La página que buscas no existe');
-});
+app.use('/user/admin', rutasRegistrarPago);
+app.use('/user/admin', rutasCrearDeuda);
+app.use('/user/admin', rutasListaUsuarios);
+app.use('/csv', csvRoutes); // Rutas para la carga de CSV
 
 // Ruta de ejemplo para el historial de pagos
 app.get('/historial-pagos', async (req, res) => {
   try {
-    // Ajusta la consulta SQL según tus necesidades
+    // Asegúrate de que la variable 'pool' está definida y configurada correctamente
     const [rows, fields] = await pool.query('SELECT * FROM pago');
     res.render('historialPago', { pageTitle: 'Historial de Pagos', payments: rows });
   } catch (error) {
@@ -73,14 +64,10 @@ app.get('/historial-pagos', async (req, res) => {
   }
 });
 
-const rutasListaUsuarios = require('./routes/lista_usuarios.routes');
-app.use('/user/admin', rutasListaUsuarios);
-
 // Manejo de errores de 404
-app.use((request, response, next) => {
-  response.status(404).send('Error 404: La página que buscas no existe');
+app.use((req, res) => {
+  res.status(404).send('Error 404: La página que buscas no existe');
 });
-
 
 // Iniciar el servidor
 app.listen(2050, () => {

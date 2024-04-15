@@ -1,0 +1,46 @@
+<%- include('includes/sidebar.ejs') %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset = "UTF-8">
+        <meta name = "viewport" content="width-device-width, initial-scale=1.0">
+        <title>Costo crédito</title>
+        <link rel="stylesheet" href="/css/stylesb.css">
+        <link rel="stylesheet" href="/css/style3.css">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    </head>
+    
+    <body>
+        <div class="rectangulo-superior">
+
+        </div>
+        <div class="wrapper">
+            <h3 style="display: flex; justify-content: center; width: 100%;">Introducir nuevo ciclo escolar</h3>
+            <form action="/user/admin/ciclo_escolar"  method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <div class="input-box">
+                    <input type="text" name="Ciclo" placeholder="Ciclo escolar">
+                </div>
+                <div class="input-box">
+                    <input type="date" name="Fecha_Inicio" placeholder="Fecha de inicio">
+                </div>
+                <div class="input-box">
+                    <input type="date" name="Fecha_Fin" placeholder="Fecha de fin">
+                </div>
+                <div class="input-box">
+                    <input type="number" name="Precio_credito" placeholder="Costo de crédito">
+                </div>
+                <div class="switch-container">
+                    <div>Ciclo activo</div>
+                    <label class="switch">
+                        <input type="checkbox" name="Ciclo_activo">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+        
+                <button class="btn" id="actualizarValor">Actualizar Valor</button>
+            </form>
+        </div>
+
+    </body>
+</html>
