@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const csvController = require('../controllers/csv.controller');
-const canUploadCSV = require('../util/can-upload-csv');
+const canUploadCSV = require('../middleware/can-upload-csv');
 
-router.get('/upload', canUploadCSV, csvController.getUploadPage);
-router.post('/upload', canUploadCSV, csvController.uploadCSV, csvController.handleUpload);
+router.post('/upload-csv', canUploadCSV, csvController.uploadCSV);
 
 module.exports = router;

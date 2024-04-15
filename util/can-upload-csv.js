@@ -1,7 +1,7 @@
 module.exports = (req, res, next) => {
-    if (req.session.userRole === 'admin') {
-        next();
+    if (req.session && req.session.user && req.session.user.role === 'Admin') {
+        return next();
     } else {
-        res.status(403).send("Acceso denegado. Solo los administradores pueden cargar archivos CSV.");
+        return res.status(403).send('No tienes permiso para cargar archivos CSV');
     }
 };

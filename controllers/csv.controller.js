@@ -1,29 +1,35 @@
-const CSVEntry = require('../models/csv.model');
 const fs = require('fs');
-const parse = require('csv-parse/lib/sync');
-const multer = require('multer');
+const Papa = require('papaparse');
+const CSV = require('../models/csv.model');
 
-const upload = multer({ dest: 'uploads/' });
+exports.uploadCSV = (request, response) => {
+    if (!request.file) {
+        return response.status(400).send('No file uploaded');
+    }
 
-exports.uploadCSV = upload.single('csvfile');
+    const filePath = request.file.path;
+    
+    fs.readFile(filePath, 'utf8', async (err, data) => {
+        if (err) {
+            console.error('Error reading the file:', err);
+            return response.status(500).send('Error reading the file');
+        }
 
-exports.getUploadPage = (req, res) => {
-  res.render('upload');
-};
+        const results = Papa.parse(data, {
+            header: true,
+            skipEmptyLines: true
+        });
 
-exports.handleUpload = async (req, res) => {
-  const fileContents = fs.readFileSync(req.file.path, 'utf8');
-  const records = parse(fileContents, {
-    columns: true,
-    skip_empty_lines: true
-  });
-  const entries = records.map(record => new CSVEntry(record));
-  try {
-    await CSVEntry.insertMany(entries);
-    res.redirect('/success');
-  } catch (error) {
-    res.status(500).send(error.message);
-  } finally {
-    fs.unlinkSync(req.file.path); 
-  }
+        try {
+            for (let row of results.data) {
+                const record = new CSV(row);
+                await record.save();
+            }
+            fs.unlinkSync(filePath); 
+            response.redirect('/path-to-success-page'); 
+        } catch (error) {
+            console.error('Error processing data:', error);
+            response.status(500).send('Error processing data');
+        }
+    });
 };
