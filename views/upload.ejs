@@ -1,5 +1,111 @@
-<form action="/csv/upload" method="post" enctype="multipart/form-data">
-    <input type="file" name="csvfile" accept=".csv" required>
-    <button type="submit">Upload CSV</button>
-  </form>
-  
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title><%= pageTitle %></title>
+  <link rel="stylesheet" href="/css/stylesb.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    .main-content {
+      margin-left: 240px; 
+      padding: 20px;
+    }
+    .main-content h1 {
+      text-align: center;
+      color: #333;
+    }
+    .main-content table {
+      width: 100%; 
+      border-collapse: collapse;
+    }
+    .main-content th, .main-content td {
+      padding: 10px;
+      border: 1px solid #ddd; 
+      text-align: left;
+    }
+    .main-content th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+    .main-content td {
+      background-color: #ffffff; 
+    }
+    /* Estilos para el formulario */
+    .csv-form {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .csv-form input[type="file"] {
+      margin-bottom: 10px;
+    }
+    .csv-form button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .csv-form button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <%- include('includes/sidebar_admin.ejs') %> 
+  <div class="main-content">
+    <h1>Historial de Pagos</h1>
+    <% if (userRole === 'administrador' && users) { %>
+    <form action="/pagos/descargar-csv" method="GET">
+      <label for="userId">Seleccionar Usuario:</label>
+      <select name="userId" id="userId">
+        <option value="">Todos</option>
+        <% users.forEach(user => { %>
+          <option value="<%= user.IDUsuario %>"><%= user.Nombre %></option>
+        <% }) %>
+      </select>
+      <button type="submit">Descargar CSV</button>
+    </form>
+    <% } %>
+    <div class="csv-form">
+      <form action="/csv/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="csvfile" accept=".csv" required>
+        <button type="submit">Cargar CSV</button>
+      </form>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>ID Pago</th>
+          <th>Referencia</th>
+          <th>Nombre</th>
+          <th>Fecha de Pago</th>
+          <th>Cantidad Pagada</th>
+          <th>Método</th>
+          <th>Banco</th>
+          <th>Nota</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (payments) { %>
+          <% payments.forEach(payment => { %>
+            <tr>
+              <td><%= payment.IDPago %></td>
+              <td><%= payment.Referencia %></td>
+              <td><%= payment.Nombre %></td>
+              <td><%= payment.Fecha_de_pago ? new Date(payment.Fecha_de_pago).toLocaleDateString('es-MX') : 'N/A' %></td>
+              <td>$<%= payment.Cant_pagada.toFixed(2) %></td>
+              <td><%= payment.Metodo %></td>
+              <td><%= payment.Banco %></td>
+              <td><%= payment.Nota %></td>
+            </tr>
+          <% }) %>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

@@ -1,15 +1,7 @@
 module.exports = (req, res, next) => {
-    let canUploadCSV = false;
-    for (let privilegio of req.session.permisos) {
-        if (privilegio.actividades === 'cargar csv') {
-            canUploadCSV = true;
-            break; 
-        }
-    }
-
-    if (canUploadCSV) {
+    if (req.session.userRole === 'admin') {
         next();
     } else {
-        return res.redirect('/user/login'); 
+        res.status(403).send("Acceso denegado. Solo los administradores pueden cargar archivos CSV.");
     }
 };

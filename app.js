@@ -30,10 +30,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// Configuración de multer para la carga de archivos CSV
 const csvUpload = multer({ dest: 'uploads/' });
 
-// Rutas
+
 const rutasUsuario = require('./routes/usuario.routes');
 const rutasHome = require('./routes/home.routes');
 const rutasPagoAlumno = require('./routes/pago_alumno.routes');
@@ -41,7 +40,7 @@ const rutasPago = require('./routes/pago.routes');
 const rutasRegistrarPago = require('./routes/registrarPago.routes');
 const rutasCrearDeuda = require('./routes/crearDeuda.routes');
 const rutasListaUsuarios = require('./routes/lista_usuarios.routes');
-const csvRoutes = require('./routes/csv.routes'); // Asegúrate de que este archivo esté bien configurado
+const csvRoutes = require('./routes/csv.routes');
 
 app.use('/user', rutasUsuario);
 app.use('/', rutasHome);
@@ -50,12 +49,10 @@ app.use('/pagos', rutasPago);
 app.use('/user/admin', rutasRegistrarPago);
 app.use('/user/admin', rutasCrearDeuda);
 app.use('/user/admin', rutasListaUsuarios);
-app.use('/csv', csvRoutes); // Rutas para la carga de CSV
+app.use('/csv', csvRoutes); 
 
-// Ruta de ejemplo para el historial de pagos
 app.get('/historial-pagos', async (req, res) => {
   try {
-    // Asegúrate de que la variable 'pool' está definida y configurada correctamente
     const [rows, fields] = await pool.query('SELECT * FROM pago');
     res.render('historialPago', { pageTitle: 'Historial de Pagos', payments: rows });
   } catch (error) {
@@ -64,14 +61,13 @@ app.get('/historial-pagos', async (req, res) => {
   }
 });
 
-// Manejo de errores de 404
 app.use((req, res) => {
   res.status(404).send('Error 404: La página que buscas no existe');
 });
 
-// Iniciar el servidor
+
 app.listen(2050, () => {
   console.log('El servidor está corriendo en el puerto 2050');
 });
 
-module.exports = app; // Si necesitas exportar tu aplicación para testing u otros propósitos
+module.exports = app; 

@@ -3,7 +3,6 @@ const fs = require('fs');
 const parse = require('csv-parse/lib/sync');
 const multer = require('multer');
 
-// Configuración de Multer para almacenar archivos subidos
 const upload = multer({ dest: 'uploads/' });
 
 exports.uploadCSV = upload.single('csvfile');
@@ -25,6 +24,6 @@ exports.handleUpload = async (req, res) => {
   } catch (error) {
     res.status(500).send(error.message);
   } finally {
-    fs.unlinkSync(req.file.path); // Eliminar el archivo después de procesarlo
+    fs.unlinkSync(req.file.path); 
   }
 };
