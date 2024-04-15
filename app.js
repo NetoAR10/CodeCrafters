@@ -32,6 +32,8 @@ app.use((request, response, next) => {
 
 // Rutas
 
+const rutasUsuario = require('./routes/usuario.routes');
+app.use('/user', rutasUsuario);
 
 const rutasMaterias = require('./routes/materias.routes');
 app.use('/user/alumno', rutasMaterias);
@@ -42,8 +44,6 @@ app.use('/pagos', rutasPago);
 const cicloEscolarRoutes = require('./routes/ciclo_escolar.routes');
 app.use('/user/admin', cicloEscolarRoutes);
 
-const rutasUsuario = require('./routes/usuario.routes');
-app.use('/user', rutasUsuario);
 
 const rutasListaUsuarios = require('./routes/lista_usuarios.routes');
 app.use('/user/admin', rutasListaUsuarios);

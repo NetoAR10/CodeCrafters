@@ -120,3 +120,7 @@ exports.post_signup = (request, response, next) => {
             response.redirect('/user/register');
         });
 };
+
+exports.get_forgot = (request, response, next) => {
+    response.render('olvido_contrasena');
+}
