@@ -24,4 +24,5 @@ exports.get_buscar = (request, response, next) => {
     .then(([rows, fieldData]) => {
         return response.status(200).json({rows: rows})
     })
+    .catch((error) => {console.log(error)});
 }
