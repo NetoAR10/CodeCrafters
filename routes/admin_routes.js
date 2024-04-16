@@ -14,6 +14,7 @@ router.post('/ciclo_escolar', isAuth, cicloEscolarController.post_nuevo_ciclo);
 //Lista de Usuarios
 router.get('/usuarios', isAuth, listaUsuariosController.get_listUsers);
 router.get('/usuarios/buscar/:valor_busqueda', isAuth, listaUsuariosController.get_buscar);
+router.get('/usuarios/buscar', isAuth, listaUsuariosController.get_buscar);
 
 //Registrar Pago
 router.get('/registrarPago', isAuth,  pagoController.getRegistrarPago);
