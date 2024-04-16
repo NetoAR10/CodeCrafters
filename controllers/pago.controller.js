@@ -2,6 +2,24 @@ const PDFDocument = require('pdfkit');
 const db = require('../util/database');
 const Usuario = require('../models/usuario.model');
 
+exports.get_attributes = (request, response, next) => {
+  Usuario.fetch(request.params.correo)
+    .then(([users, fieldData]) => {
+            response.render('historialPago', {
+                usuariosDB: users,
+                correo: request.session.correo || '',
+                permisos: request.session.permisos || [],
+                rol: request.session.roles || '',
+                nombre: request.session.nombre || '',
+            });
+
+        }
+    )
+    .catch(error => {
+        console.log(error)
+    })
+}
+
 exports.getPaymentHistory = (req, res) => {
   const userID = req.params.userID; 
   db.execute('SELECT * FROM Pago WHERE IDUsuario = ?', [userID])
@@ -44,20 +62,3 @@ exports.downloadPaymentHistory = (req, res) => {
       res.status(500).send('Error generando el historial de pagos');
     });
 };
-
-exports.get_attributes = (request, response, next) => {
-  Usuario.fetch(request.params.correo)
-    .then(([users, fieldData]) => {
-            response.render('historialPago', {
-                usuariosDB: users,
-                correo: request.session.correo || '',
-                permisos: request.session.permisos || [],
-                rol: request.session.roles || '',
-                nombre: request.session.nombre || '',
-            });
-        }
-    )
-    .catch(error => {
-        console.log(error)
-    })
-}
