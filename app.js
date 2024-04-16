@@ -35,27 +35,18 @@ app.use((request, response, next) => {
 const rutasUsuario = require('./routes/usuario.routes');
 app.use('/user', rutasUsuario);
 
-const rutasMaterias = require('./routes/materias.routes');
-app.use('/user/alumno', rutasMaterias);
+const rutasAlumno = require('./routes/alumno_routes');
+app.use('/user/alumno', rutasAlumno);
+
+const rutasAdmin = require('./routes/admin_routes');
+app.use('/user/admin', rutasAdmin);
 
 const rutasPago = require('./routes/pago.routes'); // Asegúrate de que la ruta sea correcta
 app.use('/pagos', rutasPago);
 
-const cicloEscolarRoutes = require('./routes/ciclo_escolar.routes');
-app.use('/user/admin', cicloEscolarRoutes);
-
-
-const rutasListaUsuarios = require('./routes/lista_usuarios.routes');
-app.use('/user/admin', rutasListaUsuarios);
-
-const rutasRegistrarPago = require('./routes/registrarPago.routes');
-app.use('/user/admin', rutasRegistrarPago);
-
-const rutasCrearDeuda = require('./routes/crearDeuda.routes');
-app.use('/user/admin', rutasCrearDeuda);
-
 const rutasHome = require('./routes/home.routes');
 app.use('/', rutasHome);
+
 
 // Manejo de errores de 404
 app.use((request, response, next) => {
