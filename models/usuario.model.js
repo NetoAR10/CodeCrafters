@@ -21,7 +21,7 @@ module.exports = class Usuario {
         console.log(this.ref);
         return bcrypt.hash(this.password, 12).then((password_cifrado) => {
             return db.execute(
-                'INSERT INTO Usuario (Nombre, Matricula, Correo_electronico, Contrasena, Beca_actual, Referencia) VALUES (?, ?, ?, ?, ? , ?)',
+                'INSERT INTO usuario (Nombre, Matricula, Correo_electronico, Contrasena, Beca_actual, Referencia) VALUES (?, ?, ?, ?, ? , ?)',
                 [this.nombre, this.matricula, this.correo, password_cifrado, this.beca, this.ref]
             );
         })
@@ -32,12 +32,12 @@ module.exports = class Usuario {
     }
 
     static fetchAll() {
-        return db.execute('SELECT * FROM Usuario');
+        return db.execute('SELECT * FROM usuario');
     }
 
     static fetchOne(correo) {
         return db.execute(
-            'SELECT * FROM Usuario WHERE Correo_electronico=?',
+            'SELECT * FROM usuario WHERE Correo_electronico=?',
             [correo]
         );
     }

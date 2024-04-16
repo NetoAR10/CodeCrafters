@@ -40,11 +40,13 @@ app.use((req, res, next) => {
 const rutasUsuario = require('./routes/usuario.routes');
 const rutasHome = require('./routes/home.routes');
 const rutasPagoAlumno = require('./routes/pago_alumno.routes');
-const rutasPago = require('./routes/pago.routes');
+const rutasPago = require('./routes/historial.routes');
 const adminDashboardRoutes = require('./routes/admin_dashboard.routes');
 const rutasRegistrarPago = require('./routes/registrarPago.routes');
 const rutasDeuda = require('./routes/crearDeuda.routes');
+const historialRoutes = require('./routes/historial.routes');
 
+app.use('/pagos', historialRoutes);
 app.use('/user', rutasUsuario);
 app.use('/', rutasHome);
 app.use('/user/alumno', rutasPagoAlumno);

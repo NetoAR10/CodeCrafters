@@ -1,9 +1,21 @@
+// historial.controller.js
 const pool = require('../util/database');
-const { Parser } = require('json2csv');
 
-async function obtenerDatosDePagos() {
+async function obtenerDatosDePagos(userID, userRole) {
     try {
-        const [rows] = await pool.query("SELECT `IDPago`, `IDUsuario`, `Cant_pagada`, `Fecha_de_pago`, `Metodo`, `Banco`, `Nota` FROM `pago`");
+        let query;
+        let params = [];
+
+        if (userRole === 'administrador') {
+            query = "SELECT `IDPago`, `IDUsuario`, `Cant_pagada`, `Fecha_de_pago`, `Metodo`, `Banco`, `Nota` FROM `pago`";
+        } else if (userRole === 'alumno') {
+            query = "SELECT `IDPago`, `IDUsuario`, `Cant_pagada`, `Fecha_de_pago`, `Metodo`, `Banco`, `Nota` FROM `pago` WHERE `IDUsuario` = ?";
+            params.push(userID); // UserID from session or a verified source
+        } else {
+            throw new Error("Acceso no autorizado");
+        }
+
+        const [rows] = await pool.query(query, params);
         return rows;
     } catch (error) {
         console.error("Error al consultar la base de datos: ", error);
@@ -11,69 +23,47 @@ async function obtenerDatosDePagos() {
     }
 }
 
+exports.mostrarHistorialPagoTodos = async (req, res) => {
+    try {
+        const userRole = req.session.usuario.role;
+        if (userRole !== 'administrador') {
+            throw new Error("Acceso no autorizado");
+        }
 
-exports.descargarCsv = async (req, res) => {
-  try {
-      let query;
-      let params = [];
+        const paymentsData = await obtenerDatosDePagos(null, userRole);
+        const [users] = await pool.query("SELECT `IDUsuario`, `Nombre` FROM `usuario`");
 
-      if (req.userRole === 'administrador') {
-          const userId = req.query.userId || '%';
-          query = `
-              SELECT p.IDPago, p.IDUsuario, u.Nombre, p.Referencia, p.Fecha_de_pago, p.Cant_pagada, p.Metodo, p.Banco, p.Nota 
-              FROM pago AS p 
-              JOIN usuario AS u ON p.IDUsuario = u.IDUsuario 
-              WHERE p.IDUsuario LIKE ?`;
-          params.push(userId);
-      } else if (req.userRole === 'alumno') {
-          const userId = req.session.usuario.IDUsuario;
-          query = `
-              SELECT p.IDPago, p.IDUsuario, u.Nombre, p.Referencia, p.Fecha_de_pago, p.Cant_pagada, p.Metodo, p.Banco, p.Nota 
-              FROM pago AS p 
-              JOIN usuario AS u ON p.IDUsuario = u.IDUsuario 
-              WHERE p.IDUsuario = ?`;
-          params.push(userId);
-      } else {
-          return res.status(403).send('No autorizado');
-      }
-
-      const [rows] = await pool.query(query, params);
-      const fields = ['IDPago', 'IDUsuario', 'Nombre', 'Referencia', 'Fecha_de_pago', 'Cant_pagada', 'Metodo', 'Banco', 'Nota'];
-      const json2csvParser = new Parser({ fields });
-      const csv = json2csvParser.parse(rows);
-
-      res.header('Content-Type', 'text/csv');
-      res.attachment('pagos.csv');
-      res.send(csv);
-  } catch (error) {
-      console.error("Error al generar el CSV: ", error);
-      res.status(500).send("Error al generar el archivo CSV.");
-  }
+        res.render('historialPago', {
+            pageTitle: 'Historial de Todos los Pagos',
+            payments: paymentsData,
+            users: users,
+            csrfToken: req.csrfToken()
+        });
+    } catch (error) {
+        console.error("Error al mostrar el historial de pagos para todos: ", error);
+        res.status(500).render('error', {
+            pageTitle: 'Error',
+            error: error
+        });
+    }
 };
 
+exports.mostrarHistorialPagoPropio = async (req, res) => {
+    try {
+        const userID = req.session.usuario.IDUsuario;
+        const userRole = req.session.usuario.role;
+        const paymentsData = await obtenerDatosDePagos(userID, userRole);
 
-exports.mostrarHistorialPago = async (req, res) => {
-  try {
-    const paymentsData = await obtenerDatosDePagos();
-    let usersData = [];
-
-    if (req.userRole === 'administrador') {
-        const [users] = await pool.query("SELECT `IDUsuario`, `Nombre` FROM `usuario`");
-        usersData = users;
+        res.render('historialPago', {
+            pageTitle: 'Tu Historial de Pagos',
+            payments: paymentsData,
+            csrfToken: req.csrfToken()
+        });
+    } catch (error) {
+        console.error("Error al mostrar el historial de pagos propio: ", error);
+        res.status(500).render('error', {
+            pageTitle: 'Error',
+            error: error
+        });
     }
-
-    res.render('historialPago', {
-      pageTitle: 'Historial de Pagos',
-      payments: paymentsData,
-      userRole: req.userRole, 
-      users: usersData, 
-      csrfToken: req.csrfToken()
-    });
-  } catch (error) {
-    console.error("Error al mostrar el historial de pagos: ", error);
-    res.status(500).render('error', {
-      pageTitle: 'Error',
-      error: error
-    });
-  }
 };
