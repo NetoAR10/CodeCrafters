@@ -4,18 +4,14 @@ module.exports = function(requiredRoles) {
             return res.redirect('/user/login');
         }
 
-        let hasRole = false;
-        for (let privilegio of req.session.permisos) {
-            if (requiredRoles.includes(privilegio.actividades)) {
-                hasRole = true;
-                break;
-            }
-        }
+        const userRoles = req.session.usuario.roles; 
+
+        const hasRole = requiredRoles.some(role => userRoles.includes(role));
 
         if (hasRole) {
-            return next();
+            return next(); 
         } else {
-            return res.status(403).send('No tiene permiso para realizar esta acción');
+            res.status(403).send('No tiene permiso para realizar esta acción'); 
         }
     };
 };
