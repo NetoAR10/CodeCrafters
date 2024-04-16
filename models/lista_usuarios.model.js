@@ -25,10 +25,11 @@ module.exports = class ListaUsuario {
 
     static search(valor_busqueda) {
         return db.execute(
-            `SELECT * FROM usuario u, tiene t, rol r 
+            `SELECT u.Nombre, u.Matricula, u.Correo_electronico, u.Beca_actual, Tipo_Rol 
+            FROM usuario u, tiene t, rol r
             WHERE u.IDUsuario = t.IDUsuario
             AND t.IDRol = r.IDRol
-            AND u.Nombre LIKE ?`, ['%' + valor_busqueda + '%']);
+            AND u.Nombre LIKE ?`,['%' + valor_busqueda + '%']);
     }
 
 }

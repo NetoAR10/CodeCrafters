@@ -5,21 +5,86 @@
     nombre: nombre,
     rolUser: rolUser,
 } %>
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Página de Inicio</title>
-    </head>
     <body>
-        <div id="respuesta_ajax">
+        
+        <div class="page_content">
+            
+            <div class="text">
+                <div class="title_usuarios">
+                    <h1>Usuarios</h1> 
+                </div>
+                <input id="buscar" class="buscar" type="text" placeholder="Buscar..."/><br><br>
+                <div id="respuesta_ajax">
+                    <div class="tabla">
+                        <% if (usuariosDB.length < 1) { %>
+                            <div class="notification">
+                                No existe el usuario.            
+                            </div>
+                        <% } %>
 
-            <div class="page_content">
-
-                <div class="text">
-                    <div class="title_usuarios">
-                       <h1>Usuarios</h1> 
+                        <table id="USUARIOS">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Matrícula</th>
+                                <th>Correo electrónico</th>
+                                <th>Beca</th>
+                                <th>Rol</th>
+                                <th></th>
+                            </tr>
+                            <% for (let user of usuariosDB) {%>
+                                <% let columns = 0; %>
+                                <% columns++ %>
+                                <tr>
+                                  <td><%= user.Nombre %></td>
+                                  <td><%= user.Matricula %></td>
+                                  <td><%= user.Correo_electronico %></td>
+                                  <td><%= user.Beca_actual %></td>
+                                  <td><%= user.Tipo_Rol %></td> 
+                                  <td><button class="modifyuser" onclick="alert('Cambiar rol')">Modificar Usuario</button> <button class="deleteuser" onclick="alert('Cambiar rol')">Eliminar Usuario</button> </td>
+                                </tr></td>
+                                  
+                            <%}%>
+                            
+                            
+                          </table>
                     </div>
-                    <input id="buscar" class="buscar" type="text" placeholder="Buscar..."/><br><br>
+                </div>
+            </div>
+        </div>
+        
+        
+        <script>
+            const accion_asincrona = () => {
+                console.log('Buscando...');
+                const valor_busqueda = document.getElementById('buscar').value;
+                //función que manda la petición asíncrona
+                fetch('/user/admin/usuarios/buscar/' + valor_busqueda, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }).then((result) => {
+                    console.log(result);
+                    return result.json(); //Regresa otra promesa
+                }).then((data) => {
+                    console.log(data);
+                    let html = '';
+                    
+                    
+                        
+                    html += `
+                        <div class="tabla">
+                    `
+                    console.log('HTML:', html)
+                    
+                    if (data.usuariosDB.length < 1) {
+                        html += `
+                        <div class="notification">
+                            No existe el usuario.            
+                            </div>`
+                    }
+                    
+                    html += `
                     <table id="USUARIOS">
                         <tr>
                             <th>Nombre</th>
@@ -28,91 +93,39 @@
                             <th>Beca</th>
                             <th>Rol</th>
                             <th></th>
-                        </tr>
-                        <% for (let user of usuariosDB) {%>
-                            <tr>
-                              <td><%= user.Nombre %></td>
-                              <td><%= user.Matricula %></td>
-                              <td><%= user.Correo_electronico %></td>
-                              <td><%= user.Beca_actual %></td>
-                              <td><%= user.Tipo_Rol %></td> 
-                              <td><button class="modifyuser" onclick="alert('Cambiar rol')">Modificar Usuario</button> <button class="deleteuser" onclick="alert('Cambiar rol')">Eliminar Usuario</button> </td>
-                            </tr></td>
-                              
-                        <%}%>
+                            </tr>`
+
                         
-                        
-                      </table>
-                </div>
-            </div>
-        </div>
-        
-    </body>
-
-    <script>
-        const accion_asincrona = () => {
-            console.log('Buscando...');
-            const valor_busqueda = document.getElementById('buscar').value;
-            //función que manda la petición asíncrona
-            fetch('/user/admin/usuarios/buscar/' + valor_busqueda, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            }).then((result) => {
-                console.log(result);
-                return result.json(); //Regresa otra promesa
-            }).then((data) => {
-                console.log(data);
-                let html = '';
-
-                
-                if (data.usuariosDB.length < 1) {
-                    html += `
-                    <div class="notification">
-                        <strong>No existe el dato.</strong>
-                    </div>`;
-                }
-
-
-                html += `
-                <div class="page_content">
-
-                    <div class="text">
-                        <div class="title_usuarios">
-                        <h1>Usuarios</h1> 
-                        </div>
-                        <input id="buscar" class="buscar" type="text" placeholder="Buscar..."/><br><br>
-                        <table id="USUARIOS">
+                        for (let user of data.usuariosDB) {
+                        let columns = 0;
+                        columns++
+                        html += `
                             <tr>
-                                <th>Nombre</th>
-                                <th>Matrícula</th>
-                                <th>Correo electrónico</th>
-                                <th>Beca</th>
-                                <th>Rol</th>
-                            </tr>
-                            <% for (let user of usuariosDB) {%>
-                                <tr>
                                 <td>${user.Nombre}</td>
-                                <td>${user.Matricula} %></td>
-                                <td>${user.Correo_electronico} %></td>
+                                <td>${user.Matricula}</td>
+                                <td>${user.Correo_electronico}</td>
                                 <td>${user.Beca_actual}</td>
-                                <td>${user.Tipo_Rol}<button class="adminrole" onclick="alert('Cambiar rol')">Cambiar</button> </td>
-                                </tr>
-                            <%}%>
-                            
-                            
-                        </table>
+                                <td>${user.Tipo_Rol}</td> 
+                                <td><button class="modifyuser" onclick="alert('Cambiar rol')">Modificar Usuario</button> <button class="deleteuser" onclick="alert('Cambiar rol')">Eliminar Usuario</button> </td>
+                                </tr></td>`
+                                
+                            }
+                            console.log('HTML2:', html)
+                    html += ` 
+                    </table>
                     </div>
                     </div>
-                `
+                    </div>
+                    `
 
-            document.getElementById('respuesta_ajax').innerHTML = html;
-            }).catch(err => {
-                console.log(err);
-            });
-        };
-        document.getElementById('buscar').onkeyup = accion_asincrona;
+                                                            
+                document.getElementById('respuesta_ajax').innerHTML = html;
+                }).catch(err => {
+                    console.log(err);
+                });
+            };
+            document.getElementById('buscar').onkeyup = accion_asincrona;
         </script>
 
+    </body>
 </html>
