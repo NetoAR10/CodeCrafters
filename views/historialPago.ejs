@@ -37,20 +37,23 @@
   </style>
 </head>
 <body>
-  <%- include('includes/sidebar_admin.ejs') %> <!-- Asegúrate de que este archivo exista y esté en la ubicación correcta -->
+  <%- include('includes/sidebar_admin.ejs') %>
   <div class="main-content">
     <h1>Historial de Pagos</h1>
-    <% if (userRole === 'administrador' && users) { %>
-    <form action="/pagos/descargar-csv" method="GET">
-      <label for="userId">Seleccionar Usuario:</label>
-      <select name="userId" id="userId">
-        <option value="">Todos</option>
-        <% users.forEach(user => { %>
-          <option value="<%= user.IDUsuario %>"><%= user.Nombre %></option>
-        <% }) %>
-      </select>
-      <button type="submit">Descargar CSV</button>
-    </form>
+    <% if (typeof userRole !== 'undefined' && userRole === 'administrador' && typeof users !== 'undefined' && users.length > 0) { %>
+      <form action="/pagos/descargar-csv" method="GET">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <label for="userId">Seleccionar Usuario:</label>
+        <select name="userId" id="userId">
+          <option value="">Todos</option>
+          <% users.forEach(user => { %>
+            <option value="<%= user.IDUsuario %>"><%= user.Nombre %></option>
+          <% }) %>
+        </select>
+        <button type="submit">Descargar CSV</button>
+      </form>
+    <% } else { %>
+      <p>No hay usuarios disponibles o no tienes permiso para ver esta sección.</p>
     <% } %>
     <table>
       <thead>
@@ -66,7 +69,7 @@
         </tr>
       </thead>
       <tbody>
-        <% if (payments) { %>
+        <% if (typeof payments !== 'undefined' && payments.length > 0) { %>
           <% payments.forEach(payment => { %>
             <tr>
               <td><%= payment.IDPago %></td>
@@ -79,6 +82,10 @@
               <td><%= payment.Nota %></td>
             </tr>
           <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="8" style="text-align:center;">No hay pagos registrados</td>
+          </tr>
         <% } %>
       </tbody>
     </table>

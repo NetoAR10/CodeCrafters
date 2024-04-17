@@ -1,7 +1,6 @@
+// csv.controller.js
 const fs = require('fs');
 const Papa = require('papaparse');
-const csvParser = require('csv-parser');
-const moment = require('moment');
 const CSV = require('../models/csv.model');
 
 exports.uploadCSV = (request, response) => {
@@ -27,17 +26,11 @@ exports.uploadCSV = (request, response) => {
                 const record = new CSV(row);
                 await record.save();
             }
-            fs.unlinkSync(filePath); 
-            response.redirect('/'); 
+            fs.unlinkSync(filePath); // Elimina el archivo después de procesarlo
+            response.redirect('/'); // O redirige a alguna página de éxito o estado
         } catch (error) {
             console.error('Error processing data:', error);
             response.status(500).send('Error processing data');
         }
     });
 };
-
-exports.uploadCSV = (req, res) => {
-    
-    res.send('Archivo CSV cargado con éxito.');
-  };
-  
