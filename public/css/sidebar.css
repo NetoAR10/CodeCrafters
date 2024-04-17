@@ -386,6 +386,26 @@ body {
     cursor: pointer;
 }
 
+.reactivateuser {
+    position: relative;
+    background-color: #c09a75;
+    color: #fff;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    font-size: 10px;
+    padding: 4px 4px;
+    left: 10px;
+}
+
+
+.reactivateuser:hover {
+    background-color: #fff;
+    color: #c09a75;
+    border: 1px solid #c09a75;
+    transition-duration: 0.3s;
+    cursor: pointer;
+}
+
 .buscar {
     position: relative;
     width: 70%;
@@ -437,4 +457,8 @@ Efecto cuando el botón está siendo presionado
 
 form {
     margin-right: 10px;
+}
+
+.inactiveStudent {
+    background-color: #dcdcdc;
 }

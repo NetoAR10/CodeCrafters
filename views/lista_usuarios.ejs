@@ -8,6 +8,7 @@
     <body>
         
         <div class="page_content">
+            <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" >
             
             <div class="text">
                 <div class="title_usuarios">
@@ -29,20 +30,36 @@
                                 <th>Correo electrónico</th>
                                 <th>Beca</th>
                                 <th>Rol</th>
+                                <th>¿Activo?</th>
                                 <th></th>
                             </tr>
                             <% for (let user of usuariosDB) {%>
                                 <% let columns = 0; %>
                                 <% columns++ %>
-                                <tr>
-                                  <td><%= user.Nombre %></td>
-                                  <td><%= user.Matricula %></td>
-                                  <td><%= user.Correo_electronico %></td>
-                                  <td><%= user.Beca_actual %></td>
-                                  <td><%= user.Tipo_Rol %></td> 
-                                  <td><button class="modifyuser" onclick="alert('Cambiar rol')">Modificar Usuario</button> <button class="deleteuser" onclick="alert('Cambiar rol')">Eliminar Usuario</button> </td>
-                                </tr></td>
-                                  
+                                    
+                            <tr class="<%= user.Alumno_activo == 0 ? 'inactiveStudent' : '' %>">
+                                
+                                <td><%= user.Nombre %></td>
+                                <td><%= user.Matricula %></td>
+                                <td><%= user.Correo_electronico %></td>
+                                <td><%= user.Beca_actual %></td>
+                                <td><%= user.Tipo_Rol %></td> 
+                                <td><% if (user.Alumno_activo == 1 ) {%> Activo <% } else if (user.Alumno_activo == 0) { %> Inactivo <% } %> </td>
+                                <td><button class="modifyuser" onclick="alert('Cambiar rol')">Modificar Usuario</button> 
+                                <button class="<% if (user.Alumno_activo == 1) { %> deleteuser <% } else { %> reactivateuser <% } %>" 
+                                <% if (user.Alumno_activo == 1) { %>
+                                    onclick="desactivar('<%= user.Correo_electronico %>')"
+                                <% } else if (user.Alumno_activo == 0) { %>
+                                    onclick="reactivar('<%= user.Correo_electronico %>')"
+                                <% } %>>
+                                <% if (user.Alumno_activo == 1) { %>
+                                    Desactivar Usuario
+                                <% } else if (user.Alumno_activo == 0) { %>
+                                    Reactivar Usuario
+                                <% } %>
+                                </button> </td>
+                            </tr>
+ 
                             <%}%>
                             
                             
@@ -75,7 +92,6 @@
                     html += `
                         <div class="tabla">
                     `
-                    console.log('HTML:', html)
                     
                     if (data.usuariosDB.length < 1) {
                         html += `
@@ -92,6 +108,7 @@
                             <th>Correo electrónico</th>
                             <th>Beca</th>
                             <th>Rol</th>
+                            <th>¿Activo?</th>
                             <th></th>
                             </tr>`
 
@@ -100,13 +117,21 @@
                         let columns = 0;
                         columns++
                         html += `
-                            <tr>
+                            <tr class="${user.Alumno_activo == 0 ? 'inactiveStudent' : ''}">
                                 <td>${user.Nombre}</td>
                                 <td>${user.Matricula}</td>
                                 <td>${user.Correo_electronico}</td>
                                 <td>${user.Beca_actual}</td>
                                 <td>${user.Tipo_Rol}</td> 
-                                <td><button class="modifyuser" onclick="alert('Cambiar rol')">Modificar Usuario</button> <button class="deleteuser" onclick="alert('Cambiar rol')">Eliminar Usuario</button> </td>
+                                <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
+                                <td><button class="modifyuser" onclick="alert('Cambiar rol')">Modificar Usuario</button> 
+                                    <button class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
+                                        user.Alumno_activo === 1 
+                                        ? `onclick="desactivar('${user.Correo_electronico}')" `
+                                        : `onclick="reactivar('${user.Correo_electronico}')"`
+                                    }>
+                                        ${user.Alumno_activo === 1 ? "Desactivar Usuario" : "Reactivar Usuario"}
+                                    </button> </td>
                                 </tr></td>`
                                 
                             }
@@ -125,6 +150,157 @@
                 });
             };
             document.getElementById('buscar').onkeyup = accion_asincrona;
+
+            const desactivar = (correo) => {
+                const csrf = document.getElementById('_csrf').value;
+                fetch('/user/admin/usuarios/desactivar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'csrf-token': csrf
+                    },
+                    body: JSON.stringify({correo:correo})
+                }).then(result => {
+                    return result.json();
+                }).then(data => {
+                    console.log(data);
+                    let html = '';
+
+                    html += `
+                        <div class="tabla">
+                    `
+                    
+                    if (data.usuariosDB.length < 1) {
+                        html += `
+                        <div class="notification">
+                            No existe el usuario.            
+                            </div>`
+                    }
+                    
+                    html += `
+                    <table id="USUARIOS">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Matrícula</th>
+                            <th>Correo electrónico</th>
+                            <th>Beca</th>
+                            <th>Rol</th>
+                            <th>¿Activo?</th>
+                            <th></th>
+                            </tr>`
+
+                        
+                        for (let user of data.usuariosDB) {
+                        let columns = 0;
+                        columns++
+                        html += `
+                            <tr class="${user.Alumno_activo == 0 ? 'inactiveStudent' : ''}">
+                                <td>${user.Nombre}</td>
+                                <td>${user.Matricula}</td>
+                                <td>${user.Correo_electronico}</td>
+                                <td>${user.Beca_actual}</td>
+                                <td>${user.Tipo_Rol}</td> 
+                                <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
+                                <td><button class="modifyuser" onclick="alert('Cambiar rol')">Modificar Usuario</button> 
+                                    <button class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
+                                    user.Alumno_activo === 1 
+                                    ? `onclick="desactivar('${user.Correo_electronico}')" `
+                                    : `onclick="reactivar('${user.Correo_electronico}')"`
+                                }>
+                                    ${user.Alumno_activo === 1 ? "Desactivar Usuario" : "Reactivar Usuario"}
+                                </button> </td>
+                                </tr></td>`
+                                
+                            }
+                    html += ` 
+                    </table>
+                    </div>
+                    </div>
+                    </div>
+                    `
+                    document.getElementById('respuesta_ajax').innerHTML = html;
+                }).catch(err => {
+                    console.log(err);
+                })
+
+                
+
+            }
+
+            const reactivar = (correo) => {
+                const csrf = document.getElementById('_csrf').value;
+                fetch('/user/admin/usuarios/reactivar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'csrf-token': csrf
+                    },
+                    body: JSON.stringify({correo:correo})
+                }).then(result => {
+                    return result.json();
+                }).then(data => {
+                    console.log(data);
+                    let html = '';
+
+                    html += `
+                        <div class="tabla">
+                    `
+                    
+                    if (data.usuariosDB.length < 1) {
+                        html += `
+                        <div class="notification">
+                            No existe el usuario.            
+                            </div>`
+                    }
+                    
+                    html += `
+                    <table id="USUARIOS">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Matrícula</th>
+                            <th>Correo electrónico</th>
+                            <th>Beca</th>
+                            <th>Rol</th>
+                            <th>¿Activo?</th>
+                            <th></th>
+                            </tr>`
+
+                        
+                        for (let user of data.usuariosDB) {
+                        let columns = 0;
+                        columns++
+                        html += `
+                            <tr class="${user.Alumno_activo == 0 ? 'inactiveStudent' : ''}">
+                                <td>${user.Nombre}</td>
+                                <td>${user.Matricula}</td>
+                                <td>${user.Correo_electronico}</td>
+                                <td>${user.Beca_actual}</td>
+                                <td>${user.Tipo_Rol}</td> 
+                                <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
+                                <td><button class="modifyuser" onclick="alert('Cambiar rol')">Modificar Usuario</button> 
+                                    <button class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
+                                    user.Alumno_activo === 1 
+                                    ? `onclick="desactivar('${user.Correo_electronico}')" `
+                                    : `onclick="reactivar('${user.Correo_electronico}')"`
+                                }>
+                                    ${user.Alumno_activo === 1 ? "Desactivar Usuario" : "Reactivar Usuario"}
+                                </button> </td>
+                                </tr></td>`
+                                
+                            }
+                    html += ` 
+                    </table>
+                    </div>
+                    </div>
+                    </div>
+                    `
+                    document.getElementById('respuesta_ajax').innerHTML = html;
+                }).catch(err => {
+                    console.log(err);
+                })
+
+            }
+
         </script>
 
     </body>
