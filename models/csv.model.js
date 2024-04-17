@@ -1,20 +1,13 @@
-const Sequelize = require('sequelize');
 const db = require('../util/database');
 
-const Causan = db.define('causan', {
-  IDCausan: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  IDDeuda: {
-    type: Sequelize.INTEGER
-  },
-  IDMateria: {
-    type: Sequelize.INTEGER
-  }
-}, {
-  timestamps: false
-});
+module.exports = class CsvModel {
+  static bulkInsert(data) {
+    const insertPromises = data.map(item => {
+      // Aquí debes adaptar los campos a los de tu base de datos
+      const query = `INSERT INTO pago (IDUsuario, IDDeuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota, Prorroga) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+      return db.execute(query, [item.IDUsuario, item.IDDeuda, item.Cant_pagada, item.Fecha_de_pago, item.Metodo, item.Banco, item.Nota, item.Prorroga]);
+    });
 
-module.exports = { Causan };
+    return Promise.all(insertPromises);
+  }
+};

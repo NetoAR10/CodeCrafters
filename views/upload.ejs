@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cargar CSV</title>
+</head>
+<body>
+    <% if (!uploaded) { %>
+        <form action="/csv/upload" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="file" name="csv" accept=".csv" required>
+            <button type="submit">Subir CSV</button>
+        </form>
+    <% } else { %>
+        <p>Archivo CSV cargado con éxito.</p>
+    <% } %>
+</body>
+</html>
