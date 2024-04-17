@@ -18,7 +18,7 @@ exports.postUploadCsv = (req, res, next) => {
     .on('end', () => {
       CsvModel.bulkInsert(csvData)
         .then(() => {
-          fs.unlinkSync(req.file.path); // Eliminar archivo después de cargar los datos
+          fs.unlinkSync(req.file.path); 
           res.render('upload', { csrfToken: req.csrfToken(), uploaded: true });
         })
         .catch(err => res.status(500).json({ error: err.message }));
