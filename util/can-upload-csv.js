@@ -1,8 +1,9 @@
+// can-upload-csv.js
 module.exports = (req, res, next) => {
-    if (req.session.user && req.session.user.permissions.some(p => p.Actividades === 'cargar csv')) {
-      next();
+    // Verificar que el usuario está logueado y que tiene el rol de administrador
+    if (req.session.user && req.session.user.role === 'admin') {
+        next();
     } else {
-      res.status(403).send('No tiene permisos para cargar archivos CSV.');
+        res.status(403).send('Acceso denegado. Necesitas privilegios de administrador para acceder a esta función.');
     }
-  };
-  
+};
