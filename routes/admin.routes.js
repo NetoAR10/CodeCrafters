@@ -7,6 +7,7 @@ const listaUsuariosController = require('../controllers/lista_usuarios.controlle
 const pagoController = require('../controllers/rPago.controller');
 const deudaController = require('../controllers/Deuda.controller');
 const isActive = require('../util/is-active');
+const csvController = require('../controllers/csv.controller');
 
 //Ciclo Escolar
 router.get('/ciclo_escolar', isAuth, canResgisterCiclo, isActive, cicloEscolarController.get_nuevo_ciclo);
@@ -27,5 +28,8 @@ router.post('/registrarPago', isAuth, isActive, pagoController.postRegistrarPago
 router.get('/crearDeuda', isAuth, isActive, deudaController.getCrearDeuda);
 router.post('/crearDeuda', isAuth, isActive, deudaController.postCrearDeuda);
 
+//Cargar CSV
+router.get('/csv/upload', isAuth,  isActive, csvController.getUploadCsv);
+router.post('/csv/upload', isAuth, isActive, csvController.postUploadCsv);
 
 module.exports = router;

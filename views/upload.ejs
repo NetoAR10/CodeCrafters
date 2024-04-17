@@ -5,14 +5,14 @@
     <title>Cargar CSV</title>
 </head>
 <body>
-    <% if (!uploaded) { %>
+    <% if (user.role === 'admin') { %>
         <form action="/csv/upload" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <input type="file" name="csv" accept=".csv" required>
-            <button type="submit">Subir CSV</button>
+          <label for="csvFile">Subir archivo CSV:</label>
+          <input type="file" id="csvFile" name="csvFile" accept=".csv">
+          <button type="submit">Cargar CSV</button>
         </form>
-    <% } else { %>
-        <p>Archivo CSV cargado con éxito.</p>
-    <% } %>
+      <% } else { %>
+        <p>Acceso denegado. Solo los administradores pueden cargar archivos CSV.</p>
+      <% } %>      
 </body>
 </html>

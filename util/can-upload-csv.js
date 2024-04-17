@@ -1,6 +1,4 @@
-// can-upload-csv.js
 module.exports = (req, res, next) => {
-    // Verificar que el usuario está logueado y que tiene el rol de administrador
     if (req.session.user && req.session.user.role === 'admin') {
         next();
     } else {
