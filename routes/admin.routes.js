@@ -7,6 +7,7 @@ const pagoController = require('../controllers/rPago.controller');
 const deudaController = require('../controllers/deuda.controller');
 const isActive = require('../util/is-active');
 const csvController = require('../controllers/csv.controller');
+const isAuth = require('../util/is-auth'); 
 
 //Ciclo Escolar
 console.log("get_nuevo_ciclo:", cicloEscolarController.get_nuevo_ciclo);
