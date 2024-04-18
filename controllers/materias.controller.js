@@ -16,22 +16,21 @@ exports.get_materias = async (request, response, next) => {
             const {
                 name: nombreProfe = '',
             } = userGroup.professor;
-            const {
-                semester
-            } = userGroup.course.plans_courses;
+            const sem = (userGroup.course.plans_courses || []).map((planCourse) => planCourse.semester)[0];
             
             return {
                 idMateria: id,
                 nombreMat: name,
                 creditos: credits,
                 nombreProfe,
-                semestre: semester
+                semestre: sem
             };
-        })
+        });
         console.log(cursos);
         return  response.render('materias', {
             csrfToken: request.csrfToken(),
-            userGroups: userGroups.data
+            userGroups: userGroups.data,
+            cursos: cursos
         });
     } catch (err) {
         console.log(err);

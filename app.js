@@ -33,10 +33,10 @@ app.use((request, response, next) => {
 // Rutas
 
 
-const rutasAlumno = require('./routes/alumno_routes');
+const rutasAlumno = require('./routes/alumno.routes');
 app.use('/user/alumno', rutasAlumno);
 
-const rutasAdmin = require('./routes/admin_routes');
+const rutasAdmin = require('./routes/admin.routes');
 app.use('/user/admin', rutasAdmin);
 
 const rutasPago = require('./routes/pago.routes'); // Asegúrate de que la ruta sea correcta
