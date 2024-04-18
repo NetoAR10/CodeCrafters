@@ -1,13 +1,19 @@
 const db = require('../util/database');
 
-module.exports = class CsvModel {
-  static bulkInsert(data) {
-    const insertPromises = data.map(item => {
-      // Aquí debes adaptar los campos a los de tu base de datos
-      const query = `INSERT INTO pago (IDUsuario, IDDeuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota, Prorroga) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
-      return db.execute(query, [item.IDUsuario, item.IDDeuda, item.Cant_pagada, item.Fecha_de_pago, item.Metodo, item.Banco, item.Nota, item.Prorroga]);
-    });
+module.exports = class Pago {
+    constructor(pago) {
+        this.idUsuario = pago.IDUsuario;
+        this.idDeuda = pago.IDDeuda;
+        this.cantPagada = pago.CantPagada;
+        this.fechaDePago = pago.FechaDePago;
+        this.metodo = pago.Metodo;
+        this.banco = pago.Banco;
+        this.nota = pago.Nota;
+        this.prorroga = pago.Prorroga;
+    }
 
-    return Promise.all(insertPromises);
-  }
+    async save() {
+        let sql = `INSERT INTO pago (IDUsuario, IDDeuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota, Prorroga) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+        return db.execute(sql, [this.idUsuario, this.idDeuda, this.cantPagada, this.fechaDePago, this.metodo, this.banco, this.nota, this.prorroga]);
+    }
 };

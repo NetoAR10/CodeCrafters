@@ -1,18 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Cargar CSV</title>
-</head>
-<body>
-    <% if (user.role === 'admin') { %>
-        <form action="/csv/upload" method="post" enctype="multipart/form-data">
-          <label for="csvFile">Subir archivo CSV:</label>
-          <input type="file" id="csvFile" name="csvFile" accept=".csv">
-          <button type="submit">Cargar CSV</button>
-        </form>
-      <% } else { %>
-        <p>Acceso denegado. Solo los administradores pueden cargar archivos CSV.</p>
-      <% } %>      
-</body>
-</html>
+<%- include('../includes/sidebar.ejs') %>
+
+<div class="h-screen font-sans text-gray-900 bg-gray-300 border-box">
+    <div class="flex justify-center w-full mx-auto sm:max-w-lg">
+        <div class="flex flex-col items-center justify-center w-full h-auto my-20 bg-white sm:w-3/4 sm:rounded-lg sm:shadow-xl">
+            <div class="mt-10 mb-10 text-center">
+                <h2 class="text-2xl font-semibold mb-2">Upload your file</h2>
+                <p class="text-xs text-gray-500">File should be in .csv format</p>
+            </div>
+            <form action="/leads/upload" method="post" enctype="multipart/form-data" class="relative w-4/5 h-32 max-w-xs mb-10 bg-white bg-gray-100 rounded-lg shadow-inner">
+                <input type="file" id="file-upload" name="importCSV" class="hidden">
+                <label for="file-upload" class="z-20 flex flex-col-reverse items-center justify-center w-full h-full cursor-pointer">
+                    <p class="z-10 text-xs font-light text-center text-gray-500">Drag & Drop your files here or click to browse</p>
+                </label>
+                <button type="submit" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Upload
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+

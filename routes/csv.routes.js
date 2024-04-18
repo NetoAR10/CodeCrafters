@@ -1,9 +1,12 @@
 const express = require('express');
-const isAuth = require('../util/is-auth');
-const csvController = require('../controllers/csv.controller');
 const router = express.Router();
+const pagoController = require('../controllers/csv.controller');
+const multer = require('multer');
+const isAuth = require('../util/is-auth');
 
-router.get('/upload', isAuth, csvController.getUploadCsv);
-router.post('/upload', isAuth, csvController.postUploadCsv);
+const upload = multer({ dest: 'uploads/' });
+
+router.get('/upload', isAuth, pagoController.getUpload);
+router.post('/upload', isAuth, upload.single('file'), pagoController.postUpload);
 
 module.exports = router;
