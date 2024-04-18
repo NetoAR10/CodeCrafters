@@ -74,6 +74,16 @@
                             </li>
 
                         <% } %>
+                        <% if (permisos.some(permiso => permiso.Actividades == 'cargar csv')) { %>
+                            <li>
+                                <a href="/csv/upload">
+                                    <i class='bx bx-upload'></i>
+                                    <span class="links_name">Cargar CSV</span>
+                                </a>
+                                <span class="tooltip">Cargar CSV</span>
+                            </li>
+                        <% } %>
+                        
                     <% } %>
                     <li>
                         <a href="#">

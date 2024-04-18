@@ -6,7 +6,6 @@ app.set('views', 'views');
 
 const session = require('express-session');
 const csrf = require('csurf');
-const bodyParser = require('body-parser');
 const path = require('path');
 
 // Configuración de la sesión
@@ -17,9 +16,8 @@ app.use(session({
 }));
 
 // Middlewares
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
-
+app.use(express.urlencoded({extended: false}));  // Usa el middleware incorporado en Express
+app.use(express.json());  // Usa el middleware incorporado en Express
 
 app.use(express.static(path.join(__dirname, 'public')));
 const csrfProtection = csrf();
@@ -31,7 +29,8 @@ app.use((request, response, next) => {
 });
 
 // Rutas
-
+const csvRoutes = require('./routes/csv.routes');
+app.use('/csv', csvRoutes);
 
 const rutasAlumno = require('./routes/alumno.routes');
 app.use('/user/alumno', rutasAlumno);
@@ -47,7 +46,6 @@ app.use('/user', rutasUsuario);
 
 const rutasHome = require('./routes/home.routes');
 app.use('/', rutasHome);
-
 
 // Manejo de errores de 404
 app.use((request, response, next) => {
