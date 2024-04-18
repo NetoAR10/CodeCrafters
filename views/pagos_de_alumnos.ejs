@@ -103,35 +103,36 @@
                             <th>Matrícula</th>
                             <th>Correo electrónico</th>
                             <th>Beca</th>
-                            <th>Rol</th>
-                            <th>¿Activo?</th>
-                            <th></th>
+                            <th>Crear deuda</th>
+                            <th>Registrar Pago</th>
+                            <th>Historial de pagos</th>
                             </tr>`
-
-                        
+ 
                         for (let user of data.usuariosDB) {
                         let columns = 0;
                         columns++
                         html += `
-                            <tr class="${user.Alumno_activo == 0 ? 'inactiveStudent' : ''}">
-                                <td>${user.Nombre}</td>
-                                <td>${user.Matricula}</td>
-                                <td>${user.Correo_electronico}</td>
-                                <td>${user.Beca_actual}</td>
-                                <td>${user.Tipo_Rol}</td> 
-                                <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
-                                <td><button class="modifyuser" onclick="alert('Cambiar rol')">Modificar Usuario</button> 
-                                    <button class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
-                                        user.Alumno_activo === 1 
-                                        ? `onclick="desactivar('${user.Correo_electronico}')" `
-                                        : `onclick="reactivar('${user.Correo_electronico}')"`
-                                    }>
-                                        ${user.Alumno_activo === 1 ? "Desactivar Usuario" : "Reactivar Usuario"}
-                                    </button> </td>
-                                </tr></td>`
-                                
-                            }
-                            console.log('HTML2:', html)
+                            
+                            <td><%= user.Matricula %></td>
+                            <td><%= user.Correo_electronico %></td>
+                            <td><%= user.Beca_actual %></td> 
+                            <td>
+                                <a href="http://localhost:2050/user/admin/crearDeuda" class="simple-btn">
+                                    Crear Deuda
+                                </a>
+                            </td>
+                            <td>
+                                <a href="http://localhost:2050/user/admin/registrarPago" class="simple-btn">
+                                    Registrar Pago
+                                </a>
+                            </td>
+		            <td>
+				<a href="/user/admin/pagos_de_alumnos/historial/<%= user.Correo_electronico%>" class="simple-btn">
+                                    Historial de pagos
+                                </a>
+			    </td>
+                           </tr>
+                        <% } %>      
                     html += ` 
                     </table>
                     </div>
