@@ -47,12 +47,12 @@ module.exports = class ListaUsuario {
         WHERE Correo_electronico = ?`,[correo]);
     }
 
-    static modificarRol(rol_id, IDUsuario){
+    static modificarRol(nuevo_rol, IDUsuario){
         return db.execute(
             `
             UPDATE tiene
             SET IDRol = ?
-            WHERE IDUsuario = ?`, [rol_id, IDUsuario]);
+            WHERE IDUsuario = ?`, [nuevo_rol, IDUsuario]);
     }
 
 }

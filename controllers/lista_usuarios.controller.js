@@ -53,5 +53,12 @@ exports.post_reactivar = (request, response, next) => {
 }
 
 exports.post_modificarRol = (request, response, next) => {
-
+    ListaUsuario.modificarRol(nuevo_rol, request.session.user_id)
+    .then(() => {
+        ListaUsuario.getVariosRol()
+        .then(([usuariosDB, fieldData]) => {
+            return response.status(200).json({usuariosDB: usuariosDB})
+        })
+        .catch((error) => {console.log(error)});
+    })
 }
