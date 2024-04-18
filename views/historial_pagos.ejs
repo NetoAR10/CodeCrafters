@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de Pagos</title>
+    <link rel="stylesheet" href="/css/sidebar.css">
+</head>
+<body>
+    <div class="page_content">
+        <h1 class="title">Historial de Pagos</h1>
+        <table id=USUARIOS">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Matrícula</th>
+                    <th>Cantidad Pagada</th>
+                    <th>Fecha de Pago</th>
+                    <th>Método</th>
+                    <th>Banco</th>
+                    <th>Nota</th>
+                    <th>Prórroga</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% pagos.forEach(function(pago) { %>
+                    <tr>
+                        <td><%= pago.Nombre %></td>
+                        <td><%= pago.Matricula %></td>
+                        <td><%= pago.Cant_pagada %></td>
+                        <td><%= new Date(pago.Fecha_de_pago).toLocaleDateString() %></td>
+                        <td><%= pago.Metodo %></td>
+                        <td><%= pago.Banco %></td>
+                        <td><%= pago.Nota %></td>
+                        <td><%= pago.Prorroga %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+

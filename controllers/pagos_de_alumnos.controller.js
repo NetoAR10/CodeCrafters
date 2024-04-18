@@ -54,9 +54,9 @@ exports.post_reactivar = (request, response, next) => {
 
 exports.getHistorialDePagos = (request, response, next) => {
     console.log('Controlador getHistorialDePagos invocado.');
-    const idUsuario = request.params.id; // Aquí capturas el ID del usuario desde el parámetro de la URL
+    const Correo_electronico = request.params.id; // Aquí capturas el ID del usuario desde el parámetro de la URL
 
-    ListaUsuario.historialDePagos(idUsuario)
+    ListaUsuario.historialDePagos(Correo_electronico)
     .then(([data, fieldData]) => {
         response.render('historial_pagos', { // 'historial_pagos' es el nombre de tu vista EJS para mostrar el historial
             pagos: data,

@@ -47,14 +47,14 @@ module.exports = class ListaUsuario {
         WHERE Correo_electronico = ?`,[correo]);
     }   
         
-    static historialDePagos(idUsuario) {
+    static historialDePagos(Correo_electronico) {
     	return db.execute(
         `SELECT usuario.Nombre, usuario.Matricula,
         pago.Cant_pagada, pago.Fecha_de_pago, pago.Metodo, pago.Banco, pago.Nota, pago.Prorroga
         FROM usuario
         JOIN pago ON usuario.IDUsuario = pago.IDUsuario
-        WHERE usuario.IDUsuario = ?;`,
-        [idUsuario]
+        WHERE usuario.Correo_electronico = ?;`,
+        [Correo_electronico]
     );
 }
 
