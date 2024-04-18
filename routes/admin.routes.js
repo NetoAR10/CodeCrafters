@@ -1,15 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const isAuth = require('../util/is-auth');
 const cicloEscolarController = require('../controllers/ciclo_escolar.controller');
 const canResgisterCiclo = require('../util/can-register-ciclo');
 const listaUsuariosController = require('../controllers/lista_usuarios.controller');
 const pagoController = require('../controllers/rPago.controller');
-const deudaController = require('../controllers/Deuda.controller');
+const deudaController = require('../controllers/deuda.controller');
 const isActive = require('../util/is-active');
 const csvController = require('../controllers/csv.controller');
 
 //Ciclo Escolar
+console.log("get_nuevo_ciclo:", cicloEscolarController.get_nuevo_ciclo);
 router.get('/ciclo_escolar', isAuth, canResgisterCiclo, isActive, cicloEscolarController.get_nuevo_ciclo);
 router.post('/ciclo_escolar', isAuth, isActive, cicloEscolarController.post_nuevo_ciclo);
 
