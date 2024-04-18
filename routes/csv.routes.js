@@ -7,6 +7,6 @@ const isAuth = require('../util/is-auth');
 const upload = multer({ dest: 'uploads/' });
 
 router.get('/upload', isAuth, pagoController.getUpload);
-router.post('/upload', isAuth, upload.single('file'), pagoController.postUpload);
+router.post('/upload', isAuth, upload.single('importCSV'), pagoController.postUpload);
 
 module.exports = router;

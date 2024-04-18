@@ -1,4 +1,3 @@
-const PDFDocument = require('pdfkit');
 const db = require('../util/database');
 const Usuario = require('../models/usuario.model');
 

@@ -10,27 +10,31 @@ exports.getUpload = (req, res, next) => {
     });
 };
 
-exports.postUpload = (req, res, next) => {
-    let pagos = [];
-    fs.createReadStream(req.file.path)
-        .pipe(csvParser())
-        .on('data', (row) => {
-            pagos.push(new Pago({
-                IDUsuario: parseInt(row.IDUsuario),
-                IDDeuda: parseInt(row.IDDeuda),
-                CantPagada: parseFloat(row.CantPagada),
-                FechaDePago: row.FechaDePago,
-                Metodo: row.Metodo,
-                Banco: row.Banco,
-                Nota: row.Nota,
-                Prorroga: row.Prorroga
-            }));
-        })
-        .on('end', async () => {
-            for (let pago of pagos) {
-                await pago.save();
-            }
-            fs.unlinkSync(req.file.path); 
-            res.redirect('/pagos');
-        });
+exports.postUpload = async (req, res, next) => {
+  let pagos = [];
+  const stream = fs.createReadStream(req.file.path)
+      .pipe(csvParser());
+
+  for await (const row of stream) {
+      pagos.push(new Pago({
+          IDUsuario: parseInt(row.IDUsuario),
+          IDDeuda: parseInt(row.IDDeuda),
+          CantPagada: parseFloat(row.CantPagada),
+          FechaDePago: row.FechaDePago,
+          Metodo: row.Metodo,
+          Banco: row.Banco,
+          Nota: row.Nota,
+          Prorroga: row.Prorroga
+      }));
+  }
+
+  try {
+      await Promise.all(pagos.map(pago => pago.save()));
+      fs.unlinkSync(req.file.path);
+      res.redirect('/pagos');
+  } catch (error) {
+      console.error("Failed to process CSV:", error);
+      res.status(500).send("Failed to process CSV.");
+  }
 };
+
