@@ -46,6 +46,15 @@ module.exports = class ListaUsuario {
         SET Alumno_activo = 1
         WHERE Correo_electronico = ?`,[correo]);
     }
+
+    static modificarRol(rol_id, IDUsuario){
+        return db.execute(
+            `
+            UPDATE tiene
+            SET IDRol = ?
+            WHERE IDUsuario = ?`, [rol_id, IDUsuario]);
+    }
+
 }
 
 

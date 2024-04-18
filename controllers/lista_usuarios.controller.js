@@ -51,3 +51,7 @@ exports.post_reactivar = (request, response, next) => {
     })
     .catch((error) => {console.log(error)});
 }
+
+exports.post_modificarRol = (request, response, next) => {
+
+}

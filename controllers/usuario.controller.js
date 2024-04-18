@@ -34,8 +34,9 @@ exports.post_login = (request, response, next) => {
                         request.session.nombre = user.Nombre; 
                         request.session.roles = rol.Tipo_Rol;
                         request.session.active = user.Alumno_activo;
-                        console.log('Correo:', user.Correo_electronico)
-                        console.log('Rol: ', rol.Tipo_Rol)
+                        request.session.rol_id = rol.IDRol;
+                        request.session.user_id = rol.IDUsuario;
+                        console.log('Inicio de Sesión Correcto');
                         return request.session.save(err => {
                             response.redirect('/');
                         });
