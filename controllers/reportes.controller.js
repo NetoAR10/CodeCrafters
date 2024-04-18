@@ -1,14 +1,18 @@
-const reportesModel = require('../models/reportes.model');
+const ReportsModel = require('../models/reportes.model');
 
-exports.renderChart = async (req, res) => {
+exports.getReportData = async (req, res) => {
   try {
-    const datos = await reportesModel.getDatosCiclo();
-    res.render('chart', {  
-      chartData: JSON.stringify(datos)
-    });
+    const { startDate, endDate } = req.query;
+    const reports = await ReportsModel.getReports(new Date(startDate), new Date(endDate));
+    res.json(reports);
   } catch (error) {
-    console.error('Error en el controlador:', error.message);
-    res.status(500).send('Error al procesar los datos del reporte');
+    res.status(500).send(error);
   }
 };
 
+
+exports.renderReportPage = (req, res) => {
+  res.render('reportes', {
+      pageTitle: 'Reportes'
+  });
+};

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reportes de Pago</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>Reporte de Pagos</h1>
+  <div style="width: 80%; margin: auto;">
+    <canvas id="paymentChart"></canvas>
+  </div>
+  <script>
+    const fetchReportData = async () => {
+      const response = await fetch('/api/reports?startDate=2022-01-01&endDate=2022-12-31');
+      const data = await response.json();
+      const ctx = document.getElementById('paymentChart').getContext('2d');
+      const paymentChart = new Chart(ctx, {
+        type: 'line', // Change the type as needed, e.g., 'bar', 'line'
+        data: {
+          labels: data.map(item => new Date(item.date).toLocaleDateString()),
+          datasets: [{
+            label: 'Amount Collected',
+            data: data.map(item => item.amount),
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    };
+
+    document.addEventListener('DOMContentLoaded', fetchReportData);
+  </script>
+</body>
+</html>

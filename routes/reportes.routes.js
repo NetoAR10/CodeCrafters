@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const reportesController = require('./reportes.controller');
+const reportsController = require('../controllers/reportes.controller');
 
-router.get('/graficas', reportesController.renderChart);
+router.get('/reports', reportsController.getReportData);
 
 module.exports = router;
