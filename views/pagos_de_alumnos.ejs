@@ -112,10 +112,10 @@
                         let columns = 0;
                         columns++
                         html += `
-                            
-                            <td><%= user.Matricula %></td>
-                            <td><%= user.Correo_electronico %></td>
-                            <td><%= user.Beca_actual %></td> 
+                            <td>${user.Nombre}</td>
+                            <td>${user.Matricula}</td>
+                            <td>${user.Correo_electronico}</td>
+                            <td>${user.Beca_actual}</td> 
                             <td>
                                 <a href="http://localhost:2050/user/admin/crearDeuda" class="simple-btn">
                                     Crear Deuda
@@ -127,12 +127,12 @@
                                 </a>
                             </td>
 		            <td>
-				<a href="/user/admin/pagos_de_alumnos/historial/<%= user.Correo_electronico%>" class="simple-btn">
+				<a href="/user/admin/pagos_de_alumnos/historial/${user.Correo_electronico}" class="simple-btn">
                                     Historial de pagos
                                 </a>
 			    </td>
-                           </tr>
-                        <% } %>      
+                           </tr>`
+                        }     
                     html += ` 
                     </table>
                     </div>
@@ -151,4 +151,4 @@
         </script>
 
     </body>
-</html>
+</html>`

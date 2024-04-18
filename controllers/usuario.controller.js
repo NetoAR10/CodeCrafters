@@ -74,6 +74,7 @@ exports.get_home = (request, response, next) => {
     )
     .catch(error => {
         console.log(error)
+
     })
 }
 
