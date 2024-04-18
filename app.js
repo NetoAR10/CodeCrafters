@@ -10,8 +10,6 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const multer = require('multer');
 
-const csvRoutes = require('./routes/csv.routes');
-const canUploadCsvMiddleware = require('./util/can-upload-csv.js'); // Asegúrate de tener este archivo en la ruta correcta
 
 // Configuración de la sesión
 app.use(session({
@@ -34,6 +32,9 @@ app.use((request, response, next) => {
 });
 
 // Rutas
+const csvRoutes = require('./routes/csv.routes');
+app.use('/csv', csvRoutes);
+
 const rutasAlumno = require('./routes/alumno.routes');
 app.use('/user/alumno', rutasAlumno);
 
@@ -55,10 +56,7 @@ const storage = multer.diskStorage({
         cb(null, new Date().toISOString().replace(/:/g, '-') + '-' + file.originalname);
     }
 });
-const upload = multer({ storage: storage });
 
-// Incluir el middleware de subida de CSV antes de tus rutas de CSV
-app.use('/csv', canUploadCsvMiddleware, upload.single('file'), csvRoutes);
 
 // Manejo de errores de 404
 app.use((request, response, next) => {
