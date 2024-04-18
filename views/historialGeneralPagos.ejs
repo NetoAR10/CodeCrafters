@@ -1,3 +1,5 @@
+<%- include('includes/sidebar.ejs') %>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,39 +11,36 @@
     <div class="page_content">
         <h1>Historial de Pagos General</h1>
         <table id="USUARIOS">
-           <thead>
-              <tr>
-                  <th>Nombre</th>
-                  <th>Matrícula</th>
-                  <th>Cantidad Pagada</th>
-                  <th>Fecha de Pago</th>
-                  <th>Método</th>
-                  <th>Banco</th>
-                  <th>Nota</th>
-                  <th>Prórroga</th>
-             </tr>
-         </thead>
-         <tbody>
-             <% pagos.forEach(function(pago) { %>
-                 <tr>
-                     <td><%= pago.Nombre %></td>
-                     <td><%= pago.Matricula %></td>
-                     <td><%= Number(pago.Cant_pagada).toFixed(2) %></td>
-		     <% 
-                     let date = new Date(pago.Fecha_de_pago);
-                     let day = ('0' + date.getDate()).slice(-2);
-                     let month = ('0' + (date.getMonth() + 1)).slice(-2);
-                     let year = date.getFullYear();
-                     %>
-		     <td><%= `${day}/${month}/${year}` %></td>
-		     <td><%= pago.Metodo %></td>
-                     <td><%= pago.Banco %></td>
-                     <td><%= pago.Nota %></td>
-                     <td><%= pago.Prorroga %></td>
-                 </tr>
-             <% }); %>
-         </tbody>
-     </table>
-   </div>
+            <thead>
+                <tr>
+                    <th>Pago</th>
+		    <th>Porcentaje Pagado</th>
+                    <th>Referencia</th>
+                    <th>Nombre</th>
+                    <th>Fecha de Pago</th>
+                    <th>Cantidad Pagada</th>
+                    <th>Método</th>
+                    <th>Banco</th>
+                    <th>Nota</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% pagos.forEach(function(pago) { %>
+                    <tr>
+                        <td><%= pago.Mes %></td>
+			<td><%= (pago.PorcentajePagado * 100).toFixed(2) %>%</td>
+                        <td><%= pago.Referencia %></td>
+                        <td><%= pago.Nombre %></td>
+                        <td><%= pago.Fecha_de_pago.toISOString().slice(0, 10) %></td>
+                        <td><%= pago.Cant_pagada.toFixed(2) %></td>
+                        <td><%= pago.Metodo %></td>
+                        <td><%= pago.Banco %></td>
+                        <td><%= pago.Nota %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
+

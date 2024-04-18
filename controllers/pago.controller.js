@@ -2,37 +2,37 @@ const PDFDocument = require('pdfkit');
 const db = require('../util/database');
 const Usuario = require('../models/usuario.model');
 
-exports.get_attributes = (request, response, next) => {
-  Usuario.fetch(request.params.correo)
-    .then(([users, fieldData]) => {
-            response.render('historialPago', {
-                usuariosDB: users,
-                correo: request.session.correo || '',
-                permisos: request.session.permisos || [],
-                rol: request.session.roles || '',
-                nombre: request.session.nombre || '',
-            });
+// exports.get_attributes = (request, response, next) => {
+//   Usuario.fetch(request.params.correo)
+//     .then(([users, fieldData]) => {
+//             response.render('historialPago', {
+                
+//             });
 
-        }
-    )
-    .catch(error => {
-        console.log(error)
-    })
-}
+//         }
+//     )
+//     .catch(error => {
+//         console.log(error)
+//     })
+// }
 
-exports.getPaymentHistory = (req, res) => {
-  const userID = req.params.userID; 
-  db.execute('SELECT * FROM Pago WHERE IDUsuario = ?', [userID])
+exports.getPaymentHistory = (request, response, next) => {
+  const userID = request.params.userID; 
+  db.execute(`SELECT * FROM Pago P, Usuario U WHERE P.IDUsuario = U.IDUsuario AND U.IDUsuario = ?`, [userID])
     .then(([rows]) => {
-      res.render('historialPago', { 
+      response.render('historialPago', { 
         pageTitle: 'Historial de Pagos',
         payments: rows,
-        userID: userID
+        userID: userID,
+        correo: request.session.correo || '',
+        permisos: request.session.permisos || [],
+        rol: request.session.roles || '',
+        nombre: request.session.nombre || '',
       });
     })
     .catch(err => {
       console.error('Error al obtener el historial de pagos:', err);
-      res.status(500).send('Error al obtener el historial de pagos');
+      response.status(500).send('Error al obtener el historial de pagos');
     });
 };
 
