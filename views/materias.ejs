@@ -1,66 +1,48 @@
-
-<% let name = 'Neto'%>
-<% const costoCredito = 530 %>
-<% let totalCreditos = 0 %>
-<% let listaMaterias = [ 
-    { nombre: "Física", creditos: 17.5, maestro: "Laura Gómez", horario: "Martes 11-13", semestre: 2 },
-    { nombre: "Química", creditos: 15, maestro: "Carlos Martínez", horario: "Miércoles 9-11", semestre: 2 },
-    { nombre: "Historia", creditos: 21, maestro: "María López", horario: "Jueves 12-14", semestre: 1 },
-    { nombre: "Español", creditos: 15, maestro: "Pepito Perez", horario: "Viernes 14-16", semestre: 2 },
-    { nombre: "Matemáticas", creditos: 21, maestro: "Juan Pérez", horario: "Lunes 10-12", semestre: 1 },
-    { nombre: "Inglés", creditos: 17.5, maestro: "Juan Valdez", horario: "Sábado 16-18", semestre: 1 },
-]; %>
-
-<% listaMaterias.forEach(materia => { totalCreditos += materia.creditos; }); %>
-<% let totalPago = totalCreditos * costoCredito; %>
-
-
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="es">
     <head>
-        <meta charset = "UTF-8">
+        <meta charset="UTF-8">
         <meta name = "viewport" content="width-device-width, initial-scale=1.0">
-        <title>Portal de Pago</title>
+        <title>Materias</title>
         <link rel="stylesheet" href="/css/stylesb.css">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     </head>
     <body>
         <div class="page_content">
-            <h1>Materias asignadas para <%= name %>.</h1>
-            <h4>Materias para el ciclo.</h4>
-
-            <% if (listaMaterias.length < 1) { %>
-                <div class="notification is-info">
-                    <button class="delete"></button>
-                    No hay materias registradas. Contacte al portal administrador.           
-                </div>
-            <% } %>
-
+            <h1>Materias</h1>
+            <% const costoCredito = 530; %>
+            <% let totalCreditos = 0; %>
+            <% cursos.forEach(function(curso) { %>
+                <% totalCreditos += parseFloat(curso.creditos); %>
+            <% }); %>
+            <% let costoTotal = totalCreditos * costoCredito; %>
+            
             <form action="/user/alumno/materias" method="POST">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <% let i = 1 %>
-                <% for (let materia of listaMaterias) { %>
-                    <div class="page_items">
-                        <div class="item">
-                            <%= materia.nombre %>
-                            <br><h6><div class="materiaCheckbox" value="<%=materia.creditos%>">
-                                Créditos: <%= materia.creditos %> | Costo: $<%=(costoCredito * materia.creditos) %>
-                            | Maestro: <%= materia.maestro %> | Horario: <%= materia.horario %> | Semestre: <%= materia.semestre %></h6>
-                            
-                        </div>
-                    </div>
-                    <% i += 1 %>
-                <% } %>
+                <% if (cursos.length > 0) { %>
+                        <% cursos.forEach(function(curso) { %>
+                            <div class="page_items">
+                                <div class="item">
+                                    <%= curso.nombreMat %>
+                                    <br><h4><div class="materiaCheckbox"></div>
+                                        Créditos: <%= curso.creditos %> | Costo: $<%= (costoCredito * curso.creditos) %>
+                                        | Maestro: <%= curso.nombreProfe %> | Semestre: <%= curso.semestre %> | ID: <%= curso.idMateria %></h4>
+                                </div>
+                            </div>
+                        <% }); %>
 
-                <br><h4>Total de créditos: <span id="totalCreditos"><%= totalCreditos.toFixed(1) %></span></h4>
-                <br><h4>Total a pagar: $<span id="totalPago"><%= totalPago.toFixed(2) %></span></h4>
-                <br><input type="submit" value="Confirmar materias" class="btn2" id="confirmar"></input>
+                    <br><h4>Total de Créditos: <%= totalCreditos %></h4>
+                    <br><h4>Costo Total: $<%= costoTotal.toFixed(2) %></h4>
+                    <br><input type="submit" value="Confirmar materias" class="btn2" id="confirmar"></input>
+                <% } else { %>
+                    <p>No hay materias disponibles.</p>
+                <% } %>
             </form>
             <form action="/user/alumno/contactar_admin" method="POST" style="margin-top: 40px;">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <h5>Si requiere cambios, da click en el botón de pedir cambios.</h5>
                 <input type="submit" value="Pedir cambios" class="btn2" style="margin-top: 20px;">
             </form>
-        </div>
+        </div>     
     </body>
 </html>
