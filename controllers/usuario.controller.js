@@ -33,6 +33,7 @@ exports.post_login = (request, response, next) => {
                         request.session.correo = user.Correo_electronico;
                         request.session.nombre = user.Nombre; 
                         request.session.roles = rol.Tipo_Rol;
+                        request.session.matricula = user.Matricula;
                         console.log('Correo:', user.Correo_electronico)
                         console.log('Rol: ', rol.Tipo_Rol)
                         return request.session.save(err => {

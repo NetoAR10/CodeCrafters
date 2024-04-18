@@ -1,9 +1,14 @@
 const materia = require('../models/materias.model');
 const adminClient = require('../util/api_clients/adminApiClient');
+const db = require('../util/database');
 
 exports.get_materias = async (request, response, next) => {
+    // TODO sacar matricula de usuario actual
+    matricula = await materia.fetchMatricula(request.session.correo)
+    mat = matricula[0][0].matricula;
+    // TODO sacar ciclo escolar EXT de mi db
     try {
-        const userGroups = await adminClient.getUserGroups(13, 100008);
+        const userGroups = await adminClient.getUserGroups(13, mat); 
         if (!userGroups || !userGroups.data) {
             throw new Error('No existen user groups para ese usuario.');
         }
@@ -71,13 +76,22 @@ exports.post_materias = async (request, response, next) => {
         }
 
         for (let curso of cursos) {
-            let nuevo_curso = new materia(
-                curso.nombreMat,
-                curso.creditos,  
-                curso.idMateria
-            );
-            //console.log(nuevo_curso);
-            await nuevo_curso.save();
+            //buscar o insertar mi materia en db
+            IDMat = db.execute(
+                `SELECT IDMateria FROM materias WHERE IDMateriaEXT = ?`,
+                [curso.idMateria]
+            )
+            if(IDMat === null){
+                let nuevo_curso = new materia(
+                    curso.nombreMat,
+                    curso.creditos,  
+                    curso.idMateria
+                );
+                //console.log(nuevo_curso);
+                IDMat = await nuevo_curso.save(); 
+            }
+            //ahora insertar a pertenece 
+            
         }
 
         response.redirect('/');
@@ -86,9 +100,6 @@ exports.post_materias = async (request, response, next) => {
         response.status(500).send('Error al mandar datos');
     }
 };
-
-
-
 
 exports.post_contactar_admin = async (request, response, next) => {
     response.render('contactar_admin');

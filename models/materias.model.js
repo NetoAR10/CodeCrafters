@@ -34,6 +34,24 @@ module.exports = class materia {
         }
     }
 
+    static fetchMatricula(correo) {
+        return db.execute(
+            'SELECT matricula FROM usuario WHERE Correo_electronico=?',
+            [correo]
+        );
+    }
+
+    static fecthCicloEscolar(correo) {
+        return db.execute(
+            `SELECT C.ciclo, C.IDCicloEXT, C.ciclo_Activo, C.Precio_credito, P.Beca
+            FROM cicloescolar C, pertenece 	p, usuario U
+            WHERE C.IDCiclo = P.IDCiclo AND U.IDUsuario = P.IDUsuario
+            AND U.Correo_electronico = '?' `
+            [correo]
+        );
+    }
+
+
     static fetchAllMateriasAlumno(materia) {
         return db.execute(
             `SELECT U.Nombre, U.Matricula, M.Nombre_mat
