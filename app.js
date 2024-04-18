@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors'); // Asegúrate de instalar CORS con `npm install cors`
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -8,6 +9,9 @@ const session = require('express-session');
 const csrf = require('csurf');
 const bodyParser = require('body-parser');
 const path = require('path');
+
+// Configuración de CORS para permitir todos los orígenes
+app.use(cors());
 
 // Configuración de la sesión
 app.use(session({
@@ -20,13 +24,12 @@ app.use(session({
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-
 app.use(express.static(path.join(__dirname, 'public')));
 const csrfProtection = csrf();
 app.use(csrfProtection);
 
 app.use((request, response, next) => {
-    response.locals.csrfToken = request.csrfToken(); 
+    response.locals.csrfToken = request.csrfToken();
     next();
 });
 
@@ -40,7 +43,7 @@ app.use('/user/alumno', rutasAlumno);
 const rutasAdmin = require('./routes/admin.routes');
 app.use('/user/admin', rutasAdmin);
 
-const rutasPago = require('./routes/pago.routes'); 
+const rutasPago = require('./routes/pago.routes');
 app.use('/pagos', rutasPago);
 
 const rutasUsuario = require('./routes/usuario.routes');
@@ -48,7 +51,6 @@ app.use('/user', rutasUsuario);
 
 const rutasHome = require('./routes/home.routes');
 app.use('/', rutasHome);
-
 
 // Manejo de errores de 404
 app.use((request, response, next) => {

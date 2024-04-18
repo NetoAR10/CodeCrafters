@@ -12,33 +12,38 @@
     <canvas id="paymentChart"></canvas>
   </div>
   <script>
-    const fetchReportData = async () => {
-      const response = await fetch('/api/reports?startDate=2022-01-01&endDate=2022-12-31');
-      const data = await response.json();
-      const ctx = document.getElementById('paymentChart').getContext('2d');
-      const paymentChart = new Chart(ctx, {
-        type: 'line', // Change the type as needed, e.g., 'bar', 'line'
-        data: {
-          labels: data.map(item => new Date(item.date).toLocaleDateString()),
-          datasets: [{
-            label: 'Amount Collected',
-            data: data.map(item => item.amount),
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const response = await fetch('/api/reports');
+        if (!response.ok) {
+          throw new Error('Network response was not ok: ' + response.statusText);
+        }
+        const data = await response.json();
+        const ctx = document.getElementById('paymentChart').getContext('2d');
+        const paymentChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: data.map(item => item.date),
+            datasets: [{
+              label: 'Amount Collected',
+              data: data.map(item => item.amount),
+              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
             }
           }
-        }
-      });
-    };
-
-    document.addEventListener('DOMContentLoaded', fetchReportData);
+        });
+      } catch (error) {
+        console.error('Failed to fetch data: ', error);
+      }
+    });
   </script>
 </body>
 </html>
