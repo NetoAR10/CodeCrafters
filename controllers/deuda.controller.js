@@ -10,7 +10,7 @@ exports.postCrearDeuda = async (req, res, next) => {
 	const { IDUsuario, Total_deuda, Plan_pago, Concepto, Mes } = req.body;
 	const nuevaDeuda = new deuda(IDUsuario, Total_deuda, Plan_pago, Concepto, Mes);
 	nuevaDeuda.save()
-        res.send('Deuda creada con éxito.');
+        res.redirect('deudas/lista');
      }catch (err){
 	console.log(err);
 	res.status(500).send('Error al registrar el pago.');
@@ -21,8 +21,8 @@ exports.postCrearDeuda = async (req, res, next) => {
 
 exports.getDeudas = async (req, res, next) => {
     try {
-	const [rows] = await Deuda.fetchAll();
-	res.render('listaDeudas', {pagos:rows});
+	const [rows] = await deuda.fetchAll();
+	res.render('listaDeudas', {deudas:rows});
      }catch (err) {
 	console.log(err);
 	res.status(500).send('Error al obtener la lista de pagos.');

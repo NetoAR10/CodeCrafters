@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width-device-width, initial-scale=1.0">
     <title>Registrar Pago</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
     <link rel="stylesheet" href="/css/stylesb.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
@@ -14,24 +13,24 @@
           <form action="/user/admin/registrarPago" method="POST"> 
           <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
 
-	  <label for="IDUsuario">Alumno:</label>
+	    <label for="Matricula">Matrícula:</label>
             <div class="input-box">
-                <input type="number" name="IDUsuario" placeholder="120" required>
+                <input type="number" name="Matricula" placeholder="Ejemplo: 123456" required>
             </div>
 
 	    <label for="IDDueda ">Total deuda:</label>
             <div class="input-box">
-                <input type="number" name="IDDeuda" placeholder="123" required>
+                <input type="number" name="Total_deuda" placeholder="1500" step="0.01" required>
             </div>
 
 	    <label for="Cantidad pagada">Cantidad pagada:</label>
             <div class="input-box">
-                <input type="text" name="Cant_pagada" placeholder="1545" required>
+                <input type="number" name="Cant_pagada" placeholder="1545" step="0.01" required>
             </div>
 
 	    <label for="Fecha de pago">Fecha de pago:</label> 
             <div class="input-box">
-                <input type="text" name="Fecha_de_pago" placeholder="2024-04-04" onfocus="(this.type='datetime')" required>
+                <input type="date" name="Fecha_de_pago" placeholder="2024-04-04" required>
             </div>
 
 	    <label for="Método">Método de pago:</label>
@@ -51,11 +50,13 @@
 
 	    <label for="Prórroga">Prórroga:</label>
             <div class="input-box">
-                <input type="text" name="Prorroga" placeholder="Prórroga" onfocus="(this.type='datetime')">
+                <input type="date"
+		 name="Prorroga" placeholder="Prórroga">
             </div>
 
             <div class="space"></div>
             <button type="submit" class="btn">Registrar</button>
+	    <button type="button" onclick="window.location.href='http://localhost:2050/'" class="btn">Cancelar</button>
         </form>
     </div>
 </body>

@@ -1,29 +1,27 @@
 const pago = require('../models/rPago.model');
 
-exports.getRegistrarPago = (req, res, next) => {
-    res.render('registrarPago', { csrfToken: req.csrfToken() });
+exports.getRegistrarPago = (request, response, next) => {
+    response.render('registrarPago', { csrfToken: request.csrfToken() });
 };
 
-exports.postRegistrarPago = async (req, res, next) => {
-    console.log(req.body);
+exports.postRegistrarPago = async (request, response, next) => {
     try {
-        const { IDUsuario, IDDeuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota, Prorroga } = req.body;
-        const nuevoPago = new pago(IDUsuario, IDDeuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota, Prorroga);
+        const { Matricula, Total_deuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota, Prorroga } = request.body;
+        const nuevoPago = new pago(Matricula, Total_deuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota, Prorroga);
         await nuevoPago.save();
-        res.send('Pago registrado con éxito.');
+        response.redirect('pagos/lista');
     } catch (err) {
         console.log(err);
-        res.status(500).send('Error al registrar el pago.');
-	csrfToken: request.csrfToken();    
+        response.status(500).send('Error al registrar el pago.');
     }
 };
 
-exports.getPagos = async (req, res, next) => {
+exports.getPagos = async (request, response, next) => {
     try {
-        const [rows] = await Pago.fetchAll();
-        res.render('listaPagos', { pagos: rows });
+        const [rows] = await pago.fetchAll();
+        response.render('listaPagos', { pagos: rows });
     } catch (err) {
         console.log(err);
-        res.status(500).send('Error al obtener la lista de pagos.');
+        response.status(500).send('Error al obtener la lista de pagos.');
     }
 };
