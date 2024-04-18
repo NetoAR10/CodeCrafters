@@ -1,128 +1,112 @@
-<%- include ('headsb.ejs', {
+<%- include('headsb.ejs', {
     correo: correo,
     permisos: permisos,
     rol: rol,
     nombre: nombre
-})%>
-    <body>
-        <div class="sidebar">
-            <div class="logo_content">
-                <div class="logo">
-                    <img src="/viadisenologo2.png" alt="">
-                    
-                </div>
-                <i class='bx bx-menu' id="btn"></i>
-                </div>
-                <ul class="nav_list">
+}) %>
+<body>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <img src="/viadisenologo2.png" alt="">
+            </div>
+            <i class='bx bx-menu' id="btn"></i>
+        </div>
+        <ul class="nav_list">
+            <li>
+                <a href="/">
+                    <i class='bx bxs-grid-alt'></i>
+                    <span class="links_name">Tablero</span>
+                </a>
+                <span class="tooltip">Tablero</span>
+            </li>
+
+            <li>
+                <a href="/pagos/historial_pagos/123">
+                    <i class='bx bx-objects-horizontal-left'></i>
+                    <span class="links_name">Historial de Pago</span>
+                </a>
+                <span class="tooltip">Historial</span>
+            </li>
+
+            <% let csvButtonAdded = false; %>
+            <% for (let permiso of permisos) { %>
+                <% if (permiso.Actividades == 'modificar usuario') { %>
                     <li>
-                        <a href="/">
-                            <i class='bx bxs-grid-alt' ></i>
-                            <span class="links_name">Tablero</span>
+                        <a href="/user/admin/usuarios">
+                            <i class='bx bxs-user-rectangle'></i>
+                            <span class="links_name">Usuarios</span>
                         </a>
-                        <span class="tooltip">Tablero</span>
+                        <span class="tooltip">Usuarios</span>
                     </li>
-
+                <% } %>
+                <% if (permiso.Actividades == 'generar ficha') { %>
                     <li>
-                        <a href="/pagos/historial_pagos/123">
-                            <i class='bx bx-objects-horizontal-left'></i>
-                            <span class="links_name">Historial de Pago</span>
+                        <a href="/user/alumno/materias">
+                            <i class='bx bx-book-open'></i>
+                            <span class="links_name">Materias</span>
                         </a>
-                        <span class="tooltip">Historial</span>
+                        <span class="tooltip">Materias</span>
                     </li>
-                    <% for (let permiso of permisos) {%>
-                        <% if (permiso.Actividades == 'modificar usuario') { %>
-
-                            <li>
-                                <a href="/user/admin/usuarios">
-                                    <i class='bx bxs-user-rectangle'></i>
-                                    <span class="links_name">Usuarios</span>
-                                </a>
-                                <span class="tooltip">Usuarios</span>
-                            </li>
-
-                        <% } %>
-                        <% if (permiso.Actividades == 'generar ficha') { %>
-
-                            <li>
-                                <a href="/user/alumno/materias">
-                                    <i class='bx bx-book-open' ></i>
-                                    <span class="links_name">Materias</span>
-                                </a>
-                                <span class="tooltip">Materias</span>
-                            </li>
-
-                        <% } %>
-                        <% if (permiso.Actividades == 'registrar pago') { %>
-
-                            <li>
-                                <a href="/user/admin/registrarPago">
-                                    <i class='bx bx-money-withdraw'></i>
-                                    <span class="links_name">Pagos</span>
-                                </a>
-                                <span class="tooltip">Pagos</span>
-                            </li>
-
-                        <% } %>
-                        <% if (permiso.Actividades == 'ver historial todos') { %>
-
-                            <li>
-                                <a href="#"">
-                                    <i class='bx bxs-bank'></i>
-                                    <span class="links_name">Historial General</span>
-                                </a>
-                                <span class="tooltip">H. General</span>
-                            </li>
-
-                        <% } %>
-                        <% if (permisos.some(permiso => permiso.Actividades == 'cargar csv')) { %>
-                            <li>
-                                <a href="/csv/upload">
-                                    <i class='bx bx-upload'></i>
-                                    <span class="links_name">Cargar CSV</span>
-                                </a>
-                                <span class="tooltip">Cargar CSV</span>
-                            </li>
-                        <% } %>
-                        
-                    <% } %>
+                <% } %>
+                <% if (permiso.Actividades == 'registrar pago') { %>
+                    <li>
+                        <a href="/user/admin/registrarPago">
+                            <i class='bx bx-money-withdraw'></i>
+                            <span class="links_name">Pagos</span>
+                        </a>
+                        <span class="tooltip">Pagos</span>
+                    </li>
+                <% } %>
+                <% if (permiso.Actividades == 'ver historial todos') { %>
                     <li>
                         <a href="#">
-                            <i class='bx bxs-cog' ></i>
-                            <span class="links_name">Configuración</span>
+                            <i class='bx bxs-bank'></i>
+                            <span class="links_name">Historial General</span>
                         </a>
-                        <span class="tooltip">Configuración</span>
+                        <span class="tooltip">H. General</span>
                     </li>
+                <% } %>
+                <% if (!csvButtonAdded && permiso.Actividades == 'cargar csv') { %>
+                    <li>
+                        <a href="/csv/upload">
+                            <i class='bx bx-upload'></i>
+                            <span class="links_name">Cargar CSV</span>
+                        </a>
+                        <span class="tooltip">Cargar CSV</span>
+                    </li>
+                    <% csvButtonAdded = true; %>
+                <% } %>
+            <% } %>
 
-                </ul>
+            <li>
+                <a href="#">
+                    <i class='bx bxs-cog'></i>
+                    <span class="links_name">Configuración</span>
+                </a>
+                <span class="tooltip">Configuración</span>
+            </li>
+        </ul>
 
-                
-                <div class="profile_content">
-                    <div class="profile">
-                        <div class="profile_details">
-                            <img src="/profile.png" alt="">
-                            <div class="name_role">
-                                <div class="name">
-                                        
-                                        <%= nombre %>
-                                        
-                                    </div>
-                                    <div class="role">
-                       
-                                            <%= rol %>
-            
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="/user/logout">
-                                <i class='bx bx-log-out' id="log_out"></i>
-                            </a>
+        <div class="profile_content">
+            <div class="profile">
+                <div class="profile_details">
+                    <img src="/profile.png" alt="">
+                    <div class="name_role">
+                        <div class="name">
+                            <%= nombre %>
                         </div>
-                        
+                        <div class="role">
+                            <%= rol %>
+                        </div>
                     </div>
-
+                </div>
+                <a href="/user/logout">
+                    <i class='bx bx-log-out' id="log_out"></i>
+                </a>
             </div>
-            
         </div>
+    </div>
 
-        <script src="/sidebar.js"></script>
-    
+    <script src="/sidebar.js"></script>
+</body>
