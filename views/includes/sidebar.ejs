@@ -22,13 +22,6 @@
                         <span class="tooltip">Tablero</span>
                     </li>
 
-                    <li>
-                        <a href="/pagos/historial_pagos/123">
-                            <i class='bx bx-objects-horizontal-left'></i>
-                            <span class="links_name">Historial de Pago</span>
-                        </a>
-                        <span class="tooltip">Historial</span>
-                    </li>
                     <% for (let permiso of permisos) {%>
                         <% if (permiso.Actividades == 'modificar usuario') { %>
 
@@ -57,9 +50,9 @@
                             <li>
                                 <a href="/user/admin/registrarPago">
                                     <i class='bx bx-money-withdraw'></i>
-                                    <span class="links_name">Pagos</span>
+                                    <span class="links_name">Registrar Pago</span>
                                 </a>
-                                <span class="tooltip">Pagos</span>
+                                <span class="tooltip">R. Pago</span>
                             </li>
 
                         <% } %>
@@ -68,13 +61,22 @@
                             <li>
                                 <a href="/user/admin/pagos_de_alumnos"">
                                     <i class='bx bxs-bank'></i>
-                                    <span class="links_name">Pagos de Alumnos</span>
+                                    <span class="links_name">Historial Alumnos</span>
                                 </a>
-                                <span class="tooltip">Pagos A.</span>
+                                <span class="tooltip">H. Alumnos</span>
                             </li>
 
                         <% } %>
                     <% } %>
+
+                    <li>
+                        <a href="/user/admin/historial-pagos-general"">
+                            <i class='bx bxs-bank'></i>
+                            <span class="links_name">Historial General</span>
+                        </a>
+                        <span class="tooltip">H. General</span>
+                    </li>
+                            
                     <li>
                         <a href="#">
                             <i class='bx bxs-cog' ></i>

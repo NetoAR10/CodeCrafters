@@ -1,7 +1,13 @@
 const pago = require('../models/rPago.model');
 
 exports.getRegistrarPago = (request, response, next) => {
-    response.render('registrarPago', { csrfToken: request.csrfToken() });
+    response.render('registrarPago', { 
+        csrfToken: request.csrfToken(),
+        correo: request.session.correo,
+        permisos: request.session.permisos,
+        rol: request.session.roles,
+        nombre: request.session.nombre,
+    });
 };
 
 exports.postRegistrarPago = async (request, response, next) => {

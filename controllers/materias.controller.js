@@ -31,7 +31,11 @@ exports.get_materias = async (request, response, next) => {
         console.log(cursos);
         return  response.render('materias', {
             csrfToken: request.csrfToken(),
-            userGroups: userGroups.data
+            userGroups: userGroups.data,
+            correo: request.session.correo,
+            permisos: request.session.permisos,
+            rol: request.session.roles,
+            nombre: request.session.nombre,
         });
     } catch (err) {
         console.log(err);
