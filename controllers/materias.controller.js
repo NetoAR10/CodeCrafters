@@ -1,4 +1,4 @@
-const materias = require('../models/materias.model');
+const materia = require('../models/materias.model');
 const adminClient = require('../util/api_clients/adminApiClient');
 
 exports.get_materias = async (request, response, next) => {
@@ -9,14 +9,13 @@ exports.get_materias = async (request, response, next) => {
         }
 
         const cursos = userGroups.data.map(userGroup => {
-            // Asumimos que cada userGroup tiene una estructura definida y correcta
             const {
                 course = {},
                 professor = {}
             } = userGroup;
 
             const {
-                id = 13, // valor predeterminado si no se encuentra
+                id = 13,
                 name = '',
                 credits = ''
             } = course;
@@ -36,7 +35,7 @@ exports.get_materias = async (request, response, next) => {
             };
         });
 
-        console.log(cursos);
+        //console.log(cursos);
         response.render('materias', {
             csrfToken: request.csrfToken(),
             userGroups: userGroups.data,
@@ -53,13 +52,43 @@ exports.get_materias = async (request, response, next) => {
 
 exports.post_materias = async (request, response, next) => {
     try {
-        response.alert('exito')
+        const cursos = [];
+        const cursoKeys = Object.keys(request.body);
+        cursoKeys.forEach(key => {
+            const match = key.match(/^cursos\[(\d+)\]\[(.+)\]$/);
+            if (match) {
+                const index = parseInt(match[1]);
+                const prop = match[2];
+                if (!cursos[index]) cursos[index] = {};
+                cursos[index][prop] = request.body[key];
+            }
+        });
+
+        //console.log(cursos);
+
+        if (!cursos.length) {
+            throw new Error('No se recibieron datos de cursos o el formato no es correcto.');
+        }
+
+        for (let curso of cursos) {
+            let nuevo_curso = new materia(
+                curso.nombreMat,
+                curso.creditos,  
+                curso.idMateria
+            );
+            //console.log(nuevo_curso);
+            await nuevo_curso.save();
+        }
+
+        response.redirect('/');
     } catch (err) {
-        console.log(err);
-        response.status(500).send('error al mandar datos');
-        csrfToken: request.csrfToken();
+        console.error('Error al guardar los cursos:', err);
+        response.status(500).send('Error al mandar datos');
     }
 };
+
+
+
 
 exports.post_contactar_admin = async (request, response, next) => {
     response.render('contactar_admin');
