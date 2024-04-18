@@ -56,7 +56,11 @@ module.exports = class ListaUsuario {
         WHERE usuario.Correo_electronico = ?;`,
         [Correo_electronico]
     );
+
+
 }
+
+
 
 
 

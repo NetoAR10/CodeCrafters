@@ -51,3 +51,11 @@ exports.post_reactivar = (request, response, next) => {
     })
     .catch((error) => {console.log(error)});
 }
+
+// exports.get_modificarRol(request, response, next){
+//     ListaUsuario.getVariosRol()
+//     .then(([usuariosDB, fieldData]) => {
+//         return response.status(200).json({usuariosDB: usuariosDB})
+//     })
+//     .catch((error) => {console.log(error)})
+// }
