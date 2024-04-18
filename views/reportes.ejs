@@ -5,31 +5,170 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reportes de Pago</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    canvas {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
 </head>
 <body>
   <h1>Reporte de Pagos</h1>
   <div style="width: 80%; margin: auto;">
-    <canvas id="paymentChart"></canvas>
+    <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+      <div style="width: 48%; margin-bottom: 20px;">
+        <canvas id="lineChart"></canvas>
+      </div>
+      <div style="width: 48%; margin-bottom: 20px;">
+        <canvas id="barChart"></canvas>
+      </div>
+      <div style="width: 48%; margin-bottom: 20px;">
+        <canvas id="doughnutChart"></canvas>
+      </div>
+      <div style="width: 48%; margin-bottom: 20px;">
+        <canvas id="radarChart"></canvas>
+      </div>
+      <div style="width: 48%; margin-bottom: 20px;">
+        <canvas id="polarAreaChart"></canvas>
+      </div>
+      <div style="width: 48%; margin-bottom: 20px;">
+        <canvas id="bubbleChart"></canvas>
+      </div>
+    </div>
   </div>
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       try {
-        const response = await fetch('/api/reports');
+        const response = await fetch('/reportes/api/reports');
         if (!response.ok) {
           throw new Error('Network response was not ok: ' + response.statusText);
         }
         const data = await response.json();
-        const ctx = document.getElementById('paymentChart').getContext('2d');
-        const paymentChart = new Chart(ctx, {
+
+        // Configuración del gráfico de líneas
+        const lineCtx = document.getElementById('lineChart').getContext('2d');
+        const lineChart = new Chart(lineCtx, {
           type: 'line',
           data: {
             labels: data.map(item => item.date),
             datasets: [{
-              label: 'Amount Collected',
+              label: 'Cantidad Recaudada',
               data: data.map(item => item.amount),
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+            }]
+          }
+        });
+
+        // Configuración del gráfico de barras
+        const barCtx = document.getElementById('barChart').getContext('2d');
+        const barChart = new Chart(barCtx, {
+          type: 'bar',
+          data: {
+            labels: data.map(item => item.date),
+            datasets: [{
+              label: 'Cantidad Pagada',
+              data: data.map(item => item.amountPaid),
+              backgroundColor: 'rgba(54, 162, 235, 0.2)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1
+            }]
+          }
+        });
+
+        // Configuración del gráfico de dona
+        const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
+        const doughnutChart = new Chart(doughnutCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
+            datasets: [{
+              label: 'Distribución de Pagos',
+              data: [300, 50, 100, 200, 150, 250],
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+            }]
+          }
+        });
+
+        // Configuración del gráfico de radar
+        const radarCtx = document.getElementById('radarChart').getContext('2d');
+        const radarChart = new Chart(radarCtx, {
+          type: 'radar',
+          data: {
+            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
+            datasets: [{
+              label: 'Pago por Mes',
+              data: [65, 59, 90, 81, 56, 55],
               backgroundColor: 'rgba(255, 99, 132, 0.2)',
               borderColor: 'rgba(255, 99, 132, 1)',
-              borderWidth: 1
+              pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: 'rgba(255, 99, 132, 1)'
+            }]
+          },
+          options: {
+            elements: {
+              line: {
+                borderWidth: 3
+              }
+            }
+          }
+        });
+
+        // Configuración del gráfico de área polar
+        const polarAreaCtx = document.getElementById('polarAreaChart').getContext('2d');
+        const polarAreaChart = new Chart(polarAreaCtx, {
+          type: 'polarArea',
+          data: {
+            labels: ['Red', 'Green', 'Yellow', 'Grey', 'Blue'],
+            datasets: [{
+              data: [11, 16, 7, 3, 14],
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(255, 206, 86, 0.5)',
+                'rgba(201, 203, 207, 0.5)',
+                'rgba(54, 162, 235, 0.5)'
+              ]
+            }]
+          }
+        });
+
+        // Configuración del gráfico de burbuja
+        const bubbleCtx = document.getElementById('bubbleChart').getContext('2d');
+        const bubbleChart = new Chart(bubbleCtx, {
+          type: 'bubble',
+          data: {
+            datasets: [{
+              label: 'Primer Conjunto',
+              data: [{
+                x: 20,
+                y: 30,
+                r: 15
+              }, {
+                x: 40,
+                y: 10,
+                r: 10
+              }],
+              backgroundColor: 'rgb(255, 99, 132)'
             }]
           },
           options: {
@@ -40,6 +179,7 @@
             }
           }
         });
+
       } catch (error) {
         console.error('Failed to fetch data: ', error);
       }
