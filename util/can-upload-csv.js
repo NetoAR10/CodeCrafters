@@ -1,7 +1,14 @@
+
 module.exports = (req, res, next) => {
-    if (req.session.user && req.session.user.role === 'admin') {
-        next();
+    console.log(req.session.user); 
+
+    if (req.session.user) {
+        if (req.session.user.role === 'Administrador') {
+            next(); 
+        } else {
+            res.status(403).send('Acceso denegado. Solo los administradores pueden acceder a esta función.');
+        }
     } else {
-        res.status(403).send('Acceso denegado. Necesitas privilegios de administrador para acceder a esta función.');
+        res.status(403).send('Acceso denegado. Debes iniciar sesión para acceder a esta función.');
     }
 };
