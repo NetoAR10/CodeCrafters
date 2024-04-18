@@ -7,8 +7,8 @@ exports.getCrearDeuda = (req, res, next) => {
 exports.postCrearDeuda = async (req, res, next) => {
     console.log(req.body);
     try {
-	const { IDUsuario, Total_deuda, Plan_pago, Concepto, Mes } = req.body;
-	const nuevaDeuda = new deuda(IDUsuario, Total_deuda, Plan_pago, Concepto, Mes);
+	const { Matricula, Total_deuda, Plan_pago, Concepto, Mes } = req.body;
+	const nuevaDeuda = new deuda(Matricula, Total_deuda, Plan_pago, Concepto, Mes);
 	nuevaDeuda.save()
         res.redirect('deudas/lista');
      }catch (err){

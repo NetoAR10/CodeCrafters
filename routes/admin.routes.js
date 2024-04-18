@@ -6,7 +6,10 @@ const canResgisterCiclo = require('../util/can-register-ciclo');
 const listaUsuariosController = require('../controllers/lista_usuarios.controller');
 const pagoController = require('../controllers/rPago.controller');
 const deudaController = require('../controllers/Deuda.controller');
+const pagosDeAlumnosController = require('../controllers/pagos_de_alumnos.controller');
+const historialPagosGeneralController = require('../controllers/historialGeneralPagos.controller');
 const isActive = require('../util/is-active');
+const canViewHistorialTodos = require('../util/can-view-historial-todos');
 
 //Ciclo Escolar
 router.get('/ciclo_escolar', isAuth, canResgisterCiclo, isActive, cicloEscolarController.get_nuevo_ciclo);
@@ -22,10 +25,22 @@ router.post('/usuarios/reactivar', isAuth, isActive, listaUsuariosController.pos
 //Registrar Pago
 router.get('/registrarPago', isAuth, isActive, pagoController.getRegistrarPago);
 router.post('/registrarPago', isAuth, isActive, pagoController.postRegistrarPago);
+router.get('/pagos/lista', isAuth, isActive, pagoController.getPagos);
 
 //Crear Deuda
 router.get('/crearDeuda', isAuth, isActive, deudaController.getCrearDeuda);
 router.post('/crearDeuda', isAuth, isActive, deudaController.postCrearDeuda);
+router.get('/deudas/lista', isAuth, isActive, deudaController.getDeudas);
 
+//Pagos de Alumnos
+router.get('/pagos_de_alumnos', isAuth, isActive, pagosDeAlumnosController.get_listUsers);
+router.get('/pagos_de_alumnos/buscar/:valor_busqueda', isAuth, isActive, pagosDeAlumnosController.get_buscar);
+router.get('/pagos_de_alumnos/buscar', isAuth, isActive, pagosDeAlumnosController.get_buscar);
+router.post('/pagos_de_alumnos/desactivar', isAuth, isActive, pagosDeAlumnosController.post_desactivar);
+router.post('/pagos_de_alumnos/reactivar', isAuth, isActive, pagosDeAlumnosController.post_reactivar);
+router.get('/pagos_de_alumnos/historial/:id', isAuth, isActive, pagosDeAlumnosController.getHistorialDePagos);
+
+// Ruta para Historial de Pagos General
+router.get('/historial-pagos-general', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getHistorialPagosGeneral);
 
 module.exports = router;

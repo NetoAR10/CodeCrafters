@@ -1,0 +1,153 @@
+<%- include('includes/sidebar.ejs'), {
+    correo: correo,
+    permisos: permisos,
+    rol: rol,
+    nombre: nombre,
+    rolUser: rolUser,
+} %>
+    <body>
+        
+        <div class="page_content">
+            <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" >
+            
+            <div class="text">
+                <div class="title_usuarios">
+                    <h1>Usuarios</h1> 
+                </div>
+                <input id="buscar" class="buscar" type="text" placeholder="Buscar"/><br><br>
+                <div id="respuesta_ajax">
+                    <div class="tabla">
+                        <% if (usuariosDB.length < 1) { %>
+                            <div class="notification">
+                                No existe el usuario.            
+                            </div>
+                        <% } %>
+
+                        <table id="USUARIOS">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Matrícula</th>
+                                <th>Correo electrónico</th>
+                                <th>Beca</th>
+                                <th>Crear deuda</th>
+                                <th>Registrar Pago</th>
+                                <th>Historial de Pagos</th>
+                            </tr>
+                            <% for (let user of usuariosDB) {%>
+                                <% let columns = 0; %>
+                                <% columns++ %>
+                                
+                            <td><%= user.Nombre %></td>
+                            <td><%= user.Matricula %></td>
+                            <td><%= user.Correo_electronico %></td>
+                            <td><%= user.Beca_actual %></td> 
+                            <td>
+                                <a href="http://localhost:2050/user/admin/crearDeuda" class="simple-btn">
+                                    Crear Deuda
+                                </a>
+                            </td>
+                            <td>
+                                <a href="http://localhost:2050/user/admin/registrarPago" class="simple-btn">
+                                    Registrar Pago
+                                </a>
+                            </td>
+		            <td>
+				<a href="/pagos_de_alumnos/historial/<%= user.IDUsuario %>" class="simple-btn">
+                                    Historial de pagos
+                                </a>
+			    </td>
+                           </tr>
+                        <% } %>                            
+                            
+                          </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <script>
+            const accion_asincrona = () => {
+                console.log('Buscando...');
+                const valor_busqueda = document.getElementById('buscar').value;
+                //función que manda la petición asíncrona
+                fetch('/user/admin/usuarios/buscar/' + valor_busqueda, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }).then((result) => {
+                    console.log(result);
+                    return result.json(); //Regresa otra promesa
+                }).then((data) => {
+                    console.log(data);
+                    let html = '';
+                    
+                    
+                        
+                    html += `
+                        <div class="tabla">
+                    `
+                    
+                    if (data.usuariosDB.length < 1) {
+                        html += `
+                        <div class="notification">
+                            No existe el usuario.            
+                            </div>`
+                    }
+                    
+                    html += `
+                    <table id="USUARIOS">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Matrícula</th>
+                            <th>Correo electrónico</th>
+                            <th>Beca</th>
+                            <th>Rol</th>
+                            <th>¿Activo?</th>
+                            <th></th>
+                            </tr>`
+
+                        
+                        for (let user of data.usuariosDB) {
+                        let columns = 0;
+                        columns++
+                        html += `
+                            <tr class="${user.Alumno_activo == 0 ? 'inactiveStudent' : ''}">
+                                <td>${user.Nombre}</td>
+                                <td>${user.Matricula}</td>
+                                <td>${user.Correo_electronico}</td>
+                                <td>${user.Beca_actual}</td>
+                                <td>${user.Tipo_Rol}</td> 
+                                <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
+                                <td><button class="modifyuser" onclick="alert('Cambiar rol')">Modificar Usuario</button> 
+                                    <button class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
+                                        user.Alumno_activo === 1 
+                                        ? `onclick="desactivar('${user.Correo_electronico}')" `
+                                        : `onclick="reactivar('${user.Correo_electronico}')"`
+                                    }>
+                                        ${user.Alumno_activo === 1 ? "Desactivar Usuario" : "Reactivar Usuario"}
+                                    </button> </td>
+                                </tr></td>`
+                                
+                            }
+                            console.log('HTML2:', html)
+                    html += ` 
+                    </table>
+                    </div>
+                    </div>
+                    </div>
+                    `
+
+                                                            
+                document.getElementById('respuesta_ajax').innerHTML = html;
+                }).catch(err => {
+                    console.log(err);
+                });
+            };
+            document.getElementById('buscar').onkeyup = accion_asincrona;
+                    
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Pagos</title>
+    <link rel="stylesheet" href="/css/sidebar.css">
+</head>
+<body>
+    <div class="page_content">
+	<h1>LISTA DE DEUDAS</h1>
+        <table id="USUARIOS">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+		    <th>Matricula</th>
+                    <th>Total deuda</th>
+                    <th>Plan de pago</th>
+                    <th>Concepto</th>
+                    <th>Mes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% deudas.forEach(function(deuda) { %>
+                    <tr>
+                        <td><%= deuda.Nombre %></td>
+                        <td><%= deuda.Matricula %></td>
+                        <td><%= (Number(deuda.Total_deuda)).toFixed(2) %></td>
+                        <td><%= deuda.Plan_pago %></td>
+                        <td><%= deuda.Concepto %></td>
+                        <td><%= deuda.Mes %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
