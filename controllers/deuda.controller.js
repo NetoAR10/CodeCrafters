@@ -1,7 +1,13 @@
-const deuda = require('../models/Deuda.model');
+const deuda = require('../models/deuda.model');
 
-exports.getCrearDeuda = (req, res, next) => {
-    res.render('crearDeuda', { csfrToken: req.csrfToken() });
+exports.getCrearDeuda = (request, response, next) => {
+    response.render('crearDeuda', { 
+		csfrToken: request.csrfToken(),
+		nombre: request.session.nombre,
+		permisos: request.session.permisos,
+		correo: request.session.correo,
+		rol: request.session.roles,
+	});
 };
 
 exports.postCrearDeuda = async (req, res, next) => {
