@@ -71,13 +71,17 @@
         </tr>
       </thead>
       <tbody>
-        <% for (var i = 0; i < 10; i++) { %>
+        <% for (var i = 1; i <= 10; i++) { %>
           <tr>
-            <td><%= i + 1 %></td>
-            <td><%= Math.floor(Math.random() * 1000) %></td>
-            <td>$<%= (Math.random() * 1000).toFixed(2) %></td>
-            <td><%= new Date(new Date() - Math.floor(Math.random() * 10000000000)).toLocaleDateString() %></td>
-            <td><%= ['Tarjeta de crédito', 'PayPal', 'Transferencia bancaria'][Math.floor(Math.random() * 3)] %></td>
+            <td><%= i %></td> <!-- Mes -->
+            <td><%= (Math.random() * 100).toFixed(2) %>%</td> <!-- Porcentaje -->
+            <td>REF12345<%= i %></td> <!-- Referencia -->
+            <td>Nombre Cliente <%= i %></td> <!-- Nombre -->
+            <td><%= new Date(2024, i % 12, i).toLocaleDateString('es') %></td> <!-- Fecha -->
+            <td>$<%= (1000 + i * 123.45).toFixed(2) %></td> <!-- Monto -->
+            <td>Tarjeta de crédito</td> <!-- Método -->
+            <td>Banco <%= i %></td> <!-- Banco -->
+            <td>Nota sobre el pago <%= i %></td> <!-- Nota -->
           </tr>
         <% } %>
       </tbody>
