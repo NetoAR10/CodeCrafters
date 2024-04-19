@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-04-2024 a las 20:35:29
+-- Tiempo de generación: 18-04-2024 a las 21:15:26
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -137,43 +137,46 @@ CREATE TABLE `cicloescolar` (
   `Fecha_Inicio` date DEFAULT NULL,
   `Fecha_Fin` date DEFAULT NULL,
   `Ciclo_activo` tinyint(1) NOT NULL,
-  `Precio_credito` int(11) DEFAULT NULL
+  `Precio_credito` int(11) DEFAULT NULL,
+  `IDCicloEXT` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `cicloescolar`
 --
 
-INSERT INTO `cicloescolar` (`IDCiclo`, `Ciclo`, `Fecha_Inicio`, `Fecha_Fin`, `Ciclo_activo`, `Precio_credito`) VALUES
-(1, '2024-1', '2024-01-01', '2024-06-29', 1, 1249),
-(2, '2024-2', '2024-06-30', '2024-12-27', 0, 1177),
-(3, '2024-3', '2024-12-28', '2025-06-26', 1, 1481),
-(4, '2024-4', '2025-06-27', '2025-12-24', 0, 1816),
-(5, '2024-5', '2025-12-25', '2026-06-23', 1, 1178),
-(6, '2024-6', '2026-06-24', '2026-12-21', 0, 1664),
-(7, '2024-7', '2026-12-22', '2027-06-20', 1, 1356),
-(8, '2024-8', '2027-06-21', '2027-12-18', 0, 1089),
-(9, '2024-9', '2027-12-19', '2028-06-16', 1, 1170),
-(10, '2024-10', '2028-06-17', '2028-12-14', 0, 1204),
-(11, '2024-11', '2028-12-15', '2029-06-13', 1, 1782),
-(12, '2024-12', '2029-06-14', '2029-12-11', 0, 1621),
-(13, '2024-13', '2029-12-12', '2030-06-10', 1, 1208),
-(14, '2024-14', '2030-06-11', '2030-12-08', 0, 1775),
-(15, '2024-15', '2030-12-09', '2031-06-07', 1, 1958),
-(16, '2024-16', '2031-06-08', '2031-12-05', 0, 1914),
-(17, '2024-17', '2031-12-06', '2032-06-03', 1, 1586),
-(18, '2024-18', '2032-06-04', '2032-12-01', 0, 1507),
-(19, '2024-19', '2032-12-02', '2033-05-31', 1, 1193),
-(20, '2024-20', '2033-06-01', '2033-11-28', 0, 1917),
-(21, '2024-21', '2033-11-29', '2034-05-28', 1, 1510),
-(22, '2024-22', '2034-05-29', '2034-11-25', 0, 1048),
-(23, '2024-23', '2034-11-26', '2035-05-25', 1, 1862),
-(24, '2024-24', '2035-05-26', '2035-11-22', 0, 1641),
-(28, 'Enero - Junio 2024', '2024-04-02', '2024-04-28', 1, 87878),
-(29, 'Enero - Junio 2024', '2024-04-02', '2024-04-27', 0, 555),
-(30, 'Enero - Junio 2024', '2024-04-02', '2024-05-03', 1, 123),
-(31, 'Enero - Junio 2024', '2024-04-02', '2024-04-28', 1, 555),
-(32, 'Julio - Diciembre 2024', '2024-07-12', '2024-12-05', 0, 678);
+INSERT INTO `cicloescolar` (`IDCiclo`, `Ciclo`, `Fecha_Inicio`, `Fecha_Fin`, `Ciclo_activo`, `Precio_credito`, `IDCicloEXT`) VALUES
+(1, '2024-1', '2024-01-01', '2024-06-29', 1, 1249, 0),
+(2, '2024-2', '2024-06-30', '2024-12-27', 0, 1177, 0),
+(3, '2024-3', '2024-12-28', '2025-06-26', 1, 1481, 0),
+(4, '2024-4', '2025-06-27', '2025-12-24', 0, 1816, 0),
+(5, '2024-5', '2025-12-25', '2026-06-23', 1, 1178, 0),
+(6, '2024-6', '2026-06-24', '2026-12-21', 0, 1664, 0),
+(7, '2024-7', '2026-12-22', '2027-06-20', 1, 1356, 0),
+(8, '2024-8', '2027-06-21', '2027-12-18', 0, 1089, 0),
+(9, '2024-9', '2027-12-19', '2028-06-16', 1, 1170, 0),
+(10, '2024-10', '2028-06-17', '2028-12-14', 0, 1204, 0),
+(11, '2024-11', '2028-12-15', '2029-06-13', 1, 1782, 0),
+(12, '2024-12', '2029-06-14', '2029-12-11', 0, 1621, 0),
+(13, '2024-13', '2029-12-12', '2030-06-10', 1, 1208, 0),
+(14, '2024-14', '2030-06-11', '2030-12-08', 0, 1775, 0),
+(15, '2024-15', '2030-12-09', '2031-06-07', 1, 1958, 0),
+(16, '2024-16', '2031-06-08', '2031-12-05', 0, 1914, 0),
+(17, '2024-17', '2031-12-06', '2032-06-03', 1, 1586, 0),
+(18, '2024-18', '2032-06-04', '2032-12-01', 0, 1507, 0),
+(19, '2024-19', '2032-12-02', '2033-05-31', 1, 1193, 0),
+(20, '2024-20', '2033-06-01', '2033-11-28', 0, 1917, 0),
+(21, '2024-21', '2033-11-29', '2034-05-28', 1, 1510, 0),
+(22, '2024-22', '2034-05-29', '2034-11-25', 0, 1048, 0),
+(23, '2024-23', '2034-11-26', '2035-05-25', 1, 1862, 0),
+(24, '2024-24', '2035-05-26', '2035-11-22', 0, 1641, 0),
+(28, 'Enero - Junio 2024', '2024-04-02', '2024-04-28', 1, 87878, 0),
+(29, 'Enero - Junio 2024', '2024-04-02', '2024-04-27', 1, 555, 13),
+(30, 'Enero - Junio 2024', '2024-04-02', '2024-05-03', 1, 123, 0),
+(31, 'Enero - Junio 2024', '2024-04-02', '2024-04-28', 1, 555, 0),
+(32, 'Julio - Diciembre 2024', '2024-07-12', '2024-12-05', 0, 678, 0),
+(33, '', '0000-00-00', '0000-00-00', 1, 0, 0),
+(34, '', '0000-00-00', '0000-00-00', 1, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -441,7 +444,21 @@ INSERT INTO `materias` (`IDMateria`, `Nombre_mat`, `Creditos`, `IDMateriaEXT`) V
 (154, 'Portafolio Profesional', 6.00, NULL),
 (155, 'Ética Profesional', 4.00, NULL),
 (156, 'Comunicación Efectiva', 4.00, NULL),
-(157, 'Desarrollo de Proyecto Integrador', 13.00, NULL);
+(157, 'Desarrollo de Proyecto Integrador', 13.00, NULL),
+(158, 'Taller de diseño', 7.00, 309),
+(159, 'Confección de prendas infantiles', 5.00, 317),
+(160, 'Taller para representación', 6.00, 325),
+(161, 'Taller para representación', 6.00, 325),
+(162, 'Confección de representación', 9.00, 333),
+(163, 'Diseño de diseño', 8.00, 341),
+(164, 'Fundamentos para prendas masculinas', 8.00, 349),
+(165, 'Taller de diseño', 7.00, 309),
+(166, 'Confección de prendas infantiles', 5.00, 317),
+(167, 'Taller para representación', 6.00, 325),
+(168, 'Taller para representación', 6.00, 325),
+(169, 'Confección de representación', 9.00, 333),
+(170, 'Diseño de diseño', 8.00, 341),
+(171, 'Fundamentos para prendas masculinas', 8.00, 349);
 
 -- --------------------------------------------------------
 
@@ -516,7 +533,7 @@ CREATE TABLE `pertenece` (
 --
 
 INSERT INTO `pertenece` (`IDPertenece`, `IDMateria`, `IDCiclo`, `Beca`, `IDUsuario`) VALUES
-(1, 63, 4, 1, NULL),
+(1, 63, 4, 1, 1),
 (2, 86, 1, 1, NULL),
 (3, 76, 4, 1, NULL),
 (4, 92, 1, 0, NULL),
@@ -540,7 +557,7 @@ INSERT INTO `pertenece` (`IDPertenece`, `IDMateria`, `IDCiclo`, `Beca`, `IDUsuar
 (22, 11, 5, 0, NULL),
 (23, 82, 8, 0, NULL),
 (24, 61, 3, 0, NULL),
-(25, 34, 9, 1, NULL);
+(25, 34, 29, 50, 33);
 
 -- --------------------------------------------------------
 
@@ -672,7 +689,7 @@ INSERT INTO `usuario` (`IDUsuario`, `Nombre`, `Matricula`, `Correo_electronico`,
 (30, 'Samantha Ruiz', 200003, 'samantha@example.com', 'contraseñaSamantha', 0, 0, NULL),
 (31, 'Alejandro Mendoza', 200004, 'alejandro@example.com', 'contraseñaAlejandro', 0, 0, NULL),
 (32, 'Patricia Solano', 200005, 'patricia@example.com', 'contraseñaPatricia', 0, 0, NULL),
-(33, 'Ernesto Acosta', 1364982, 'neto@gmail.com', '$2a$12$z8h.xsnjJZjAoU5vhBjDlOBiKZ6KP6Us4a3F.eVkUIG456dFkrrwm', 50, 13649821, NULL),
+(33, 'Ernesto Acosta', 100007, 'neto@gmail.com', '$2a$12$z8h.xsnjJZjAoU5vhBjDlOBiKZ6KP6Us4a3F.eVkUIG456dFkrrwm', 50, 13649821, NULL),
 (34, 'alumno', 12345678, 'alumno@edu.mx', '$2a$12$kCBfPQ395MgXIu/ii5IxYOamqZPsf28Q.RRbU9isS95e76NpU62da', 10, 123456781, NULL),
 (35, 'Levi', 1234567, 'levi@correo.com', '$2a$12$474BO8FQf3BiTL4JjomlIeUgYnuMZBnS92Dymmyx1tNQXErzxoSFy', 0, 0, NULL),
 (36, 'Arturo', 1275427, 'arturo@gmail.com', '$2a$12$38i/IeL3JGN4gJ2q4Friu.I54cHkhWJWziHi4NZ4/rJ8HIfg9ZCt.', 0, 0, NULL),
@@ -752,7 +769,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `cicloescolar`
 --
 ALTER TABLE `cicloescolar`
-  MODIFY `IDCiclo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `IDCiclo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT de la tabla `contiene`
@@ -770,7 +787,7 @@ ALTER TABLE `deuda`
 -- AUTO_INCREMENT de la tabla `materias`
 --
 ALTER TABLE `materias`
-  MODIFY `IDMateria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
+  MODIFY `IDMateria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=172;
 
 --
 -- AUTO_INCREMENT de la tabla `pago`
