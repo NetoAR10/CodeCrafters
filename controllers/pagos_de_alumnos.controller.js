@@ -61,6 +61,9 @@ exports.getHistorialDePagos = (request, response, next) => {
         response.render('historial_pagos', { // 'historial_pagos' es el nombre de tu vista EJS para mostrar el historial
             pagos: data,
             nombre: request.session.nombre || '',
+            correo: request.session.correo || '',
+            permisos: request.session.permisos || [],
+            rol: request.session.roles || '',
             // Puedes pasar más datos a la vista si es necesario
         });
     })

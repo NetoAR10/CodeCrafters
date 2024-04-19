@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Historial de Pagos</title>
-    <link rel="stylesheet" href="/css/sidebar.css">
-</head>
+<%- include('includes/sidebar.ejs') %>
 <body>
     <div class="page_content">
         <h1 class="title">Historial de Pagos</h1>
-        <table id=USUARIOS">
+        <table id="USUARIOS">
             <thead>
                 <tr>
                     <th>Nombre</th>
@@ -36,6 +30,7 @@
                 <% }); %>
             </tbody>
         </table>
+
     </div>
 </body>
 </html>
