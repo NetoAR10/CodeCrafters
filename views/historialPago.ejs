@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -59,29 +57,60 @@
     <table>
       <thead>
         <tr>
-          <th>Mes</th>
+          <th>Fecha</th>
           <th>Porcentaje</th>
           <th>Referencia</th>
           <th>Nombre</th>
-          <th>Fecha</th>
           <th>Monto</th>
-          <th>Metodo</th>
+          <th>Método</th>
           <th>Banco</th>
           <th>Nota</th>
+          <th>Concepto</th> <!-- Columna Concepto -->
         </tr>
       </thead>
       <tbody>
-        <% for (var i = 1; i <= 10; i++) { %>
+        <% 
+          const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+          const conceptos = [
+            "Colegiatura", 
+            "Colegiatura", 
+            "Colegiatura", 
+            "Material", 
+            "Colegiatura", 
+            "Inscripción", 
+            "Material", 
+            "Inscripción", 
+            "Material", 
+            "Material", 
+            "Colegiatura", 
+            "Inscripción", 
+            "Inscripción", 
+            "Inscripción", 
+            "Inscripción", 
+            "Material", 
+            "Colegiatura", 
+            "Colegiatura", 
+            "Material", 
+            "Material", 
+            "Inscripción", 
+            "Inscripción", 
+            "Material", 
+            "Colegiatura", 
+            "Colegiatura"
+          ];
+          
+          for (var i = 0; i < conceptos.length; i++) { 
+        %>
           <tr>
-            <td><%= i %></td> <!-- Mes -->
-            <td><%= (Math.random() * 100).toFixed(2) %>%</td> <!-- Porcentaje -->
-            <td>REF12345<%= i %></td> <!-- Referencia -->
-            <td>Nombre Cliente <%= i %></td> <!-- Nombre -->
-            <td><%= new Date(2024, i % 12, i).toLocaleDateString('es') %></td> <!-- Fecha -->
-            <td>$<%= (1000 + i * 123.45).toFixed(2) %></td> <!-- Monto -->
-            <td>Tarjeta de crédito</td> <!-- Método -->
-            <td>Banco <%= i %></td> <!-- Banco -->
-            <td>Nota sobre el pago <%= i %></td> <!-- Nota -->
+            <td><%= meses[i % 12] %> 1, 2024</td> <!-- Fecha hardcodeada con mes -->
+            <td><%= (Math.random() * 100).toFixed(2) %>%</td>
+            <td>REF12345<%= i + 1 %></td>
+            <td>Nombre Cliente <%= i + 1 %></td>
+            <td>$<%= (1000 + (i + 1) * 123.45).toFixed(2) %></td>
+            <td>Tarjeta de crédito</td>
+            <td>Banco <%= i + 1 %></td>
+            <td>Nota sobre el pago <%= i + 1 %></td>
+            <td><%= conceptos[i] %></td> <!-- Concepto -->
           </tr>
         <% } %>
       </tbody>
