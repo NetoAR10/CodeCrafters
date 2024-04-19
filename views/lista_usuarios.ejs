@@ -53,9 +53,9 @@
                                     onclick="reactivar('<%= user.Correo_electronico %>')"
                                 <% } %>>
                                 <% if (user.Alumno_activo == 1) { %>
-                                    Desactivar Usuario
+                                    Desactivar
                                 <% } else if (user.Alumno_activo == 0) { %>
-                                    Reactivar Usuario
+                                    Reactivar
                                 <% } %>
                                 </button> </td>
                             </tr>
@@ -132,7 +132,7 @@
                                         ? `onclick="desactivar('${user.Correo_electronico}')" `
                                         : `onclick="reactivar('${user.Correo_electronico}')"`
                                     }>
-                                        ${user.Alumno_activo === 1 ? "Desactivar Usuario" : "Reactivar Usuario"}
+                                        ${user.Alumno_activo === 1 ? "Desactivar" : "Reactivar"}
                                     </button> </td>
                                 </tr></td>`
                                 
@@ -209,7 +209,7 @@
                                     ? `onclick="desactivar('${user.Correo_electronico}')" `
                                     : `onclick="reactivar('${user.Correo_electronico}')"`
                                 }>
-                                    ${user.Alumno_activo === 1 ? "Desactivar Usuario" : "Reactivar Usuario"}
+                                    ${user.Alumno_activo === 1 ? "Desactivar" : "Reactivar"}
                                 </button> </td>
                                 </tr></td>`
                                 
@@ -285,7 +285,7 @@
                                     ? `onclick="desactivar('${user.Correo_electronico}')" `
                                     : `onclick="reactivar('${user.Correo_electronico}')"`
                                 }>
-                                    ${user.Alumno_activo === 1 ? "Desactivar Usuario" : "Reactivar Usuario"}
+                                    ${user.Alumno_activo === 1 ? "Desactivar" : "Reactivar"}
                                 </button> </td>
                                 </tr></td>`
                                 

@@ -281,13 +281,13 @@ body {
 
 #USUARIOS, th, td {
     border: 1px solid #adadad;
-    font-size: 10px;
+    font-size: 15px;
 }
 
 
 #USUARIOS {
     position: relative;
-    width: 70%;
+    width: 90%;
     border-collapse: collapse;
 }
 
@@ -302,7 +302,7 @@ body {
     color: #fff;
     border-radius: 3px;
     border: 1px solid transparent;
-    font-size: 10px;
+    font-size: 15px;
     padding: 4px 4px;
     left: 10px;
 }
@@ -322,7 +322,7 @@ body {
     color: #fff;
     border-radius: 3px;
     border: 1px solid transparent;
-    font-size: 10px;
+    font-size: 15px;
     padding: 4px 4px;
     left: 10px;
 }
@@ -338,53 +338,12 @@ body {
 
 .buscar {
     position: relative;
-    width: 70%;
+    width: 90%;
     padding: 4px 4px;
 }
 
 
 
-
-
-.modifyuser {
-    position: relative;
-    background-color: #6c0404;
-    color: #fff;
-    border-radius: 3px;
-    border: 1px solid transparent;
-    font-size: 10px;
-    padding: 4px 4px;
-    left: 10px;
-}
-
-
-.modifyuser:hover {
-    background-color: #fff;
-    color: #6c0404;
-    border: 1px solid #6c0404;
-    transition-duration: 0.3s;
-    cursor: pointer;
-}
-
-.deleteuser {
-    position: relative;
-    background-color: #c07021;
-    color: #fff;
-    border-radius: 3px;
-    border: 1px solid transparent;
-    font-size: 10px;
-    padding: 4px 4px;
-    left: 10px;
-}
-
-
-.deleteuser:hover {
-    background-color: #fff;
-    color: #c07021;
-    border: 1px solid #c07021;
-    transition-duration: 0.3s;
-    cursor: pointer;
-}
 
 .reactivateuser {
     position: relative;
@@ -392,7 +351,7 @@ body {
     color: #fff;
     border-radius: 3px;
     border: 1px solid transparent;
-    font-size: 10px;
+    font-size: 15px;
     padding: 4px 4px;
     left: 10px;
 }
@@ -406,11 +365,7 @@ body {
     cursor: pointer;
 }
 
-.buscar {
-    position: relative;
-    width: 70%;
-    padding: 4px 4px;
-}
+
 
 
 
