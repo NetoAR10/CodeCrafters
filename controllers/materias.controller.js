@@ -52,6 +52,7 @@ exports.get_materias = async (request, response, next) => {
             permisos: request.session.permisos,
             rol: request.session.roles,
             nombre: request.session.nombre,
+            cursos: cursos
         });
     } catch (err) {
         console.error('Error al obtener materias:', err);
