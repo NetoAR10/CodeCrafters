@@ -19,8 +19,16 @@ router.post('/ciclo_escolar', isAuth, isActive, cicloEscolarController.post_nuev
 router.get('/usuarios', isAuth, isActive, listaUsuariosController.get_listUsers);
 router.get('/usuarios/buscar/:valor_busqueda', isAuth, isActive, listaUsuariosController.get_buscar);
 router.get('/usuarios/buscar', isAuth, isActive, listaUsuariosController.get_buscar);
+
+//Desactivar o Reactivas
 router.post('/usuarios/desactivar', isAuth, isActive, listaUsuariosController.post_desactivar);
 router.post('/usuarios/reactivar', isAuth, isActive, listaUsuariosController.post_reactivar);
+
+// Modificar Usuario
+router.get('/usuarios/acceso_modificar/', isAuth, isActive, listaUsuariosController.get_modificarRol);
+router.get('/usuarios/acceso_modificar/:correo', isAuth, isActive, listaUsuariosController.get_modificarRol);
+router.post('/usuarios/acceso_modificar/', isAuth, isActive, listaUsuariosController.post_modificarRol);
+router.post('/usuarios/acceso_modificar/:correo', isAuth, isActive, listaUsuariosController.post_modificarRol);
 
 //Registrar Pago
 router.get('/registrarPago', isAuth, isActive, pagoController.getRegistrarPago);
@@ -42,5 +50,6 @@ router.get('/pagos_de_alumnos/historial/:id', isAuth, isActive, pagosDeAlumnosCo
 
 // Ruta para Historial de Pagos General
 router.get('/historial-pagos-general', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getHistorialPagosGeneral);
+
 
 module.exports = router;

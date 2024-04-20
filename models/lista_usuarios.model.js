@@ -55,6 +55,16 @@ module.exports = class ListaUsuario {
             WHERE IDUsuario = ?`, [nuevo_rol, IDUsuario]);
     }
 
+    static individualUsers(correo) {
+        return db.execute(
+            `
+            SELECT u.IDUsuario, u.Nombre, u.Matricula, u.Correo_electronico, u.Beca_actual, Tipo_Rol, Alumno_activo 
+            FROM usuario u, tiene t, rol r
+            WHERE u.IDUsuario = t.IDUsuario
+            AND t.IDRol = r.IDRol
+            AND u.Correo_electronico = ?`, [correo])
+    }
+
 }
 
 
