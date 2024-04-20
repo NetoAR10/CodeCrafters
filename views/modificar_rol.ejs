@@ -1,10 +1,6 @@
-<%- include('includes/sidebar.ejs'), {
-    correo: correo,
-    permisos: permisos,
-    rol: rol,
-    nombre: nombre,
-    rolUser: rolUser,
-} %>
+<%- include('includes/sidebar.ejs', {
+    usuariosDB: usuariosDB 
+})%>
 <body>
     <div class="page_content">
         <h1>Modificar Rol de Usuario <%=usuariosDB.Nombre%></h1>

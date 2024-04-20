@@ -53,11 +53,11 @@ exports.post_reactivar = (request, response, next) => {
 }
 
 exports.get_modificarRol = (request, response, next) => {
-    ListaUsuario.getVariosRol()
+    ListaUsuario.individualUsers(request.params.correo)
     .then(([rolesUser, fieldData]) => {
         const lista = rolesUser[0];
         response.render('modificar_rol.ejs', {
-            usuariosDB: rolesUser,
+            usuariosDB: lista,
             nombre: request.session.nombre || '',
             matricula: request.session.matricula || '',
             correo: request.session.correo || '',
