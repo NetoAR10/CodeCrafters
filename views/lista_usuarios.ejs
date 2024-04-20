@@ -45,8 +45,8 @@
                                 <td><%= user.Beca_actual %></td>
                                 <td><%= user.Tipo_Rol %></td> 
                                 <td><% if (user.Alumno_activo == 1 ) {%> Activo <% } else if (user.Alumno_activo == 0) { %> Inactivo <% } %> </td>
-                                <td><button class="modifyuser" onclick="modificarRol()">Modificar Rol</button> 
-                                <button class="<% if (user.Alumno_activo == 1) { %> deleteuser <% } else { %> reactivateuser <% } %>" 
+                                <td><a href="/user/admin/usuarios/acceso_modificar/<%= user.Correo_electronico %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</button> 
+                                <a class="<% if (user.Alumno_activo == 1) { %> deleteuser <% } else { %> reactivateuser <% } %>" 
                                 <% if (user.Alumno_activo == 1) { %>
                                     onclick="desactivar('<%= user.Correo_electronico %>')"
                                 <% } else if (user.Alumno_activo == 0) { %>
@@ -57,7 +57,7 @@
                                 <% } else if (user.Alumno_activo == 0) { %>
                                     Reactivar
                                 <% } %>
-                                </button> </td>
+                                </a> </td>
                             </tr>
  
                             <%}%>
@@ -72,6 +72,7 @@
         
         <script>
 
+            const correo = user.Correo_electronico;
 
             const accion_asincrona = () => {
                 console.log('Buscando...');
@@ -126,14 +127,14 @@
                                 <td>${user.Beca_actual}</td>
                                 <td>${user.Tipo_Rol}</td> 
                                 <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
-                                <td><button class="modifyuser" onclick="modificarRol()">Modificar Rol</button> 
-                                    <button class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
+                                <td><a class="modifyuser" onclick="modificarRol()">Modificar Rol</button> 
+                                    <a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
                                         user.Alumno_activo === 1 
                                         ? `onclick="desactivar('${user.Correo_electronico}')" `
                                         : `onclick="reactivar('${user.Correo_electronico}')"`
                                     }>
                                         ${user.Alumno_activo === 1 ? "Desactivar" : "Reactivar"}
-                                    </button> </td>
+                                    </a> </td>
                                 </tr></td>`
                                 
                             }
@@ -203,14 +204,14 @@
                                 <td>${user.Beca_actual}</td>
                                 <td>${user.Tipo_Rol}</td> 
                                 <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
-                                <td><button class="modifyuser" onclick="modificarRol()">Modificar Rol</button> 
-                                    <button class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
+                                <td><a class="modifyuser" onclick="modificarRol()">Modificar Rol</button> 
+                                    <a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
                                     user.Alumno_activo === 1 
                                     ? `onclick="desactivar('${user.Correo_electronico}')" `
                                     : `onclick="reactivar('${user.Correo_electronico}')"`
                                 }>
                                     ${user.Alumno_activo === 1 ? "Desactivar" : "Reactivar"}
-                                </button> </td>
+                                </a> </td>
                                 </tr></td>`
                                 
                             }
@@ -279,14 +280,14 @@
                                 <td>${user.Beca_actual}</td>
                                 <td>${user.Tipo_Rol}</td> 
                                 <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
-                                <td><button class="modifyuser" onclick="modificarRol()">Modificar Rol</button> 
-                                    <button class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
+                                <td><a class="modifyuser" onclick="modificarRol()">Modificar Rol</button> 
+                                    <a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
                                     user.Alumno_activo === 1 
                                     ? `onclick="desactivar('${user.Correo_electronico}')" `
                                     : `onclick="reactivar('${user.Correo_electronico}')"`
                                 }>
                                     ${user.Alumno_activo === 1 ? "Desactivar" : "Reactivar"}
-                                </button> </td>
+                                </a> </td>
                                 </tr></td>`
                                 
                             }

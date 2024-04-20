@@ -1,0 +1,24 @@
+<%- include('includes/sidebar.ejs'), {
+    correo: correo,
+    permisos: permisos,
+    rol: rol,
+    nombre: nombre,
+    rolUser: rolUser,
+} %>
+<body>
+    <div class="page_content">
+        <h1>Modificar Rol de Usuario <%=usuariosDB.Nombre%></h1>
+        <div class="lista_atributos">
+            <br><strong>Nombre: </strong><%=usuariosDB.Nombre%><br>
+            <strong>Rol: </strong><%=usuariosDB.Tipo_Rol%><br><br>
+        </div>
+        <div class="asignar_rol">
+            <div class="wrapper">
+                <strong>Asignar rol nuevo a usuario</strong><br><br>
+                <a class="rolcambio" href="#">Administrador</a>
+                <a class="rolcambio" href="#">Usuario</a>
+                <a class="rolcambio" href="#">Lector</a>
+            </div>
+        </div>
+    </div>
+</body>

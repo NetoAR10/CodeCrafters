@@ -52,10 +52,32 @@ exports.post_reactivar = (request, response, next) => {
     .catch((error) => {console.log(error)});
 }
 
-// exports.get_modificarRol(request, response, next){
-//     ListaUsuario.getVariosRol()
-//     .then(([usuariosDB, fieldData]) => {
-//         return response.status(200).json({usuariosDB: usuariosDB})
-//     })
-//     .catch((error) => {console.log(error)})
-// }
+exports.get_modificarRol = (request, response, next) => {
+    ListaUsuario.getVariosRol()
+    .then(([rolesUser, fieldData]) => {
+        const lista = rolesUser[0];
+        response.render('modificar_rol.ejs', {
+            usuariosDB: rolesUser,
+            nombre: request.session.nombre || '',
+            matricula: request.session.matricula || '',
+            correo: request.session.correo || '',
+            beca: request.session.beca || '',
+            rolUser: lista.Tipo_Rol || '',
+            permisos: request.session.permisos || [] ,
+            rol: request.session.roles || '',
+            csrfToken: request.csrfToken(),
+        })
+    })
+}
+
+exports.post_modificarRol = (request, response, next) => {
+    ListaUsuario.modificarRol()
+    .then(() => {
+        ListaUsuario.getVariosRol()
+        .then(([usuariosDB, fieldData]) => {
+            return response.status(200).json({usuariosDB: usuariosDB})
+        })
+        .catch((error) => {console.log(error)})
+    })
+    .catch((error) => {console.log(error)});
+}
