@@ -58,7 +58,7 @@ module.exports = class ListaUsuario {
     static individualUsers(correo) {
         return db.execute(
             `
-            SELECT u.Nombre, u.Matricula, u.Correo_electronico, u.Beca_actual, Tipo_Rol, Alumno_activo 
+            SELECT u.IDUsuario, u.Nombre, u.Matricula, u.Correo_electronico, u.Beca_actual, Tipo_Rol, Alumno_activo 
             FROM usuario u, tiene t, rol r
             WHERE u.IDUsuario = t.IDUsuario
             AND t.IDRol = r.IDRol

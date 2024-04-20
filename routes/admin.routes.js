@@ -28,6 +28,7 @@ router.post('/usuarios/reactivar', isAuth, isActive, listaUsuariosController.pos
 router.get('/usuarios/acceso_modificar/', isAuth, isActive, listaUsuariosController.get_modificarRol);
 router.get('/usuarios/acceso_modificar/:correo', isAuth, isActive, listaUsuariosController.get_modificarRol);
 router.post('/usuarios/acceso_modificar/', isAuth, isActive, listaUsuariosController.post_modificarRol);
+router.post('/usuarios/acceso_modificar/:correo', isAuth, isActive, listaUsuariosController.post_modificarRol);
 
 //Registrar Pago
 router.get('/registrarPago', isAuth, isActive, pagoController.getRegistrarPago);

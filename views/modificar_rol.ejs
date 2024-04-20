@@ -11,9 +11,18 @@
         <div class="asignar_rol">
             <div class="wrapper">
                 <strong>Asignar rol nuevo a usuario</strong><br><br>
-                <a class="rolcambio" href="#">Administrador</a>
-                <a class="rolcambio" href="#">Usuario</a>
-                <a class="rolcambio" href="#">Lector</a>
+                1 = Administrador <br> 2 = Alumno <br> 3 = Lector
+                <form action="/user/admin/usuarios/acceso_modificar/<%= usuariosDB.Correo_electronico %>" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" name="correo" value="<%= usuariosDB.Correo_electronico %>">
+                    <input type="hidden" name="IDUsuario" value="<%= usuariosDB.IDUsuario %>">
+                    <select name="nuevo_rol">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                    <button class="modifyuser" type="submit">Cambiar Rol</button>
+                </form>
             </div>
         </div>
     </div>
