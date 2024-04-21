@@ -21,9 +21,23 @@ module.exports = class HistorialPago {
             ORDER BY pago.Fecha_de_pago, deuda.Mes;
         `);
     }
-
-
-
+    static getPaymentDetailsById(pagoId) {
+        return db.execute(`
+            SELECT 
+                pago.IDPago,
+                usuario.Referencia,
+                usuario.Nombre,
+                pago.Fecha_de_pago,
+                pago.Cant_pagada,
+                pago.Metodo,
+                pago.Banco,
+                pago.Nota,
+                materias.Nombre_mat,
+                materias.Creditos
+            FROM pago 
+            JOIN materias ON pago.IDDeuda = materias.IDMateria 
+            WHERE pago.IDPago = ?
+        `, [pagoId]);
+    }
 };
-
 

@@ -28,24 +28,27 @@ exports.get_buscar = (request, response, next) => {
 
 };
 
-exports.downloadFichaPago = async (request, response) => {
+exports.downloadFichaPago = async (req, res) => {
     try {
-        // Obtener el ID del pago de la solicitud
-        const pagoId = request.params.id;
+        const pagoId = req.params.id;
+        console.log(`Descargando ficha de pago para ID: ${pagoId}`);
 
-        // Consultar la base de datos para obtener los detalles del pago
         const [rows] = await HistorialPago.getPaymentDetailsById(pagoId);
-        const pago = rows[0]; // Suponiendo que solo hay un pago con ese ID
 
-        // Crear un nuevo documento PDF
+        if (rows.length === 0) {
+            console.error("Pago no encontrado");
+            return res.status(404).send("Pago no encontrado");
+        }
+
+        const pago = rows[0];
         const doc = new PDFDocument();
         const filePath = path.join(__dirname, '..', 'public', 'pdf', `ficha_pago_${pagoId}.pdf`);
         const writeStream = fs.createWriteStream(filePath);
 
-        // Escribir contenido en el PDF
         doc.pipe(writeStream);
+
+        // Rellenar el contenido del PDF
         doc.fontSize(16).text('Ficha de Pago', { align: 'center' });
-        doc.moveDown();
         doc.fontSize(12).text(`Referencia: ${pago.Referencia}`);
         doc.text(`Nombre: ${pago.Nombre}`);
         doc.text(`Fecha de Pago: ${pago.Fecha_de_pago.toISOString().slice(0, 10)}`);
@@ -53,15 +56,16 @@ exports.downloadFichaPago = async (request, response) => {
         doc.text(`Método: ${pago.Metodo}`);
         doc.text(`Banco: ${pago.Banco}`);
         doc.text(`Nota: ${pago.Nota}`);
+
         doc.end();
 
-        // Esperar a que el PDF se haya escrito completamente
         writeStream.on('finish', () => {
-            // Enviar el PDF como respuesta al cliente
-            response.sendFile(filePath);
+            console.log("PDF generado, enviando...");
+            res.sendFile(filePath);
         });
+
     } catch (error) {
-        console.error('Error al generar la ficha de pago:', error);
-        response.status(500).send('Error al generar la ficha de pago');
+        console.error("Error al generar la ficha de pago:", error);
+        res.status(500).send("Error al generar la ficha de pago");
     }
 };
