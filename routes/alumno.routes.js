@@ -14,6 +14,6 @@ router.post('/materias', isAuth, materiasController.post_materias);
 router.post('/contactar_admin', isAuth, materiasController.post_contactar_admin);
 
 //Historial Personal
-router.get('/historial-personal', isAuth, canViewHistorial, historialPersonalController.getHistorialPersonal);
+router.get('/historial-pagos', isAuth, historialPersonalController.getHistorialPagosPersonal);
 
 module.exports = router;
