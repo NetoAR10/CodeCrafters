@@ -54,6 +54,6 @@ router.get('/pagos_de_alumnos/historial/:id', isAuth, isActive, pagosDeAlumnosCo
 router.get('/historial-pagos-general', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getHistorialPagosGeneral);
 
 //Ruta para generar PDF
-router.get('/descargar-pagos-pdf', isAuth, isActive, canGenerateFicha, historialPagosGeneralController.descargarHistorialPagosPDF);
+router.get('/descargar-ficha', historialPagosGeneralController.descargarHistorialPagosPDF);
 
 module.exports = router;
