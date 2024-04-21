@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const pdfkit = require('pdfkit');
 const isAuth = require('../util/is-auth');
 const cicloEscolarController = require('../controllers/ciclo_escolar.controller');
 const canResgisterCiclo = require('../util/can-register-ciclo');
@@ -51,5 +52,7 @@ router.get('/pagos_de_alumnos/historial/:id', isAuth, isActive, pagosDeAlumnosCo
 // Ruta para Historial de Pagos General
 router.get('/historial-pagos-general', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getHistorialPagosGeneral);
 
+//Ruta para generar PDF
+router.get('/descargar-pagos-pdf', historialPagosGeneralController.descargarHistorialPagosPDF);
 
 module.exports = router;

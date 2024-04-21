@@ -6,6 +6,57 @@
     <meta charset="UTF-8">
     <title>Historial de Pagos General</title>
     <link rel="stylesheet" href="/css/sidebar.css">
+    <style>
+        .page_content {
+            margin: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        .download-pdf-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .download-pdf-button:hover {
+            background-color: #0056b3;
+        }
+
+        .centered {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="page_content">
@@ -14,7 +65,7 @@
             <thead>
                 <tr>
                     <th>Pago</th>
-		    <th>Porcentaje Pagado</th>
+                    <th>Porcentaje Pagado</th>
                     <th>Referencia</th>
                     <th>Nombre</th>
                     <th>Fecha de Pago</th>
@@ -28,7 +79,7 @@
                 <% pagos.forEach(function(pago) { %>
                     <tr>
                         <td><%= pago.Mes %></td>
-			<td><%= (pago.PorcentajePagado * 100).toFixed(2) %>%</td>
+                        <td><%= (pago.PorcentajePagado * 100).toFixed(2) %>%</td>
                         <td><%= pago.Referencia %></td>
                         <td><%= pago.Nombre %></td>
                         <td><%= pago.Fecha_de_pago.toISOString().slice(0, 10) %></td>
@@ -40,8 +91,13 @@
                 <% }); %>
             </tbody>
         </table>
-        
+        <div class="centered">
+            <button 
+                class="download-pdf-button" 
+                onclick="window.location.href='/descargar-pagos-pdf'">
+                Descargar PDF
+            </button>            
+        </div>
     </div>
 </body>
 </html>
-

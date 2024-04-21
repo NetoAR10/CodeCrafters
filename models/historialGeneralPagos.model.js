@@ -10,7 +10,7 @@ module.exports = class HistorialPago {
                 pago.Fecha_de_pago, 
                 pago.Cant_pagada, 
                 deuda.Total_deuda, 
-                (pago.Cant_pagada / deuda.Total_deuda) AS PorcentajePagado, 
+                ROUND((pago.Cant_pagada / deuda.Total_deuda) * 100, 2) AS PorcentajePagado, 
                 pago.Metodo, 
                 pago.Banco, 
                 pago.Nota
@@ -21,8 +21,4 @@ module.exports = class HistorialPago {
             ORDER BY pago.Fecha_de_pago, deuda.Mes;
         `);
     }
-
-
-
 };
-
