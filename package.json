@@ -23,9 +23,11 @@
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
+    "express-fileupload": "^1.5.0",
     "express-session": "^1.18.0",
     "mysql2": "^3.9.4",
     "node-cache": "^5.1.2",
+    "pdf-lib": "^1.17.1",
     "pdfkit": "^0.15.0"
   }
 }

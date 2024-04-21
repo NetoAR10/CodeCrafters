@@ -1,4 +1,7 @@
 const HistorialPago = require('../models/historialGeneralPagos.model');
+const PDFDocument = require('pdfkit');
+const path = require('path');
+const fs = require('fs');
 
 exports.getHistorialPagosGeneral = async (request, response) => {
     try {
@@ -24,4 +27,5 @@ exports.get_buscar = (request, response, next) => {
 }
 
 };
+
 
