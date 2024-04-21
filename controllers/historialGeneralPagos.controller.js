@@ -28,44 +28,40 @@ exports.get_buscar = (request, response, next) => {
 
 };
 
-exports.downloadFichaPago = async (req, res) => {
+exports.downloadPDFHistorialPagos = async (request, response) => {
     try {
-        const pagoId = req.params.id;
-        console.log(`Descargando ficha de pago para ID: ${pagoId}`);
+        const [rows] = await HistorialPago.fetchAll();
 
-        const [rows] = await HistorialPago.getPaymentDetailsById(pagoId);
-
-        if (rows.length === 0) {
-            console.error("Pago no encontrado");
-            return res.status(404).send("Pago no encontrado");
-        }
-
-        const pago = rows[0];
+        // Crear un nuevo documento PDF
         const doc = new PDFDocument();
-        const filePath = path.join(__dirname, '..', 'public', 'pdf', `ficha_pago_${pagoId}.pdf`);
-        const writeStream = fs.createWriteStream(filePath);
+        const filePath = path.join(__dirname, '..', 'public', 'historial_pagos.pdf'); // Ruta donde se guardará el PDF
 
-        doc.pipe(writeStream);
+        // Encabezado del PDF
+        doc.fontSize(18).text('Historial de Pagos', { align: 'center' }).moveDown();
 
-        // Rellenar el contenido del PDF
-        doc.fontSize(16).text('Ficha de Pago', { align: 'center' });
-        doc.fontSize(12).text(`Referencia: ${pago.Referencia}`);
-        doc.text(`Nombre: ${pago.Nombre}`);
-        doc.text(`Fecha de Pago: ${pago.Fecha_de_pago.toISOString().slice(0, 10)}`);
-        doc.text(`Cantidad Pagada: ${pago.Cant_pagada.toFixed(2)}`);
-        doc.text(`Método: ${pago.Metodo}`);
-        doc.text(`Banco: ${pago.Banco}`);
-        doc.text(`Nota: ${pago.Nota}`);
+        // Contenido del PDF con los datos de la base de datos
+        rows.forEach(row => {
+            doc.fontSize(12).text(`Mes: ${row.Mes}`);
+            // Agregar otros campos según necesites
+            doc.moveDown();
+        });
 
+        // Guardar el PDF en el servidor
+        doc.pipe(fs.createWriteStream(filePath));
         doc.end();
 
-        writeStream.on('finish', () => {
-            console.log("PDF generado, enviando...");
-            res.sendFile(filePath);
+        // Enviar el archivo PDF al cliente como respuesta
+        response.download(filePath, 'historial_pagos.pdf', (err) => {
+            if (err) {
+                console.error('Error al descargar el archivo PDF:', err);
+                response.status(500).send('Error al descargar el archivo PDF');
+            }
+            // Eliminar el archivo del servidor después de descargarlo
+            fs.unlinkSync(filePath);
         });
 
     } catch (error) {
-        console.error("Error al generar la ficha de pago:", error);
-        res.status(500).send("Error al generar la ficha de pago");
+        console.error('Error fetching payment history:', error);
+        response.status(500).send('Error al obtener el historial de pagos');
     }
 };
