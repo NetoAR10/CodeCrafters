@@ -17,7 +17,6 @@ exports.getHistorialPagosGeneral = async (request, response) => {
     }
 };
 
-// historialGeneralPagos.controller.js
 exports.descargarHistorialPagosPDF = async (request, response) => {
     try {
         const [rows] = await HistorialPago.fetchAll();
@@ -34,19 +33,19 @@ exports.descargarHistorialPagosPDF = async (request, response) => {
 
         rows.forEach((pago) => {
             doc.fontSize(12);
-            doc.text(`Mes: ${pago.Mes}`, { continued: true });
-            doc.text(`Porcentaje Pagado: ${(pago.PorcentajePagado * 100).toFixed(2)}%`, { continued: true });
-            doc.text(`Referencia: ${pago.Referencia}`, { continued: true });
-            doc.text(`Nombre: ${pago.Nombre}`, { continued: true });
-            doc.text(`Fecha de Pago: ${pago.Fecha_de_pago.toISOString().slice(0, 10)}`, { continued: true });
-            doc.text(`Cantidad Pagada: ${pago.Cant_pagada.toFixed(2)}`, { continued: true });
-            doc.text(`Método: ${pago.Metodo}`, { continued: true });
-            doc.text(`Banco: ${pago.Banco}`, { continued: true });
+            doc.text(`Mes: ${pago.Mes}`);
+            doc.text(`Porcentaje Pagado: ${(pago.PorcentajePagado * 100).toFixed(2)}%`);
+            doc.text(`Referencia: ${pago.Referencia}`);
+            doc.text(`Nombre: ${pago.Nombre}`);
+            doc.text(`Fecha de Pago: ${pago.Fecha_de_pago.toISOString().slice(0, 10)}`);
+            doc.text(`Cantidad Pagada: ${pago.Cant_pagada.toFixed(2)}`);
+            doc.text(`Método: ${pago.Metodo}`);
+            doc.text(`Banco: ${pago.Banco}`);
             doc.text(`Nota: ${pago.Nota}`);
-            doc.moveDown();
+            doc.moveDown(); // Espaciado entre secciones
         });
 
-        doc.end(); 
+        doc.end(); // Finaliza el PDF
     } catch (error) {
         console.error('Error generando PDF:', error);
         response.status(500).send('Error al generar el PDF');
