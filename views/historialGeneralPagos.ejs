@@ -22,6 +22,7 @@
                     <th>Método</th>
                     <th>Banco</th>
                     <th>Nota</th>
+                    <th>Acciones</th> <!-- Agregar columna para el botón de descarga -->
                 </tr>
             </thead>
             <tbody>
@@ -36,6 +37,10 @@
                         <td><%= pago.Metodo %></td>
                         <td><%= pago.Banco %></td>
                         <td><%= pago.Nota %></td>
+                        <td>
+                            <!-- Agregar el botón de descarga con un enlace -->
+                            <a href="/historial-pagos-general/descargar/<%= pago.IDPago %>" class="btn btn-primary">Descargar Ficha</a>
+                        </td>
                     </tr>
                 <% }); %>
             </tbody>
