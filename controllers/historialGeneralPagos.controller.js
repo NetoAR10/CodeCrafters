@@ -52,3 +52,36 @@ exports.descargarHistorialPagosPDF = async (request, response) => {
     }
 };
 
+
+exports.descargarFichaPago = async (req, res) => {
+    try {
+        const datosFicha = await HistorialPago.fetchFichaDatos();
+        
+        const doc = new PDFDocument();
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename="ficha_pago.pdf"');
+        
+        doc.pipe(res);
+
+        // Formato del PDF
+        doc.fontSize(16).text('Ficha de Pago', { align: 'center' });
+        doc.moveDown();
+        
+        doc.fontSize(12);
+        doc.text(`SEMESTRE: ${datosFicha.semestre}`);
+        doc.text(`SELECCIÓN DE MATERIAS: ${datosFicha.materias}`);
+        doc.text(`TOTAL CRÉDITOS: ${datosFicha.creditos}`);
+        doc.text(`COSTO POR CRÉDITO: ${datosFicha.costoCredito}`);
+        doc.text(`TOTAL COSTO: ${datosFicha.costoTotal}`);
+
+        doc.moveDown();
+        doc.fontSize(14).text('Plan de Pagos');
+        doc.text(`Fecha límite: ${datosFicha.fechaLimite}`);
+        doc.text(`Monto a pagar: ${datosFicha.montoPagar}`);
+
+        doc.end();
+    } catch (error) {
+        console.error('Error al generar ficha de pago:', error);
+        res.status(500).send('Error al generar la ficha de pago');
+    }
+};
