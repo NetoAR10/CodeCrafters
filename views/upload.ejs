@@ -1,0 +1,34 @@
+<%- include('includes/sidebar.ejs') %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de Pagos General</title>
+    <link rel="stylesheet" href="/css/sidebar.css">
+</head>
+<body>
+    <div class="page_content">
+        <div class="upload_container">
+            <div class="title_upload">
+                <h1>Cargar Archivo CSV</h1>
+            </div>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <!-- Campo oculto para el token CSRF -->
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <div class="file_input_container">
+                    <label for="file" class="file_label">
+                        <i class='bx bx-upload'></i>
+                        <span>Elegir archivo CSV</span>
+                    </label>
+                    <input type="file" id="file" name="file" required>
+                </div>
+                <button type="submit" class="upload_button">Cargar</button>
+            </form>
+            
+                       
+        </div>
+    </div>
+    <script src="/sidebar.js"></script>
+</body>
+</html>
