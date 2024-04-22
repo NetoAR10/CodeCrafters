@@ -8,6 +8,7 @@ const session = require('express-session');
 const csrf = require('csurf');
 const bodyParser = require('body-parser');
 const path = require('path');
+const nodeMailer = require('nodemailer');
 
 // Configuración de la sesión
 app.use(session({

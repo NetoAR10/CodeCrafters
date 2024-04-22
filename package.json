@@ -26,6 +26,7 @@
     "express-session": "^1.18.0",
     "mysql2": "^3.9.4",
     "node-cache": "^5.1.2",
+    "nodemailer": "^6.9.13",
     "pdfkit": "^0.15.0"
   }
 }
