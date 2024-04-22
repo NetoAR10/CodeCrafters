@@ -10,6 +10,7 @@ const pagosDeAlumnosController = require('../controllers/pagos_de_alumnos.contro
 const historialPagosGeneralController = require('../controllers/historialGeneralPagos.controller');
 const isActive = require('../util/is-active');
 const canViewHistorialTodos = require('../util/can-view-historial-todos');
+const canGenerateFicha = require('../util/can-generate-ficha');
 
 //Ciclo Escolar
 router.get('/ciclo_escolar', isAuth, canResgisterCiclo, isActive, cicloEscolarController.get_nuevo_ciclo);
@@ -52,6 +53,6 @@ router.get('/pagos_de_alumnos/historial/:id', isAuth, isActive, pagosDeAlumnosCo
 router.get('/historial-pagos-general', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getHistorialPagosGeneral);
 
 // Ruta para descargar la ficha de pago como PDF
-router.get('/historial-pagos-general/pdf', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.downloadPDFHistorialPagos);
+router.get('/historial-pagos-general/pdf', isAuth, isActive, canGenerateFicha, historialPagosGeneralController.generatePaymentReceipt);
 
 module.exports = router;
