@@ -54,7 +54,7 @@ router.get('/pagos_de_alumnos/historial/:id', isAuth, isActive, pagosDeAlumnosCo
 router.get('/historial-pagos-general', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getHistorialPagosGeneral);
 
 //Ruta para Cargar CSV
-router.get('/upload', csvController.getUpload);
-router.post('/upload', csvController.postUpload);
+router.get('/upload', isAuth, isActive, csvController.getUpload);
+router.post('/upload', isAuth, isActive, csvController.postUpload);
 
 module.exports = router;

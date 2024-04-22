@@ -5,15 +5,24 @@ const moment = require('moment');
 const Usuario = require('../models/csv.model');
 
 exports.getUpload = (request, response, next) => {
-    console.log(request.session.priviledges);
-    response.render('views/upload.ejs', { 
-        uploaded: false,
-        canUpload: request.canUpload,
-        canConsultReports: request.canConsultReports,
-        canConsultUsers: request.canConsultUsers,
-    });
+    const user = request.user || {}; 
+    const correo = user.correo || "Correo desconocido"; 
 
+    response.render('upload.ejs', { 
+        correo,
+        permisos: user.permisos || [],
+        rol: user.rol || "Sin rol",
+        nombre: user.nombre || "Usuario desconocido",
+        uploaded: false,
+        canUpload: request.canUpload || false,
+        canConsultReports: request.canConsultReports || false,
+        canConsultUsers: request.canConsultUsers || false,
+    });
 };
+
+
+
+
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
