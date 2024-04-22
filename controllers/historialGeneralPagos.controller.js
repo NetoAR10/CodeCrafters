@@ -31,13 +31,10 @@ exports.get_buscar = (request, response, next) => {
 
 exports.descargarHistorialCSV = async (req, res) => {
     try {
-        // Obtener historial de la base de datos
-        const historial = await Historial.find();
+        const [rows] = await HistorialPago.fetchAll();
 
-        // Convertir datos a formato CSV
-        const csv = convertirAFormatoCSV(historial);
+        const csv = convertirAFormatoCSV(rows);
 
-        // Establecer encabezados para la descarga del archivo
         res.setHeader('Content-disposition', 'attachment; filename=historial.csv');
         res.set('Content-Type', 'text/csv');
         res.status(200).send(csv);
@@ -48,11 +45,20 @@ exports.descargarHistorialCSV = async (req, res) => {
 };
 
 function convertirAFormatoCSV(data) {
-    const csvHeaders = ['Campo1', 'Campo2', 'Campo3']; // Reemplaza los nombres de campo con los adecuados
-    const csvData = data.map(item => {
-        return [item.campo1, item.campo2, item.campo3]; // Reemplaza con los campos de tu modelo
+    if (data.length === 0) {
+        return '';
+    }
+
+    const csvHeaders = Object.keys(data[0]); // Obtener los nombres de las columnas
+    const csvRows = [csvHeaders.join(',')]; // Primera fila con las cabeceras
+
+    data.forEach(item => {
+        const row = csvHeaders.map(header => {
+            const value = item[header];
+            return (value !== null && value !== undefined) ? value.toString() : '';
+        }).join(',');
+        csvRows.push(row);
     });
-    const csvRows = [csvHeaders.join(','), ...csvData.map(row => row.join(','))];
 
     return csvRows.join('\n');
 }
