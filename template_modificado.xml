@@ -9,7 +9,7 @@
   <nb_fpago>COD</nb_fpago>
   <url>
     <reference>FACTURA999</reference>
-    <amount>1.00</amount>
+    <amount>1000.00</amount>
     <moneda>MXN</moneda>
     <canal>W</canal>
     <omitir_notif_default>1</omitir_notif_default>

@@ -4,14 +4,18 @@ const db = require('../util/database');
 
 exports.get_materias = async (request, response, next) => {
     matricula = await materia.fetchMatricula(request.session.correo)
-    console.log(matricula)
+    //console.log(matricula)
     mat = matricula[0][0].matricula;
-    console.log(mat)
-    // TODO sacar ciclo escolar EXT de mi db
+    //console.log(mat)
     ciclo = await materia.fecthCicloEscolar(request.session.correo)
-    console.log(ciclo);
+    //console.log(ciclo);
+    nomCiclo = ciclo[0][0].ciclo;
+    IDCicExt = ciclo[0][0].IDCicloEXT;
+    cicActivo = ciclo[0][0].ciclo_Activo;
+    precioCred = ciclo[0][0].Precio_credito;
+    beca = ciclo[0][0].Beca;
     try {
-        const userGroups = await adminClient.getUserGroups(13, mat); 
+        const userGroups = await adminClient.getUserGroups(IDCicExt, mat); 
         if (!userGroups || !userGroups.data) {
             throw new Error('No existen user groups para ese usuario.');
         }
@@ -51,7 +55,11 @@ exports.get_materias = async (request, response, next) => {
             permisos: request.session.permisos,
             rol: request.session.roles,
             nombre: request.session.nombre,
-            cursos: cursos
+            cursos: cursos,
+            cicloActual: nomCiclo,
+            activo: cicActivo,
+            costoCred: precioCred,
+            beca: beca
         });
     } catch (err) {
         console.error('Error al obtener materias:', err);

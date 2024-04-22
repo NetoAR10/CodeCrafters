@@ -10,14 +10,20 @@
     </head>
     <body>
         <div class="page_content">
-            <h1>Materias</h1>
-            <% const costoCredito = 530; %>
+            <h1>Materias para el ciclo de <%= cicloActual %></h1>
+            <% const costoCredito = costoCred %>
             <% let totalCreditos = 0; %>
+            <% let costosMateria = {}; %>
             <% cursos.forEach(function(curso) { %>
                 <% totalCreditos += parseFloat(curso.creditos); %>
+                <% if (beca === 0) { %>
+                    <% costosMateria[curso.idMateria] = costoCredito * curso.creditos; %>
+                <% } else { %>
+                    <% costosMateria[curso.idMateria] = costoCredito * curso.creditos * (1 - beca/100); %>
+                <% } %>
             <% }); %>
             <% let costoTotal = totalCreditos * costoCredito; %>
-            
+    
             <form action="/user/alumno/materias" method="POST">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <% if (cursos.length > 0) { %>
@@ -25,7 +31,7 @@
                         <div class="page_items">
                             <div class="item">
                                 <%= curso.nombreMat %><br>
-                                <h4>Créditos: <%= curso.creditos %> | Costo: $<%= (costoCredito * curso.creditos) %> | Maestro: <%= curso.nombreProfe %> | Semestre: <%= curso.semestre %> | ID: <%= curso.idMateria %></h4>
+                                <h4>Créditos: <%= curso.creditos %> | Costo: $<%= costosMateria[curso.idMateria].toFixed(2) %> | Maestro: <%= curso.nombreProfe %> | Semestre: <%= curso.semestre %> | ID: <%= curso.idMateria %></h4>
                                 <!-- Campos ocultos para enviar la información del curso -->
                                 <input type="hidden" name="cursos[<%= index %>][idMateria]" value="<%= curso.idMateria %>">
                                 <input type="hidden" name="cursos[<%= index %>][nombreMat]" value="<%= curso.nombreMat %>">
@@ -35,9 +41,12 @@
                             </div>
                         </div>
                     <% }); %>
-
+    
                     <br><h4>Total de Créditos: <%= totalCreditos %></h4>
                     <br><h4>Costo Total: $<%= costoTotal.toFixed(2) %></h4>
+                    <% if (beca !== 0) { %>
+                        <br><h4>Porcentaje de beca: <%= beca %>%</h4>
+                    <% } %>
                     <br><input type="submit" value="Confirmar materias" class="btn2" id="confirmar">
                 <% } else { %>
                     <p>No hay materias disponibles.</p>
