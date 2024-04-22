@@ -59,7 +59,10 @@ module.exports = class Usuario {
             AND p.IDPrivilegio = c.IDPrivilegio `,
             [correo]);
     }
-    
+
+    static cambiar(correo, new_password) {
+        
+    }    
     
     
 

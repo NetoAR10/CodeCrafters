@@ -120,5 +120,13 @@ exports.post_signup = (request, response, next) => {
 };
 
 exports.get_forgot = (request, response, next) => {
-    response.render('olvido_contrasena');
+    response.render('restablecer_contrasena');
+}
+
+exports.post_darCorreo = (request, response, next) => {
+
+}
+
+exports.post_cambiarContrasena = (request, response, next) => {
+    
 }
