@@ -11,8 +11,7 @@ const historialPagosGeneralController = require('../controllers/historialGeneral
 const isActive = require('../util/is-active');
 const canViewHistorialTodos = require('../util/can-view-historial-todos');
 const csvController = require('../controllers/csv.controller');
-const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const canUpload = require('../util/can-upload-transferenicas');
 
 //Ciclo Escolar
 router.get('/ciclo_escolar', isAuth, canResgisterCiclo, isActive, cicloEscolarController.get_nuevo_ciclo);
@@ -56,6 +55,6 @@ router.get('/historial-pagos-general', isAuth, isActive, canViewHistorialTodos, 
 
 //Ruta para Cargar CSV
 router.get('/upload', csvController.getUpload);
-router.post('/upload', upload.single('file'), csvController.postUpload);
+router.post('/upload', csvController.postUpload);
 
 module.exports = router;
