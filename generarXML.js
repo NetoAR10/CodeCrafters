@@ -84,7 +84,7 @@ xml2js.parseString(xml, function(err, result) {
     result.P.business[0].user[0] = 'SNBXUSR0123';
     result.P.business[0].pwd[0] = 'SECRETO';
     result.P.url[0].reference[0] = 'FACTURA999';
-    result.P.url[0].amount[0] = '1.00';
+    result.P.url[0].amount[0] = '1000.00';
 
     const builder = new xml2js.Builder();
     const newXml = builder.buildObject(result);

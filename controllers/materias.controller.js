@@ -3,14 +3,13 @@ const adminClient = require('../util/api_clients/adminApiClient');
 const db = require('../util/database');
 
 exports.get_materias = async (request, response, next) => {
-    // TODO sacar matricula de usuario actual
     matricula = await materia.fetchMatricula(request.session.correo)
     console.log(matricula)
     mat = matricula[0][0].matricula;
     console.log(mat)
     // TODO sacar ciclo escolar EXT de mi db
-    //ciclo = await materia.fecthCicloEscolar(request.session.correo)
-    //console.log(ciclo);
+    ciclo = await materia.fecthCicloEscolar(request.session.correo)
+    console.log(ciclo);
     try {
         const userGroups = await adminClient.getUserGroups(13, mat); 
         if (!userGroups || !userGroups.data) {
