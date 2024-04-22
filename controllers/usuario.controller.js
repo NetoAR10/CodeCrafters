@@ -19,7 +19,6 @@ exports.post_login = (request, response, next) => {
     
     Usuario.fetchOne(request.body.correo)
     .then(([users, fieldData]) => {
-        console.log(request.body.correo)
         if(users.length == 1) {
             const user = users[0];
             bcrypt.compare(request.body.password, user.Contrasena)
@@ -29,14 +28,12 @@ exports.post_login = (request, response, next) => {
                         const rol = permisos[0];
                         request.session.isLoggedIn = true;
                         request.session.permisos = permisos;
-                        console.log(request.session.permisos);
                         request.session.correo = user.Correo_electronico;
                         request.session.nombre = user.Nombre; 
                         request.session.roles = rol.Tipo_Rol;
                         request.session.active = user.Alumno_activo;
                         request.session.rol_id = rol.IDRol;
                         request.session.user_id = rol.IDUsuario;
-                        console.log('Inicio de Sesión Correcto');
                         return request.session.save(err => {
                             response.redirect('/');
                         });
@@ -49,8 +46,6 @@ exports.post_login = (request, response, next) => {
                 }
             })
             .catch((error) => {
-                console.log(user.Contrasena);
-                console.log(request.body.password);
                 console.log(error);
             });
         }

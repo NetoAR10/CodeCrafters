@@ -303,6 +303,7 @@ body {
     border-radius: 3px;
     border: 1px solid transparent;
     font-size: 15px;
+    text-decoration: none;
     padding: 4px 4px;
     left: 10px;
 }
@@ -342,6 +343,13 @@ body {
     padding: 4px 4px;
 }
 
+.wrapper {
+    width: 420px;
+    background: white;
+    border:2px solid grey;
+    border-radius: 10px;
+    padding: 10px 10px 10px 10px;
+}
 
 
 
@@ -418,3 +426,21 @@ form {
     background-color: #dcdcdc;
 }
 
+.rolcambio {
+    position: relative;
+    background-color: #6c0404;
+    color: #fff;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    font-size: 15px;
+    text-decoration: none;
+    padding: 4px 4px;
+}
+
+.rolcambio:hover {
+    background-color: #fff;
+    color: #6c0404;
+    border: 1px solid #6c0404;
+    transition-duration: 0.3s;
+    cursor: pointer;
+}
