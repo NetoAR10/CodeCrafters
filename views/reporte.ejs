@@ -1,0 +1,50 @@
+<%- include('includes/sidebar.ejs') %>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Reporte de Deudas</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <canvas id="graficoDeudas" width="400" height="200"></canvas>
+
+  <script>
+    fetch('/api/reporte-deudas') // Solicitar datos al controlador
+      .then(response => {
+        if (!response.ok) { // Comprobar errores en la respuesta
+          throw new Error('Error obteniendo datos');
+        }
+        return response.json(); // Convertir la respuesta a JSON
+      })
+      .then(data => {
+        const ctx = document.getElementById('graficoDeudas').getContext('2d');
+        const labels = data.map(item => item.Concepto); // Etiquetas para el gráfico
+        const values = data.map(item => item.Total_deuda); // Valores para el gráfico
+
+        const grafico = new Chart(ctx, {
+          type: 'bar', // Tipo de gráfico
+          data: {
+            labels: labels, // Asignar etiquetas
+            datasets: [{
+              label: 'Deuda Total',
+              data: values,
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true // Configuración para las escalas
+              }
+            }
+          }
+        });
+      })
+      .catch(error => console.error('Error:', error)); // Manejo de errores
+  </script>
+</body>
+</html>

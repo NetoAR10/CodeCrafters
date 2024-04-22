@@ -10,6 +10,7 @@ const pagosDeAlumnosController = require('../controllers/pagos_de_alumnos.contro
 const historialPagosGeneralController = require('../controllers/historialGeneralPagos.controller');
 const isActive = require('../util/is-active');
 const canViewHistorialTodos = require('../util/can-view-historial-todos');
+const reporteController = require('../controllers/reporte.controller'); 
 
 //Ciclo Escolar
 router.get('/ciclo_escolar', isAuth, canResgisterCiclo, isActive, cicloEscolarController.get_nuevo_ciclo);
@@ -51,5 +52,7 @@ router.get('/pagos_de_alumnos/historial/:id', isAuth, isActive, pagosDeAlumnosCo
 // Ruta para Historial de Pagos General
 router.get('/historial-pagos-general', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getHistorialPagosGeneral);
 
+// Ruta para obtener datos de reportes de deudas
+router.get('/reportes', isAuth, isActive, reporteController.getReporteDeudas); 
 
 module.exports = router;
