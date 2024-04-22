@@ -51,5 +51,7 @@ router.get('/pagos_de_alumnos/historial/:id', isAuth, isActive, pagosDeAlumnosCo
 // Ruta para Historial de Pagos General
 router.get('/historial-pagos-general', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getHistorialPagosGeneral);
 
+//Ruta para descargar historial en CSV
+router.get('/descargar-historial', isAuth, isActive, historialPagosGeneralController.descargarHistorialCSV);
 
 module.exports = router;
