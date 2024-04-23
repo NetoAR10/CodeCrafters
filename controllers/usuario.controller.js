@@ -90,6 +90,8 @@ exports.get_signup = (request, response, next) => {
         correo: request.session.correo || '',
         registrar: true,
         error: error,
+        rol: request.session.roles,
+        nombre: request.session.nombre,
         csrfToken: request.csrfToken(),
         permisos: request.session.permisos || [],
     })
@@ -137,26 +139,31 @@ exports.get_forgot = (request, response, next) => {
 
 exports.post_forgot = (request, response, next) => {
     const correo = request.body.correo;
+    request.session.correo = correo;
     Usuario.fetchOne(correo).then(([users, fieldData]) => {
         if (users.length === 1) {
-            console.log('Correo ingresado: ', correo);
             const generateResetToken = () => {
                 return require('crypto').randomBytes(32).toString('hex');
                 
             }
             const resetToken = generateResetToken();
+            const encodedEmail = encodeURIComponent(correo);
+            const encodedToken = encodeURIComponent(resetToken);
+            const resetURL = `http://localhost:2050/user/change_password/${encodedEmail}/${encodedToken}`;
             const transporter = nodemailer.createTransport({
-                service: 'hotmail',
+                service: 'gmail',
                 auth: {
-                    user: 'email',
-                    pass: 'password',
+                    user: 'testing20242304@gmail.com',
+                    pass: 'mwks ltuh hxmm fwcc',
                 },
             });
             const mailOptions = {
-                from: 'email',
-                to: 'a01620887@tec.mx',
+                from: 'testing20242304@gmail.com',
+                to: correo,
                 subject: 'Password Reset',
-                text: `Testing!!! Si recibes este correo, es que funciona el sistema :D`,
+                text: `Has solicitado un cambio de contraseña. Haz clic en el siguiente link para restablecer tu contraseña.
+                
+                ${resetURL}`,
             };
 
             transporter.sendMail(mailOptions, (error, info) => {
@@ -165,11 +172,10 @@ exports.post_forgot = (request, response, next) => {
 
                 } else {
                     console.log('Email sent: ' + info.response);
-
                 }
             });
 
-            console.log('Reset Token:', resetToken);
+            request.session.token = resetToken;
             
         } else {
             console.log('Error: No se ha encontrado este correo en la base de datos.');
@@ -179,6 +185,20 @@ exports.post_forgot = (request, response, next) => {
     });
 }
 
-exports.post_cambiarContrasena = (request, response, next) => {
+exports.get_cambiar = (request, response, next) => {
+    response.render('cambiar_contrasena', {
+        resetToken: request.session.token,
+        correo: request.session.correo,
+        csrfToken: request.csrfToken(),
+    })
+}
 
+exports.post_cambiar = (request, response, next) => {
+    const emailParametro = decodeURIComponent(request.params.correo);
+    const decodedToken = decodeURIComponent(request.params.resetToken);
+    const new_password = request.body.new_password;
+    console.log('new password:', new_password);
+    console.log('session email:', emailParametro);
+    console.log('decoded token:', decodedToken);
+    // Usuario.cambiar(new_password, correo);
 }

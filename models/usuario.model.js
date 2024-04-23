@@ -60,8 +60,10 @@ module.exports = class Usuario {
             [correo]);
     }
 
-    static cambiar(correo, new_password) {
-        
+    static cambiar(new_password, correo) {
+        `UPDATE usuario 
+        SET Contrasena = ? 
+        WHERE usuario.IDUsuario = ?`,[new_password, correo]
     }    
     
     

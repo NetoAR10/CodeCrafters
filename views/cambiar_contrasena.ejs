@@ -14,11 +14,16 @@
         </a>
         <div class="header"><h3>Ingresa tu contraseña nueva</h3></div>
         <div class="texto">Tu contraseña debe contener al menos 8 caracteres, un número y una mayúscula.</div>
-        <div class="input-box2">
-            <input type="text" placeholder="Contraseña nueva">
-            <input type="text" placeholder="Confirmar contraseña">
-            <button class="btn3">Submit</button>
-        </div>
+        <form action="/user/change_password/<%= correo %>/<%= resetToken %>" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="correo" value="<%= correo %>">
+            <input type="hidden" name="resetToken" value="<%= resetToken %>">
+            <div class="input-box2">
+                <input type="text" name="new_password" placeholder="Contraseña nueva" required>
+                <input type="text" placeholder="Confirmar contraseña" required>
+                <button class="btn3">Submit</button>
+            </div>
+        </form>
     </div>
 </body>
 </html>

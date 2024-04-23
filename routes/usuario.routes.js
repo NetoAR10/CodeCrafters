@@ -14,5 +14,8 @@ router.post('/register', isAuth, usuariosController.post_signup);
 //Restablecer contraseña
 router.get('/forgot_password', usuariosController.get_forgot);
 router.post('/forgot_password', usuariosController.post_forgot);
+router.get('/change_password/:correo/:resetToken', usuariosController.get_cambiar);
+router.get('/change_password', usuariosController.get_cambiar);
+router.post('/change_password', usuariosController.post_cambiar);
 
 module.exports = router;
