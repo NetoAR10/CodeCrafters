@@ -34,17 +34,38 @@ exports.getHistorialDePagos = (request, response, next) => {
 
     ListaUsuario.historialDePagos(Correo_electronico)
     .then(([data, fieldData]) => {
-        response.render('historial_pagos', { 
+        response.render('historial_pagos', {
             pagos: data,
             nombre: request.session.nombre || '',
             correo: request.session.correo || '',
             permisos: request.session.permisos || [],
-            rol: request.session.roles || '',
+            rol: request.session.roles || '',   
         });
     })
     .catch(error => {
         console.log(error);
         response.status(500).send("Ocurrió un error al recuperar el historial de pagos");
     });
+}
+
+exports.getHistorialDeDeudas = (request, response, next) => {
+    console.log('Llendo al historial de deudas');
+    const Correo_electronico = request.params.id;
+
+    ListaUsuario.historialDeDeudas(Correo_electronico)
+    .then(([data, fieldData]) => {
+        response.render('historial_deudas', {
+            deudas: data,
+            nombre: request.session.nombre || '',
+	    correo: request.session.correo || '',
+	    permisos: request.session.permisos || [],
+	    rol: request.session.roles || '',
+        });
+    })
+    .catch(error => {
+	console.log(error);
+	response.status(500).send("Ocurrió un error al recuperar el historial de deudas");
+    });
 };
+
 

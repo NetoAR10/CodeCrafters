@@ -13,16 +13,6 @@
               <form action="/user/admin/registrarPago" method="POST"> 
               <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
     
-            <label for="Matricula">Matrícula:</label>
-                <div class="input-box">
-                    <input type="number" name="Matricula" placeholder="Ejemplo: 123456" required>
-                </div>
-    
-            <label for="IDDueda ">Total deuda:</label>
-                <div class="input-box">
-                    <input type="number" name="Total_deuda" placeholder="1500" step="0.01" required>
-                </div>
-    
             <label for="Cantidad pagada">Cantidad pagada:</label>
                 <div class="input-box">
                     <input type="number" name="Cant_pagada" placeholder="1545" step="0.01" required>
@@ -46,12 +36,6 @@
             <label for="Nota">Nota:</label>
                 <div class="input-box">
                     <input type="text" name="Nota" placeholder="Nota" required>
-                </div>
-    
-            <label for="Prórroga">Prórroga:</label>
-                <div class="input-box">
-                    <input type="date"
-             name="Prorroga" placeholder="Prórroga">
                 </div>
     
                 <div class="space"></div>

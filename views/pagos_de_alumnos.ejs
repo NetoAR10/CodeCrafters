@@ -29,8 +29,7 @@
                                 <th>Matrícula</th>
                                 <th>Correo electrónico</th>
                                 <th>Beca</th>
-                                <th>Crear deuda</th>
-                                <th>Registrar Pago</th>
+                                <th>Deudas</th>          
                                 <th>Historial de Pagos</th>
                             </tr>
                             <% for (let user of usuariosDB) {%>
@@ -42,16 +41,11 @@
                             <td><%= user.Correo_electronico %></td>
                             <td><%= user.Beca_actual %></td> 
                             <td>
-                                <a href="http://localhost:2050/user/admin/crearDeuda" class="simple-btn">
-                                    Crear Deuda
+                                <a href="/user/admin/pagos_de_alumnos/deudas/<%= user.Correo_electronico%>" class="simple-btn">
+                                    Deudas
                                 </a>
                             </td>
                             <td>
-                                <a href="http://localhost:2050/user/admin/registrarPago" class="simple-btn">
-                                    Registrar Pago
-                                </a>
-                            </td>
-		            <td>
 				<a href="/user/admin/pagos_de_alumnos/historial/<%= user.Correo_electronico%>" class="simple-btn">
                                     Historial de pagos
                                 </a>
@@ -103,8 +97,7 @@
                             <th>Matrícula</th>
                             <th>Correo electrónico</th>
                             <th>Beca</th>
-                            <th>Crear deuda</th>
-                            <th>Registrar Pago</th>
+                            <th>Crear deuda</th> 
                             <th>Historial de pagos</th>
                             </tr>`
  
@@ -117,16 +110,11 @@
                             <td>${user.Correo_electronico}</td>
                             <td>${user.Beca_actual}</td> 
                             <td>
-                                <a href="http://localhost:2050/user/admin/crearDeuda" class="simple-btn">
+                                <a href="/user/admin/pagos_de_alumnos/deudas/${user.Correo_electronico}" class="simple-btn">
                                     Crear Deuda
                                 </a>
                             </td>
                             <td>
-                                <a href="http://localhost:2050/user/admin/registrarPago" class="simple-btn">
-                                    Registrar Pago
-                                </a>
-                            </td>
-		            <td>
 				<a href="/user/admin/pagos_de_alumnos/historial/${user.Correo_electronico}" class="simple-btn">
                                     Historial de pagos
                                 </a>

@@ -45,10 +45,12 @@ router.get('/pagos_de_alumnos', isAuth, isActive, pagosDeAlumnosController.get_l
 router.get('/pagos_de_alumnos/buscar/:valor_busqueda', isAuth, isActive, pagosDeAlumnosController.get_buscar);
 router.get('/pagos_de_alumnos/buscar', isAuth, isActive, pagosDeAlumnosController.get_buscar);
 router.get('/pagos_de_alumnos/historial/:id', isAuth, isActive, pagosDeAlumnosController.getHistorialDePagos);
+router.get('/pagos_de_alumnos/deudas/:id', isAuth, isActive, pagosDeAlumnosController.getHistorialDeDeudas);
 
 // Ruta para Historial de Pagos General
 router.get('/historial-pagos-general', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getHistorialPagosGeneral);
 router.get('/historial-pagos-general/buscar/:valor_busqueda', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getBuscarHistorial);
 router.get('/historial-pagos-general/buscar', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getBuscarHistorial);
+router.delete('/historial-pagos-general/borrar/:id', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.deletePago);
 
 module.exports = router;
