@@ -120,13 +120,32 @@ exports.post_signup = (request, response, next) => {
 };
 
 exports.get_forgot = (request, response, next) => {
-    response.render('restablecer_contrasena');
+    Usuario.fetchAll()
+    .then(([users, fieldData]) => {
+        response.render('restablecer_contrasena', {
+            usuariosDB: users,
+            csrfToken: request.csrfToken(),
+        });
+    })
+    .catch((error) => {
+        console.log(error);
+    })
 }
 
-exports.post_darCorreo = (request, response, next) => {
 
+exports.post_forgot = (request, response, next) => {
+    const correo = request.body.correo;
+    Usuario.fetchOne(correo).then(([users, fieldData]) => {
+        if (users.length === 1) {
+            console.log('Correo ingresado: ', correo);
+        } else {
+            console.log('Error: No se ha encontrado este correo en la base de datos.');
+        } 
+    }).catch((error) => {
+        console.log('Error');
+    });
 }
 
 exports.post_cambiarContrasena = (request, response, next) => {
-    
+
 }

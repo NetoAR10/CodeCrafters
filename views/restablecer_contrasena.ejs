@@ -14,10 +14,14 @@
         </a>
         <div class="header"><h3>Restablecer contraseña</h3></div>
         <div class="texto">Si se te olvidó tu contraseña, puedes restablecerla aquí mismo. Ingresa a continuación tu correo electrónico.</div>
-        <div class="input-box2">
-            <input type="text" placeholder="Correo Electrónico">
-            <button class="btn3">Submit</button>
-        </div>
+        <form action="/user/forgot_password" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <div class="input-box2">
+                <input type="text" name="correo" placeholder="Correo Electrónico">
+                <button class="btn3">Submit</button>
+            </div>
+
+        </form>
     </div>
 </body>
 </html>
