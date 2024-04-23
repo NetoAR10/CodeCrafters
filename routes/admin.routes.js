@@ -58,4 +58,3 @@ router.get('/upload', isAuth, isActive, csvController.getUpload);
 router.post('/upload', isAuth, isActive,  csvController.postUpload);
 
 module.exports = router;
-

@@ -1,38 +1,38 @@
 const db = require('../util/database');
 
-class Usuario {
-    constructor({ nombre, matricula, correo, contrasena, becaActual, referencia, alumnoActivo }) {
-        this.nombre = nombre;
-        this.matricula = matricula;
-        this.correo = correo;
-        this.contrasena = contrasena;
-        this.becaActual = becaActual;
-        this.referencia = referencia;
-        this.alumnoActivo = alumnoActivo;
+class Pago {
+    constructor({ IDUsuario, IDDeuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota }) {
+        this.IDUsuario = IDUsuario;
+        this.IDDeuda = IDDeuda;
+        this.Cant_pagada = Cant_pagada;
+        this.Fecha_de_pago = Fecha_de_pago;
+        this.Metodo = Metodo;
+        this.Banco = Banco;
+        this.Nota = Nota;
     }
 
-    static async insert(usuario) {
+    static async insert(pago) {
         const query = `
-            INSERT INTO usuario (Nombre, Matricula, Correo_electronico, Contrasena, Beca_actual, Referencia, Alumno_activo)
+            INSERT INTO pago (IDUsuario, IDDeuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota)
             VALUES (?, ?, ?, ?, ?, ?, ?)
         `;
         const values = [
-            usuario.nombre,
-            usuario.matricula,
-            usuario.correo,
-            usuario.contrasena,
-            usuario.becaActual,
-            usuario.referencia,
-            usuario.alumnoActivo,
+            pago.IDUsuario,
+            pago.IDDeuda,
+            pago.Cant_pagada,
+            pago.Fecha_de_pago,
+            pago.Metodo,
+            pago.Banco,
+            pago.Nota,
         ];
 
         try {
-            await db.execute(query, values);
+            await db.execute(query, values); // Ejecutar la consulta SQL
         } catch (error) {
-            console.error("Error al insertar usuario:", error);
-            throw error;
+            console.error("Error al insertar pago:", error);
+            throw error; // Propagar el error para que el controlador lo maneje
         }
     }
 }
 
-module.exports = Usuario;
+module.exports = Pago;

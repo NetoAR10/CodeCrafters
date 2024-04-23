@@ -1,26 +1,21 @@
 const fs = require('fs');
 const Papa = require('papaparse');
-const csvParser = require('csv-parser');
-const moment = require('moment');
-const Usuario = require('../models/csv.model');
+const Pago = require('../models/csv.model'); // Cambia el modelo a 'Pago'
 
-exports.getUpload = (request, response, next) => {
-    const user = request.user || {}; 
-    const correo = user.correo || "Correo desconocido"; 
+exports.getUpload = (req, res, next) => {
+    const user = req.user || {}; // Información del usuario actual
 
-    response.render('upload.ejs', { 
-        correo,
+    res.render('upload.ejs', {
+        correo: user.correo || "Correo desconocido",
         permisos: user.permisos || [],
         rol: user.rol || "Sin rol",
         nombre: user.nombre || "Usuario desconocido",
         uploaded: false,
-        canUpload: request.canUpload || false,
-        canConsultReports: request.canConsultReports || false,
-        canConsultUsers: request.canConsultUsers || false,
+        canUpload: req.canUpload || false,
+        canConsultReports: req.canConsultReports || false,
+        canConsultUsers: req.canConsultUsers || false,
     });
 };
-
-const delay = ms => new Promise(res => setTimeout(res, ms));
 
 exports.postUpload = (req, res) => {
     if (!req.file) {
@@ -37,29 +32,28 @@ exports.postUpload = (req, res) => {
 
         const results = Papa.parse(data, {
             header: true,
-            skipEmptyLines: true,
+            skipEmptyLines: true, // Ignora líneas vacías
         });
 
         try {
-            const newUsuarios = results.data.map(row => ({
-                nombre: row['Nombre'],
-                matricula: parseInt(row['Matricula']),
-                correo: row['Correo_electronico'],
-                contrasena: row['Contrasena'],
-                becaActual: parseInt(row['Beca_actual']),
-                referencia: parseInt(row['Referencia']),
-                alumnoActivo: row['Alumno_activo'] === "1",
+            const newPagos = results.data.map(row => ({
+                IDUsuario: parseInt(row['IDUsuario']),
+                IDDeuda: parseInt(row['IDDeuda']),
+                Cant_pagada: parseFloat(row['Cant_pagada']),
+                Fecha_de_pago: row['Fecha_de_pago'], // Fecha como cadena
+                Metodo: row['Metodo'],
+                Banco: row['Banco'],
+                Nota: row['Nota'],
             }));
 
-            // Insertar todos los registros en la base de datos
-            for (const usuario of newUsuarios) {
-                await Usuario.insert(usuario);
+            for (const pago of newPagos) {
+                await Pago.insert(pago); // Insertar el nuevo registro en la tabla 'pago'
             }
 
-            fs.unlinkSync(filePath); // Eliminar el archivo después de procesarlo
+            fs.unlinkSync(filePath); // Elimina el archivo después de procesarlo
             res.status(200).send("Carga y procesamiento del archivo CSV completada.");
         } catch (error) {
-            console.error("Error al insertar usuarios:", error);
+            console.error("Error al insertar datos en la base de datos:", error);
             res.status(500).send("Error al insertar datos en la base de datos.");
         }
     });
