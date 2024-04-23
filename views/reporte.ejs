@@ -1,130 +1,129 @@
-<%- include('includes/sidebar.ejs', {
-  correo: correo,
-  permisos: permisos,
-  rol: rol,
-  nombre: nombre,
-  rolUser: rolUser,
-}) %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Reporte de Finanzas</title>
+  <link rel="stylesheet" type="text/css" href="/public/estilo.css"> <!-- Archivo CSS para estilos -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Incluir la barra lateral -->
+  <%- include('includes/sidebar.ejs', {
+    correo: correo,
+    permisos: permisos,
+    rol: rol,
+    nombre: nombre,
+    rolUser: rolUser,
+  }) %>
 
-<div class="container mx-auto px-4 py-8 text-center">
-  <h1 class="text-2xl font-bold mb-6">Reporte Financiero 📊</h1>
+  <!-- Contenedor principal para el contenido -->
+  <div class="main-content" style="margin-left: 270px; padding: 20px;">
+    <h1>Reporte de Finanzas</h1>
 
-  <!-- Contenedor principal centrado -->
-  <div class="mx-auto" style="max-width: 800px;">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <!-- Gráfico: Deuda Total -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-lg font-bold mb-4">Deuda Total 💰</h3>
-        <canvas id="totalDeudaChart" width="300" height="150"></canvas>
+    <!-- Cuadrícula para acomodar las gráficas -->
+    <div class="chart-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; padding: 20px;">
+      <!-- Gráfico 1: Total de Deudas y Pagos -->
+      <div class="chart-container" style="width: 350px; height: 250px;">
+        <canvas id="deudasPagosChart"></canvas>
       </div>
 
-      <!-- Gráfico: Pago Total -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-lg font-bold mb-4">Pago Total 💵</h3>
-        <canvas id="totalPagoChart" width="300" height="150"></canvas>
+      <!-- Gráfico 2: Deuda por Concepto -->
+      <div class="chart-container" style="width: 350px; height: 250px;">
+        <canvas id="deudaPorConceptoChart"></canvas>
       </div>
 
-      <!-- Gráfico: Deuda por Concepto -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-lg font-bold mb-4">Deuda por Concepto 📋</h3>
-        <canvas id="deudaConceptoChart" width="300" height="150"></canvas>
+      <!-- Gráfico 3: Pagos por Método -->
+      <div class="chart-container" style="width: 350px; height: 250px;">
+        <canvas id="pagosPorMetodoChart"></canvas>
       </div>
 
-      <!-- Gráfico: Pagos por Método -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-lg font-bold mb-4">Pagos por Método 💳</h3>
-        <canvas id="pagosMetodoChart" width="300" height="150"></canvas>
+      <!-- Gráfico 4: Materias por Ciclo -->
+      <div class="chart-container" style="width: 350px; height: 250px;">
+        <canvas id="materiasPorCicloChart"></canvas>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Scripts para Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  // Deuda Total
-  const ctxDeuda = document.getElementById('totalDeudaChart').getContext('2d');
-  const totalDeuda = <%= JSON.stringify(totalDeuda) %>;  
-  const deudaData = [totalDeuda.totalDeuda];
+  <!-- Configuración de Chart.js -->
+  <script>
+    const totalDeudas = <%= totalDeudas %>;
+    const totalPagos = <%= totalPagos %>;
+    const totalDeuda = <%= totalDeuda %>;
+    const totalPago = <%= totalPago %>;
 
-  new Chart(ctxDeuda, {
-    type: 'bar',
-    data: {
-      labels: deudaLabels,
-      datasets: [{
-        label: 'Total Deuda',
-        data: deudaData,
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1,
-      }],
-    },
-  });
+    const deudaPorConcepto = <%- JSON.stringify(deudaPorConcepto) %>;
+    const pagosPorMetodo = <%- JSON.stringify(pagosPorMetodo) %>;
 
-  // Pago Total
-  const ctxPago = document.getElementById('totalPagoChart').getContext('2d');
-  const totalPago = <%= JSON.stringify(totalPago) %>;
-  const pagoLabels = ['Total Pago'];
-  const pagoData = [totalPago.totalPago];
+    // Gráfico 1: Total de Deudas y Pagos
+    const ctx1 = document.getElementById('deudasPagosChart').getContext('2d');
+    new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: ['Deudas', 'Pagos'],
+        datasets: [{
+          label: 'Total',
+          data: [totalDeuda, totalPago],
+          backgroundColor: ['#FF6384', '#36A2EB']
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
 
-  new Chart(ctxPago, {
-    type: 'bar',
-    data: {
-      labels: pagoLabels,
-      datasets: [{
-        label: 'Total Pago',
-        data: pagoData,
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1,
-      }],
-    },
-  });
+    // Gráfico 2: Deuda por Concepto
+    const ctx2 = document.getElementById('deudaPorConceptoChart').getContext('2d');
+    const deudaPorConceptoLabels = deudaPorConcepto.map(item => item.Concepto);
+    const deudaPorConceptoData = deudaPorConcepto.map(item => item.totalDeuda);
 
-  // Deuda por Concepto
-  const ctxDeudaConcepto = document.getElementById('deudaConceptoChart').getContext('2d');
-  const deudaConceptos = <%= JSON.stringify(deudaPorConcepto) %>;
-  const deudaLabels = deudaConceptos.map(dc => dc.Concepto);
-  const deudaValues = deudaConceptos.map(dc => dc.totalDeuda);
+    new Chart(ctx2, {
+      type: 'pie',
+      data: {
+        labels: deudaPorConceptoLabels,
+        datasets: [{
+          label: 'Deuda por Concepto',
+          data: deudaPorConceptoData,
+          backgroundColor: ['#FFCE56', '#FF6384', '#36A2EB', '#FF9F40']
+        }]
+      }
+    });
 
-  new Chart(ctxDeudaConcepto, {
-    type: 'bar',
-    data: {
-      labels: deudaLabels,
-      datasets: [{
-        label: 'Deuda por Concepto',
-        data: deudaValues,
-        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-        borderColor: 'rgba(153, 102, 255, 1)',
-        borderWidth: 1,
-      }],
-    },
-  });
+    // Gráfico 3: Pagos por Método
+    const ctx3 = document.getElementById('pagosPorMetodoChart').getContext('2d');
+    const pagosPorMetodoLabels = pagosPorMetodo.map(item => item.Metodo);
+    const pagosPorMetodoData = pagosPorMetodo.map(item => item.totalPagos);
 
-  // Pagos por Método
-  const ctxPagosMetodo = document.getElementById('pagosMetodoChart').getContext('2d');
-  const pagosMetodos = <%= JSON.stringify(pagosPorMetodo) %>;
-  const metodoLabels = pagosMetodos.map(pm => pm.Metodo);
-  const metodoValues = pagosMetodos.map(pm => pm.totalPagos);
+    new Chart(ctx3, {
+      type: 'doughnut',
+      data: {
+        labels: pagosPorMetodoLabels,
+        datasets: [{
+          label: 'Pagos por Método',
+          data: pagosPorMetodoData,
+          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+        }]
+      }
+    });
 
-  new Chart(ctxPagosMetodo, {
-    type: 'doughnut',
-    data: {
-      labels: metodoLabels,
-      datasets: [{
-        data: metodoValues,
-        backgroundColor: [
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-        ],
-        borderColor: [
-          'rgba(75, 192, 192, 1)',
-          'rgba(255, 99, 132, 1)',
-          'rgba(255, 206, 86, 1)',
-        ],
-        borderWidth: 1,
-      }],
-    },
-  });
-</script>
+    // Gráfico 4: Materias por Ciclo
+    const ctx4 = document.getElementById('materiasPorCicloChart').getContext('2d');
+    const materiasPorCicloLabels = materiasPorCiclo.map(item => item.Ciclo);
+    const materiasPorCicloData = materiasPorCiclo.map(item => item.Nombre_mat);
+
+    new Chart(ctx4, {
+      type: 'bar',
+      data: {
+        labels: materiasPorCicloLabels,
+        datasets: [{
+          label: 'Materias por Ciclo',
+          data: materiasPorCicloData,
+          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+        }]
+      }
+    });
+  </script>
+</body>
+</html>
