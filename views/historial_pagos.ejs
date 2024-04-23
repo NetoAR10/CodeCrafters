@@ -11,8 +11,9 @@
                     <th>Fecha de Pago</th>
                     <th>Método</th>
                     <th>Banco</th>
+		    <th>Concepto</th>
                     <th>Nota</th>
-                    <th>Prórroga</th>
+                    <th>Fecha límite</th>
                 </tr>
             </thead>
             <tbody>
@@ -23,9 +24,10 @@
                         <td><%= pago.Cant_pagada %></td>
                         <td><%= new Date(pago.Fecha_de_pago).toLocaleDateString() %></td>
                         <td><%= pago.Metodo %></td>
-                        <td><%= pago.Banco %></td>
+                        <td><%= pago.Banco %></td>i
+                        <td><%= pago.Concepto %></td>
                         <td><%= pago.Nota %></td>
-                        <td><%= pago.Prorroga %></td>
+                        <td><%= pago.Fecha_limite %></td>
                     </tr>
                 <% }); %>
             </tbody>

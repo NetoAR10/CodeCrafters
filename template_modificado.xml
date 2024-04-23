@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<P>
+  <business>
+    <id_company>SNBX</id_company>
+    <id_branch>01SNBXBRNCH</id_branch>
+    <user>SNBXUSR0123</user>
+    <pwd>SECRETO</pwd>
+  </business>
+  <nb_fpago>COD</nb_fpago>
+  <url>
+    <reference>FACTURA999</reference>
+    <amount>1000.00</amount>
+    <moneda>MXN</moneda>
+    <canal>W</canal>
+    <omitir_notif_default>1</omitir_notif_default>
+    <promociones>C</promociones>
+    <st_correo>1</st_correo>
+    <mail_cliente>mail@dominio.com</mail_cliente>
+    <data3ds>
+      <ml>nospam@gmail.com</ml>
+      <cl>5515009020</cl>
+      <dir>Calle y número exterior</dir>
+      <cd>Ciudad </cd>
+      <est>CX</est>
+      <cp>1234567890</cp>
+      <idc>484</idc>
+    </data3ds>
+    <version>IntegraWPP</version>
+  </url>
+</P>

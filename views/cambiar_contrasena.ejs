@@ -14,7 +14,7 @@
         </a>
         <div class="header"><h3>Ingresa tu contraseña nueva</h3></div>
         <div class="texto">Tu contraseña debe contener al menos 8 caracteres, un número y una mayúscula.</div>
-        <form action="/user/change_password/<%= correo %>/<%= resetToken %>" method="POST">
+        <form action="/user/change_password/" method="POST">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <input type="hidden" name="correo" value="<%= correo %>">
             <input type="hidden" name="resetToken" value="<%= resetToken %>">

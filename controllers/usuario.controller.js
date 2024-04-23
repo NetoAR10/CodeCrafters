@@ -2,6 +2,7 @@ const Usuario = require('../models/usuario.model');
 const bcrypt = require ('bcryptjs');
 const crpyto = require('crypto');
 const nodemailer = require('nodemailer');
+const adminClient = require('../util/api_clients/adminApiClient');
 
 exports.get_login = (request, response, next) => {
     const error = request.session.error || '';
@@ -123,7 +124,17 @@ exports.post_signup = (request, response, next) => {
         });
 };
 
-exports.get_forgot = (request, response, next) => {
+exports.get_forgot = async (request, response, next) => {
+    try {
+        const allUsers = await adminClient.getAllUsers()
+        console.log(allUsers);
+    }
+    catch {
+        console.log('Error')
+    }
+
+
+
     Usuario.fetchAll()
     .then(([users, fieldData]) => {
         response.render('restablecer_contrasena', {
@@ -187,18 +198,16 @@ exports.post_forgot = (request, response, next) => {
 
 exports.get_cambiar = (request, response, next) => {
     response.render('cambiar_contrasena', {
-        resetToken: request.session.token,
-        correo: request.session.correo,
+        resetToken: request.params.token,
+        correo: request.params.correo,
         csrfToken: request.csrfToken(),
     })
 }
 
 exports.post_cambiar = (request, response, next) => {
-    const emailParametro = decodeURIComponent(request.params.correo);
-    const decodedToken = decodeURIComponent(request.params.resetToken);
+    const correo = decodeURIComponent(request.body.correo);
     const new_password = request.body.new_password;
     console.log('new password:', new_password);
-    console.log('session email:', emailParametro);
-    console.log('decoded token:', decodedToken);
-    // Usuario.cambiar(new_password, correo);
+    console.log('session email:', correo);
+    Usuario.cambiar(new_password, correo);
 }

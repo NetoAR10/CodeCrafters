@@ -46,7 +46,7 @@ module.exports = class materia {
             `SELECT C.ciclo, C.IDCicloEXT, C.ciclo_Activo, C.Precio_credito, P.Beca
             FROM cicloescolar C, pertenece 	p, usuario U
             WHERE C.IDCiclo = P.IDCiclo AND U.IDUsuario = P.IDUsuario
-            AND U.Correo_electronico = '?' `
+            AND U.Correo_electronico = ? `,
             [correo]
         );
     }
