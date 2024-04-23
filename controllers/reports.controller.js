@@ -10,14 +10,26 @@ exports.getReport = async (request, response) => {
     const deudaPorConcepto = await ReportsModel.getDeudaPorConcepto();
     const pagosPorMetodo = await ReportsModel.getPagosPorMetodo();
 
+    console.log('Datos para el reporte:', {
+      totalDeudas: totalDeudas[0][0], // Acceso al primer elemento
+      totalPagos: totalPagos[0][0], // Acceso al primer elemento
+      totalDeuda: totalDeuda[0][0], // Acceso al primer elemento
+      totalPago: totalPago[0][0], // Acceso al primer elemento
+      materiasPorCiclo: materiasPorCiclo[0], // Arreglo completo
+      deudaPorConcepto: deudaPorConcepto[0], // Arreglo completo
+      pagosPorMetodo: pagosPorMetodo[0], // Arreglo completo
+    });
+
     response.render('reporte', {
-      totalDeudas: totalDeudas[0]?.totalDeudas || 0,
-      totalPagos: totalPagos[0]?.totalPagos || 0,
-      totalDeuda: totalDeuda[0]?.totalDeuda || 0,
-      totalPago: totalPago[0]?.totalPago || 0,
-      materiasPorCiclo,
-      deudaPorConcepto,
-      pagosPorMetodo,
+      // Ahora utiliza los datos corregidos
+      totalDeudas: totalDeudas[0][0]?.totalDeudas || 0,
+      totalPagos: totalPagos[0][0]?.totalPagos || 0,
+      totalDeuda: totalDeuda[0][0]?.totalDeuda || 0,
+      totalPago: totalPago[0][0]?.totalPago || 0,
+      materiasPorCiclo: materiasPorCiclo[0] || [],
+      deudaPorConcepto: deudaPorConcepto[0] || [],
+      pagosPorMetodo: pagosPorMetodo[0] || [],
+      // El resto de datos para la vista
       isLoggedIn: request.session.isLoggedIn || false,
       privileges: request.session.privileges || [],
       nombre: request.session.nombre || '',
@@ -34,3 +46,4 @@ exports.getReport = async (request, response) => {
     response.status(500).send('Error interno del servidor.');
   }
 };
+
