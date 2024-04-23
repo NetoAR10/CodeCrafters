@@ -7,7 +7,7 @@ module.exports = (request, response, next) => {
         }
     }
 
-    if(canGenerateFicha) {
+    if(canViewReporte) {
         next();
 
     } else {

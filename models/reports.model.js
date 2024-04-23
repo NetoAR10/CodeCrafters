@@ -1,6 +1,47 @@
 const db = require('../util/database');
 
 module.exports = {
+  getTotalDeudas: () => {
+    return db.execute(
+      'SELECT COUNT(*) AS totalDeudas FROM deuda'
+    );
+  },
+
+  getTotalPagos: () => {
+    return db.execute(
+      'SELECT COUNT(*) AS totalPagos FROM pago'
+    );
+  },
+
+  getDeudaTotal: () => {
+    return db.execute(
+      'SELECT SUM(Total_deuda) AS totalDeuda FROM deuda'
+    );
+  },
+
+  getPagoTotal: () => {
+    return db.execute(
+      'SELECT SUM(Cant_pagada) AS totalPago FROM pago'
+    );
+  },
+
+  getDeudaPorConcepto: () => {
+    return db.execute(
+      'SELECT Concepto, SUM(Total_deuda) AS totalDeuda FROM deuda GROUP BY Concepto'
+    );
+  },
+
+  getPagosPorMetodo: () => {
+    return db.execute(
+      'SELECT Metodo, SUM(Cant_pagada) AS totalPagos FROM pago GROUP BY Metodo'
+    );
+  },
+  
+};
+
+
+/*
+module.exports = {
   getTotalDeudas: (userId) => {
     return db.execute(
       'SELECT COUNT(*) AS totalDeudas FROM deuda WHERE IDUsuario = ?',
@@ -55,3 +96,5 @@ module.exports = {
     );
   },
 };
+
+*/
