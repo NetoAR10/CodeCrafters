@@ -18,6 +18,9 @@ app.use(session({
   saveUninitialized: false,
 }));
 
+
+
+
 // Middlewares
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());

@@ -1,6 +1,7 @@
 const Usuario = require('../models/usuario.model');
 const bcrypt = require ('bcryptjs');
 const crpyto = require('crypto');
+const nodemailer = require('nodemailer');
 
 exports.get_login = (request, response, next) => {
     const error = request.session.error || '';
@@ -144,7 +145,32 @@ exports.post_forgot = (request, response, next) => {
                 
             }
             const resetToken = generateResetToken();
+            const transporter = nodemailer.createTransport({
+                service: 'hotmail',
+                auth: {
+                    user: 'email',
+                    pass: 'password',
+                },
+            });
+            const mailOptions = {
+                from: 'email',
+                to: 'a01620887@tec.mx',
+                subject: 'Password Reset',
+                text: `Testing!!! Si recibes este correo, es que funciona el sistema :D`,
+            };
+
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log(error);
+
+                } else {
+                    console.log('Email sent: ' + info.response);
+
+                }
+            });
+
             console.log('Reset Token:', resetToken);
+            
         } else {
             console.log('Error: No se ha encontrado este correo en la base de datos.');
         } 
