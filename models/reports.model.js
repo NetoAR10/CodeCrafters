@@ -36,6 +36,11 @@ module.exports = {
       'SELECT Metodo, SUM(Cant_pagada) AS totalPagos FROM pago GROUP BY Metodo'
     );
   },
+  getMateriasPorCiclo: () => {
+    return db.execute(
+      'SELECT c.Ciclo, m.Nombre_mat FROM pertenece p JOIN cicloescolar c ON c.IDCiclo = p.IDCiclo JOIN materias m ON m.IDMateria = p.IDMateria'
+    );
+  },
   
 };
 

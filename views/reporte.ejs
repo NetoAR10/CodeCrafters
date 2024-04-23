@@ -1,126 +1,131 @@
-<%- include('includes/sidebar.ejs') %>
+<%- include('includes/sidebar.ejs', {
+  correo: correo,
+  permisos: permisos,
+  rol: rol,
+  nombre: nombre,
+  rolUser: rolUser,
+}) %>
 
-<div class="container mx-auto px-4 py-8">
-  <div class="flex">
-    <h1 class="text-2xl font-bold mb-6">Reporte Financiero 📊</h1>
-  </div>
+<div class="container mx-auto px-4 py-8 text-center">
+  <h1 class="text-2xl font-bold mb-6">Reporte Financiero 📊</h1>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-    <!-- Gráfico: Deuda Total -->
-    <div class="bg-white p-6 rounded-lg shadow-md">
-      <h3 class="text-lg font-bold mb-4">Deuda Total 💰</h3>
-      <canvas id="totalDeudaChart" width="400" height="200"></canvas>
-    </div>
+  <!-- Contenedor principal centrado -->
+  <div class="mx-auto" style="max-width: 800px;">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Gráfico: Deuda Total -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-lg font-bold mb-4">Deuda Total 💰</h3>
+        <canvas id="totalDeudaChart" width="300" height="150"></canvas>
+      </div>
 
-    <!-- Gráfico: Pago Total -->
-    <div class="bg-white p-6 rounded-lg shadow-md">
-      <h3 class="text-lg font-bold mb-4">Pago Total 💵</h3>
-      <canvas id="totalPagoChart" width="400" height="200"></canvas>
-    </div>
+      <!-- Gráfico: Pago Total -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-lg font-bold mb-4">Pago Total 💵</h3>
+        <canvas id="totalPagoChart" width="300" height="150"></canvas>
+      </div>
 
-    <!-- Gráfico: Deuda por Concepto -->
-    <div class="bg-white p-6 rounded-lg shadow-md">
-      <h3 class="text-lg font-bold mb-4">Deuda por Concepto 📋</h3>
-      <canvas id="deudaConceptoChart" width="400" height="200"></canvas>
-    </div>
+      <!-- Gráfico: Deuda por Concepto -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-lg font-bold mb-4">Deuda por Concepto 📋</h3>
+        <canvas id="deudaConceptoChart" width="300" height="150"></canvas>
+      </div>
 
-    <!-- Gráfico: Pagos por Método -->
-    <div class="bg-white p-6 rounded-lg shadow-md">
-      <h3 class="text-lg font-bold mb-4">Pagos por Método 💳</h3>
-      <canvas id="pagosMetodoChart" width="400" height="200"></canvas>
-    </div>
-
-    <!-- Materias por Ciclo Escolar -->
-    <div class="bg-white p-6 rounded-lg shadow-md">
-      <h3 class="text-lg font-bold mb-4">Materias por Ciclo Escolar 📚</h3>
-      <ul>
-        <% materiasPorCiclo.forEach((materia) => { %>
-          <li><%= materia.Ciclo %> - <%= materia.Nombre_mat %></li>
-        <% }) %>
-      </ul>
+      <!-- Gráfico: Pagos por Método -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-lg font-bold mb-4">Pagos por Método 💳</h3>
+        <canvas id="pagosMetodoChart" width="300" height="150"></canvas>
+      </div>
     </div>
   </div>
-
-  <!-- Scripts para Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    // Deuda Total
-    const ctxDeuda = document.getElementById('totalDeudaChart').getContext('2d');
-    const totalDeuda = <%= totalDeuda %>;
-    new Chart(ctxDeuda, {
-      type: 'bar',
-      data: {
-        labels: ['Total Deuda'],
-        datasets: [{
-          label: 'Total Deuda',
-          data: [totalDeuda],
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          borderWidth: 1,
-        }],
-      },
-    });
-
-    // Pago Total
-    const ctxPago = document.getElementById('totalPagoChart').getContext('2d');
-    const totalPago = <%= totalPago %>;
-    new Chart(ctxPago, {
-      type: 'bar',
-      data: {
-        labels: ['Total Pago'],
-        datasets: [{
-          label: 'Total Pago',
-          data: [totalPago],
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 1,
-        }],
-      },
-    });
-
-    // Deuda por Concepto
-    const ctxDeudaConcepto = document.getElementById('deudaConceptoChart').getContext('2d');
-    const deudaConceptos = <%- JSON.stringify(deudaPorConcepto) %>;
-    const deudaLabels = deudaConceptos.map(dc => dc.Concepto);
-    const deudaValues = deudaConceptos.map(dc => dc.totalDeuda);
-    new Chart(ctxDeudaConcepto, {
-      type: 'bar',
-      data: {
-        labels: deudaLabels,
-        datasets: [{
-          label: 'Deuda por Concepto',
-          data: deudaValues,
-          backgroundColor: 'rgba(153, 102, 255, 0.2)',
-          borderColor: 'rgba(153, 102, 255, 1)',
-          borderWidth: 1,
-        }],
-      },
-    });
-
-    // Pagos por Método
-    const ctxPagosMetodo = document.getElementById('pagosMetodoChart').getContext('2d');
-    const pagosMetodos = <%- JSON.stringify(pagosPorMetodo) %>;
-    const metodoLabels = pagosMetodos.map(pm => pm.Metodo);
-    const metodoValues = pagosMetodos.map(pm => pm.totalPagos);
-    new Chart(ctxPagosMetodo, {
-      type: 'doughnut',
-      data: {
-        labels: metodoLabels,
-        datasets: [{
-          data: metodoValues,
-          backgroundColor: [
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-          ],
-          borderColor: [
-            'rgba(75, 192, 192, 1)',
-            'rgba(255, 99, 132, 1)',
-            'rgba(255, 206, 86, 1)',
-          ],
-          borderWidth: 1,
-        }],
-      },
-    });
-  </script>
 </div>
+
+<!-- Scripts para Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Deuda Total
+  const ctxDeuda = document.getElementById('totalDeudaChart').getContext('2d');
+  const totalDeuda = <%= JSON.stringify(totalDeuda) %>;
+  const deudaLabels = ['Total Deuda'];
+  const deudaData = [totalDeuda.totalDeuda];
+
+  new Chart(ctxDeuda, {
+    type: 'bar',
+    data: {
+      labels: deudaLabels,
+      datasets: [{
+        label: 'Total Deuda',
+        data: deudaData,
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1,
+      }],
+    },
+  });
+
+  // Pago Total
+  const ctxPago = document.getElementById('totalPagoChart').getContext('2d');
+  const totalPago = <%= JSON.stringify(totalPago) %>;
+  const pagoLabels = ['Total Pago'];
+  const pagoData = [totalPago.totalPago];
+
+  new Chart(ctxPago, {
+    type: 'bar',
+    data: {
+      labels: pagoLabels,
+      datasets: [{
+        label: 'Total Pago',
+        data: pagoData,
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+      }],
+    },
+  });
+
+  // Deuda por Concepto
+  const ctxDeudaConcepto = document.getElementById('deudaConceptoChart').getContext('2d');
+  const deudaConceptos = <%= JSON.stringify(deudaPorConcepto) %>;
+  const deudaLabels = deudaConceptos.map(dc => dc.Concepto);
+  const deudaValues = deudaConceptos.map(dc => dc.totalDeuda);
+
+  new Chart(ctxDeudaConcepto, {
+    type: 'bar',
+    data: {
+      labels: deudaLabels,
+      datasets: [{
+        label: 'Deuda por Concepto',
+        data: deudaValues,
+        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+        borderColor: 'rgba(153, 102, 255, 1)',
+        borderWidth: 1,
+      }],
+    },
+  });
+
+  // Pagos por Método
+  const ctxPagosMetodo = document.getElementById('pagosMetodoChart').getContext('2d');
+  const pagosMetodos = <%= JSON.stringify(pagosPorMetodo) %>;
+  const metodoLabels = pagosMetodos.map(pm => pm.Metodo);
+  const metodoValues = pagosMetodos.map(pm => pm.totalPagos);
+
+  new Chart(ctxPagosMetodo, {
+    type: 'doughnut',
+    data: {
+      labels: metodoLabels,
+      datasets: [{
+        data: metodoValues,
+        backgroundColor: [
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+        ],
+        borderColor: [
+          'rgba(75, 192, 192, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(255, 206, 86, 1)',
+        ],
+        borderWidth: 1,
+      }],
+    },
+  });
+</script>
