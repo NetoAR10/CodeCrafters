@@ -1,5 +1,6 @@
 const Usuario = require('../models/usuario.model');
 const bcrypt = require ('bcryptjs');
+const crpyto = require('crypto');
 
 exports.get_login = (request, response, next) => {
     const error = request.session.error || '';
@@ -138,11 +139,17 @@ exports.post_forgot = (request, response, next) => {
     Usuario.fetchOne(correo).then(([users, fieldData]) => {
         if (users.length === 1) {
             console.log('Correo ingresado: ', correo);
+            const generateResetToken = () => {
+                return require('crypto').randomBytes(32).toString('hex');
+                
+            }
+            const resetToken = generateResetToken();
+            console.log('Reset Token:', resetToken);
         } else {
             console.log('Error: No se ha encontrado este correo en la base de datos.');
         } 
     }).catch((error) => {
-        console.log('Error');
+        console.log('Error', error);
     });
 }
 
