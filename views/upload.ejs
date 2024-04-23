@@ -13,8 +13,7 @@
             <div class="title_upload">
                 <h1>Cargar Archivo CSV</h1>
             </div>
-            <form action="/upload" method="post" enctype="multipart/form-data">
-                <!-- Campo oculto para el token CSRF -->
+            <form action="/user/admin/upload" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <div class="file_input_container">
                     <label for="file" class="file_label">

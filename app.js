@@ -20,6 +20,8 @@ app.use(session({
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(csrf());
 
 app.use(express.static(path.join(__dirname, 'public')));
 const csrfProtection = csrf();

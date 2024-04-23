@@ -20,10 +20,6 @@ exports.getUpload = (request, response, next) => {
     });
 };
 
-
-
-
-
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
 exports.postUpload = (req, res) => {
