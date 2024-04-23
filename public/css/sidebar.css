@@ -260,9 +260,14 @@ body {
     color:rgb(43, 43, 43);
 }
 
+.title_materias{
+    padding: 0 0 0 0px;
+}
+
 .page_items{
     display: flex;
     flex-direction: column;
+    padding: 0 0 0 0px;
 }
 
 .item {
@@ -444,3 +449,4 @@ form {
     transition-duration: 0.3s;
     cursor: pointer;
 }
+
