@@ -3,7 +3,7 @@ const PDFDocument = require('pdfkit');
 const path = require('path');
 const fs = require('fs');
 
-exports.getHistorialPagosGeneral = async (request, response) => {
+exports.getHistorialPagosGeneral = async (request, response,next) => {
     try {
         const [rows] = await HistorialPago.fetchAll();
         response.render('historialGeneralPagos', { 
@@ -18,14 +18,16 @@ exports.getHistorialPagosGeneral = async (request, response) => {
         response.status(500).send('Error al obtener el historial de pagos');
     }
 
-exports.get_buscar = (request, response, next) => {
-    ListaUsuario.search(request.params.valor_busqueda || '')
-    .then(([usuariosDB, fieldData]) => {
-        return response.status(200).json({usuariosDB: usuariosDB})
+    }
+
+exports.getBuscarHistorial = (request, response, next) => {
+    HistorialPago.search(request.params.valor_busqueda || '')
+    .then(([rows, fieldData]) => {
+        response.status(200).json(rows);
     })
-    .catch((error) => {console.log(error)});
-}
-
+    .catch((error) => {
+        console.error('Error en la búsqueda:', error);
+        response.status(500).send('Error al realizar la búsqueda');
+    });
 };
-
 

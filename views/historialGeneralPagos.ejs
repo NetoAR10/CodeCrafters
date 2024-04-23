@@ -10,8 +10,10 @@
 <body>
     <div class="page_content">
         <h1>Historial de Pagos General</h1>
-        <table id="USUARIOS">
-            <thead>
+        <input id="buscar" class="buscar" type="text" placeholder="Buscar"/><br><br>
+        <div id="respuesta_ajax">
+        <table id="USUARIOS"> 
+           <thead>
                 <tr>
                     <th>Pago</th>
 		    <th>Porcentaje Pagado</th>
@@ -21,7 +23,12 @@
                     <th>Cantidad Pagada</th>
                     <th>Método</th>
                     <th>Banco</th>
+                    <th>Concepto</th>
                     <th>Nota</th>
+                    <th>Fecha límite</th>
+                    <th>Borrar Pago</th>
+                    <th>Borrar Pago</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -35,12 +42,94 @@
                         <td><%= pago.Cant_pagada.toFixed(2) %></td>
                         <td><%= pago.Metodo %></td>
                         <td><%= pago.Banco %></td>
+                        <td><%= pago.Concepto %></td>
                         <td><%= pago.Nota %></td>
+                        <td><%= pago.Fecha_limite %></td>
                     </tr>
                 <% }); %>
             </tbody>
         </table>
         
     </div>
+
+<script>
+const accion_asincrona = () => {
+    console.log('Buscando...');
+    const valor_busqueda = document.getElementById('buscar').value;
+    // función que manda la petición asincrónica
+    fetch('/user/admin/historial-pagos-general/buscar/' + valor_busqueda, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then((result) => {
+        console.log(result);
+        return result.json(); // Regresa otra promesa
+    }).then((data) => {
+        console.log(data);
+        let html = '';
+        
+        html += `
+            <div class="tabla">
+        `;
+        
+        if (data.length < 1) {
+            html += `
+            <div class="notification">
+                No existe el usuario.
+            </div>
+            `;
+        }
+
+        html += `
+        <table id="HISTORIAL_PAGOS">
+            <tr>
+                <th>Pago</th>
+                <th>Porcentaje Pagado</th>
+                <th>Referencia</th>
+                <th>Nombre</th>
+                <th>Fecha de Pago</th>
+                <th>Cantidad Pagada</th>
+                <th>Método</th>
+                <th>Banco</th>
+                <th>Concepto</th>
+                <th>Nota</th>
+                <th>Fecha Límite</th>
+            </tr>
+        `;
+
+        for (let pago of data) {
+            html += `
+            <tr>
+                <td>${pago.Mes}</td>
+                <td>${(pago.PorcentajePagado * 100).toFixed(2)}%</td>
+                <td>${pago.Referencia}</td>
+                <td>${pago.Nombre}</td>
+                <td>${new Date(pago.Fecha_de_pago).toISOString().slice(0, 10)}</td>
+                <td>${pago.Cant_pagada.toFixed(2)}</td>
+                <td>${pago.Metodo}</td>
+                <td>${pago.Banco}</td>
+                <td>${pago.Concepto}</td>
+                <td>${pago.Nota}</td>
+                <td>${pago.Fecha_limite ? pago.Fecha_limite.toISOString().slice(0, 10) : ''}</td>
+            </tr>
+            `;
+        }
+
+        html += `
+        </table>
+        </div>
+        `;
+
+        document.getElementById('respuesta_ajax').innerHTML = html;
+    }).catch((error) => {
+        console.error('Error en la búsqueda:', error);
+        document.getElementById('respuesta_ajax').innerHTML = '<div class="notification">Error en la búsqueda.</div>';
+    });
+};
+
+document.getElementById('buscar').onkeyup = accion_asincrona;
+</script>
 </body>
 </html>
+

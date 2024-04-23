@@ -32,42 +32,20 @@ module.exports = class ListaUsuario {
             AND t.IDRol = r.IDRol
             AND u.Nombre LIKE ?`,['%' + valor_busqueda + '%']);
     }
-
-    static desactivar(correo){
-        return db.execute(`
-        UPDATE usuario
-        SET Alumno_activo = 0
-        WHERE Correo_electronico = ?`,[correo]);
-    }
-
-    static reactivar(correo){
-        return db.execute(`
-        UPDATE usuario
-        SET Alumno_activo = 1
-        WHERE Correo_electronico = ?`,[correo]);
-    }   
         
     static historialDePagos(Correo_electronico) {
     	return db.execute(
         `SELECT usuario.Nombre, usuario.Matricula,
-        pago.Cant_pagada, pago.Fecha_de_pago, pago.Metodo, pago.Banco, pago.Nota, pago.Prorroga
+        pago.Cant_pagada, pago.Fecha_de_pago, pago.Metodo, pago.Banco, pago.Nota,
+	deuda.Concepto, deuda.Fecha_limite
         FROM usuario
         JOIN pago ON usuario.IDUsuario = pago.IDUsuario
+	JOIN deuda ON pago.IDDeuda
         WHERE usuario.Correo_electronico = ?;`,
         [Correo_electronico]
     );
 
 
 }
-
-
-
-
-
 	
-
-
-	
-}
-
-    
+} 
