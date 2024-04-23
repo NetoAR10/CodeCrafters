@@ -22,7 +22,6 @@
                     <th>Método</th>
                     <th>Banco</th>
                     <th>Nota</th>
-                    <th>Acciones</th> <!-- Agregar columna para el botón de descarga -->
                 </tr>
             </thead>
             <tbody>
@@ -36,14 +35,14 @@
                         <td><%= pago.Cant_pagada.toFixed(2) %></td>
                         <td><%= pago.Metodo %></td>
                         <td><%= pago.Banco %></td>
-                        <td><%= pago.Nota %></td>
-                        <td>
-                            <a href="/user/admin/historial-pagos-general/pdf" class="btn btn-primary">Descargar Ficha</a> 
-                        </td>                        
+                        <td><%= pago.Nota %></td>                       
                     </tr>
                 <% }); %>
             </tbody>
         </table>
+        <div>
+            <a href="/user/admin/historial-pagos-general/pdf" class="btn btn-primary">Descargar Ficha</a> 
+        </div> 
         
     </div>
 </body>
