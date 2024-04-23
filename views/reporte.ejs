@@ -44,8 +44,7 @@
 <script>
   // Deuda Total
   const ctxDeuda = document.getElementById('totalDeudaChart').getContext('2d');
-  const totalDeuda = <%= JSON.stringify(totalDeuda) %>;
-  const deudaLabels = ['Total Deuda'];
+  const totalDeuda = <%= JSON.stringify(totalDeuda) %>;  
   const deudaData = [totalDeuda.totalDeuda];
 
   new Chart(ctxDeuda, {
