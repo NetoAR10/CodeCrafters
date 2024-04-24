@@ -55,4 +55,30 @@ module.exports = class HistorialPago {
         return db.execute('DELETE FROM pago WHERE IDPago = ?', [IDPago]);
     }
 
+    static buscarID(IDPago) {
+    return db.execute(`
+        SELECT
+            pago.IDPago,
+            usuario.Referencia,
+            usuario.Nombre,
+            pago.Fecha_de_pago,
+            pago.Cant_pagada,
+            deuda.Total_deuda,
+            pago.Metodo,
+            pago.Banco,
+            pago.Nota,
+            deuda.Concepto,
+            deuda.Fecha_limite,
+            usuario.IDUsuario,
+            deuda.IDDeuda
+        FROM usuario
+        JOIN pago ON usuario.IDUsuario = pago.IDUsuario
+        JOIN deuda ON pago.IDDeuda = deuda.IDDeuda
+        WHERE pago.IDPago = ?`,
+	[IDPago]);
+    }
+
+
+    
 };
+

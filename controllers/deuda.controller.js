@@ -33,4 +33,13 @@ exports.getDeudas = async (req, res, next) => {
 	console.log(err);
 	res.status(500).send('Error al obtener la lista de pagos.');
      }
+}
+
+exports.getCrearDeuda = (request, response, next) => {
+    const matricula = request.query.matricula;  // Obtiene la matrícula de la URL
+    response.render('crearDeuda', {
+        csrfToken: request.csrfToken(),
+        matricula: matricula  // Pasa la matrícula a la plantilla
+    });
 };
+

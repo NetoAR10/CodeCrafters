@@ -11,23 +11,21 @@ exports.getRegistrarPago = (request, response, next) => {
 };
 
 exports.postRegistrarPago = async (request, response, next) => {
+    const { IDPago, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota } = request.body;
     try {
-        const { Matricula, Total_deuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota, Prorroga } = request.body;
-        const nuevoPago = new pago(Matricula, Total_deuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota, Prorroga);
-        await nuevoPago.save();
-        response.redirect('pagos/lista');
+        if (IDPago) {
+            // Update existing payment
+            await pago.update(IDPago, { Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota });
+            response.send('Pago creado con éxito'); // Redirect after updating
+        } else {
+            // Create new payment
+            const nuevoPago = new pago({ Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota });
+            await nuevoPago.save();
+            response.send('Pago creado con éxito'); // Redirect after creating
+        }
     } catch (err) {
         console.log(err);
-        response.status(500).send('Error al registrar el pago.');
+        response.status(500).send('Error en la operación del pago.');
     }
 };
 
-exports.getPagos = async (request, response, next) => {
-    try {
-        const [rows] = await pago.fetchAll();
-        response.render('listaPagos', { pagos: rows });
-    } catch (err) {
-        console.log(err);
-        response.status(500).send('Error al obtener la lista de pagos.');
-    }
-};

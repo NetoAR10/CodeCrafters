@@ -33,12 +33,11 @@ router.post('/usuarios/acceso_modificar/:correo', isAuth, isActive, listaUsuario
 //Registrar Pago
 router.get('/registrarPago', isAuth, isActive, pagoController.getRegistrarPago);
 router.post('/registrarPago', isAuth, isActive, pagoController.postRegistrarPago);
-router.get('/pagos/lista', isAuth, isActive, pagoController.getPagos);
 
 //Crear Deuda
-router.get('/crearDeuda', isAuth, isActive, deudaController.getCrearDeuda);
 router.post('/crearDeuda', isAuth, isActive, deudaController.postCrearDeuda);
 router.get('/deudas/lista', isAuth, isActive, deudaController.getDeudas);
+router.get('/crearDeuda', isAuth, isActive,  deudaController.getCrearDeuda);
 
 //Pagos de Alumnos
 router.get('/pagos_de_alumnos', isAuth, isActive, pagosDeAlumnosController.get_listUsers);
@@ -52,5 +51,6 @@ router.get('/historial-pagos-general', isAuth, isActive, canViewHistorialTodos, 
 router.get('/historial-pagos-general/buscar/:valor_busqueda', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getBuscarHistorial);
 router.get('/historial-pagos-general/buscar', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getBuscarHistorial);
 router.delete('/historial-pagos-general/borrar/:id', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.deletePago);
+router.get('/historial-pagos-general/editar-pago/:id',isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.editPago);
 
 module.exports = router;

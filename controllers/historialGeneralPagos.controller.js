@@ -41,5 +41,26 @@ exports.deletePago = (request, response, next) => {
             console.error('Error al eliminar el pago:', err);
             response.status(500).json({ message: 'Error al eliminar el pago.' });
         });
+}
+
+exports.editPago = async (request, response, next) => {
+    console.log('hola')
+    const IDPago = request.query.IDPago; // Recuperar ID del pago desde la query string
+    try {
+        const [pagoDetails] = await HistorialPago.buscarID(IDPago);
+        if (pagoDetails.length > 0) {
+            response.render('registrarPago', {
+                pago: pagoDetails[0],
+                titulo: 'Modificar Pago'
+            });
+        } else {
+            response.status(404).send('Pago no encontrado');
+        }
+    } catch (error) {
+        console.error('Error al obtener detalles del pago:', error);
+        response.status(500).send('Error al editar el pago');
+    }
 };
+
+
 
