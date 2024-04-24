@@ -1,6 +1,5 @@
 const Usuario = require('../models/usuario.model');
 const bcrypt = require ('bcryptjs');
-const crpyto = require('crypto');
 const nodemailer = require('nodemailer');
 const adminClient = require('../util/api_clients/adminApiClient');
 
@@ -187,6 +186,8 @@ exports.post_forgot = (request, response, next) => {
             });
 
             request.session.token = resetToken;
+
+            response.redirect('/user/forgot_password');
             
         } else {
             console.log('Error: No se ha encontrado este correo en la base de datos.');
@@ -197,10 +198,13 @@ exports.post_forgot = (request, response, next) => {
 }
 
 exports.get_cambiar = (request, response, next) => {
+    let passwordReset = false;
+    request.session.passwordReset = passwordReset;
     response.render('cambiar_contrasena', {
         resetToken: request.params.token,
         correo: request.params.correo,
         csrfToken: request.csrfToken(),
+        passwordReset: request.session.passwordReset,
     })
 }
 
@@ -209,5 +213,8 @@ exports.post_cambiar = (request, response, next) => {
     const new_password = request.body.new_password;
     console.log('new password:', new_password);
     console.log('session email:', correo);
-    Usuario.cambiar(new_password, correo);
+    Usuario.cambiar(new_password, correo).then(()=> {
+        passwordReset = true;
+        response.redirect('/user/change_password')
+    }).catch((error)=>{console.log(error)})
 }
