@@ -66,8 +66,9 @@
                           </table>
                     </div>
                 </div>
-                <form action="/user/admin/usuarios">
-                    <input type="button" name="refresh" id="refresh" value="Refrescar Tabla" onclick="console.log('Refresh')">
+                <form action="/user/admin/usuarios/actualizar" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <input type="button" name="refresh" id="refresh" value="Refrescar Tabla" onclick="actualizar()">
                 </form>
                 
             </div>
@@ -75,6 +76,29 @@
         
         
         <script>
+
+            const actualizar = () => {
+                const csrf = document.getElementById('_csrf').value;
+                fetch('/user/admin/usuarios/actualizar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'csrf-token': csrf
+                    },
+                    body: JSON.stringify()
+                }).then(result => {
+                    return result.json();
+                }).then(data => {
+                    console.log(data);
+                    
+                }).catch(err => {
+                    console.log(err);
+                })
+
+                
+
+            }
+
 
             const accion_asincrona = () => {
                 console.log('Buscando...');

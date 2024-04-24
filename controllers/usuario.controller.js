@@ -219,9 +219,3 @@ exports.post_cambiar = (request, response, next) => {
     }).catch((error)=>{console.log(error)})
 }
 
-exports.post_actualizar = (request, response, next) => {
-    Usuario.fetchAll().then(([users, fieldData]) => {
-        usuarios = users[0];
-        console.log(usuarios);
-    })
-}

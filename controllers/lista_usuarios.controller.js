@@ -1,4 +1,5 @@
 const ListaUsuario = require('../models/lista_usuarios.model');
+const Usuario = require('../models/usuario.model');
 
 exports.get_listUsers = (request, response, next) => {
     ListaUsuario.getVariosRol()
@@ -78,4 +79,10 @@ exports.post_modificarRol = (request, response, next) => {
     console.log('Rol nuevo:', nuevo_rol);
     ListaUsuario.modificarRol(nuevo_rol, IDUsuario)
     response.redirect('/user/admin/usuarios');
+}
+
+exports.post_actualizar = (request, response, next) => {
+    Usuario.fetchAllMails().then(([users, fieldData]) => {
+        console.log(users);
+    })
 }

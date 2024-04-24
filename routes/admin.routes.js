@@ -20,7 +20,7 @@ router.post('/ciclo_escolar', isAuth, isActive, cicloEscolarController.post_nuev
 router.get('/usuarios', isAuth, isActive, listaUsuariosController.get_listUsers);
 router.get('/usuarios/buscar/:valor_busqueda', isAuth, isActive, listaUsuariosController.get_buscar);
 router.get('/usuarios/buscar', isAuth, isActive, listaUsuariosController.get_buscar);
-router.post('/usuarios', isAuth, isActive, usuarioController.post_actualizar);
+router.post('/usuarios', isAuth, isActive, listaUsuariosController.post_actualizar);
 
 //Desactivar o Reactivas
 router.post('/usuarios/desactivar', isAuth, isActive, listaUsuariosController.post_desactivar);
@@ -56,7 +56,7 @@ router.get('/historial-pagos-general/buscar', isAuth, isActive, canViewHistorial
 router.delete('/historial-pagos-general/borrar/:id', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.deletePago);
 
 //Actualizar base de datos
-router.post('/actualizar');
+router.post('/usuarios/actualizar', isAuth, isActive, listaUsuariosController.post_actualizar);
 
 
 
