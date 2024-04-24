@@ -27,10 +27,10 @@ class Pago {
         ];
 
         try {
-            await db.execute(query, values); // Ejecutar la consulta SQL
+            await db.execute(query, values); 
         } catch (error) {
             console.error("Error al insertar pago:", error);
-            throw error; // Propagar el error para que el controlador lo maneje
+            throw error; 
         }
     }
 }

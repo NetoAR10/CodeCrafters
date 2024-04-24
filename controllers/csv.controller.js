@@ -1,9 +1,9 @@
 const fs = require('fs');
 const Papa = require('papaparse');
-const Pago = require('../models/csv.model'); // Cambia el modelo a 'Pago'
+const Pago = require('../models/csv.model'); 
 
 exports.getUpload = (req, res, next) => {
-    const user = req.user || {}; // Información del usuario actual
+    const user = req.user || {}; 
 
     res.render('upload.ejs', {
         correo: user.correo || "Correo desconocido",
@@ -32,7 +32,7 @@ exports.postUpload = (req, res) => {
 
         const results = Papa.parse(data, {
             header: true,
-            skipEmptyLines: true, // Ignora líneas vacías
+            skipEmptyLines: true, 
         });
 
         try {
@@ -40,17 +40,17 @@ exports.postUpload = (req, res) => {
                 IDUsuario: parseInt(row['IDUsuario']),
                 IDDeuda: parseInt(row['IDDeuda']),
                 Cant_pagada: parseFloat(row['Cant_pagada']),
-                Fecha_de_pago: row['Fecha_de_pago'], // Fecha como cadena
+                Fecha_de_pago: row['Fecha_de_pago'], 
                 Metodo: row['Metodo'],
                 Banco: row['Banco'],
                 Nota: row['Nota'],
             }));
 
             for (const pago of newPagos) {
-                await Pago.insert(pago); // Insertar el nuevo registro en la tabla 'pago'
+                await Pago.insert(pago); 
             }
 
-            fs.unlinkSync(filePath); // Elimina el archivo después de procesarlo
+            fs.unlinkSync(filePath); 
             res.status(200).send("Carga y procesamiento del archivo CSV completada.");
         } catch (error) {
             console.error("Error al insertar datos en la base de datos:", error);
