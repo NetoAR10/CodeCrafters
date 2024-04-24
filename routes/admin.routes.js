@@ -51,4 +51,7 @@ router.get('/historial-pagos-general', isAuth, isActive, canViewHistorialTodos, 
 router.get('/historial-pagos-general/buscar/:valor_busqueda', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getBuscarHistorial);
 router.get('/historial-pagos-general/buscar', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getBuscarHistorial);
 
+//Ruta para descargar historial en CSV
+router.get('/descargar-historial', isAuth, isActive, historialPagosGeneralController.descargarHistorialCSV);
+
 module.exports = router;
