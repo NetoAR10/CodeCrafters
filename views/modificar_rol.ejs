@@ -5,25 +5,33 @@
     <div class="page_content">
         <h1>Modificar Rol de Usuario <%=usuariosDB.Nombre%></h1>
         <div class="lista_atributos">
-            <br><strong>Nombre: </strong><%=usuariosDB.Nombre%><br>
+            <br><h3>Datos del Usuario</h3>
+            <strong>Nombre: </strong><%=usuariosDB.Nombre%><br>
             <strong>Rol: </strong><%=usuariosDB.Tipo_Rol%><br><br>
         </div>
         <div class="asignar_rol">
-            <div class="wrapper">
-                <strong>Asignar rol nuevo a usuario</strong><br><br>
-                1 = Administrador <br> 2 = Alumno <br> 3 = Lector
+            <div class="wrapper2">
+                <strong>Asignar rol nuevo a usuario</strong><br>
+                Selecciona uno de los siguientes roles para asignar al usuario:<br><br>
                 <form action="/user/admin/usuarios/acceso_modificar/<%= usuariosDB.Correo_electronico %>" method="POST">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <input type="hidden" name="correo" value="<%= usuariosDB.Correo_electronico %>">
                     <input type="hidden" name="IDUsuario" value="<%= usuariosDB.IDUsuario %>">
-                    <select name="nuevo_rol">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                    <button class="modifyuser" type="submit">Cambiar Rol</button>
+                    <input type="hidden" name="nuevo_rol" id="nuevo_rol" value="">
+                    <button class="rolcambio" onclick="nuevoRol(1)">Administrador</button>
+                    <button class="rolcambio" onclick="nuevoRol(2)">Alumno</button>
+                    <button class="rolcambio" onclick="nuevoRol(3)">Lector</button>
                 </form>
             </div>
         </div>
     </div>
+
+    <script>
+        function nuevoRol(newRole) {
+        document.getElementById('nuevo_rol').value = newRole;
+        document.querySelector('form').submit();
+    }
+
+    </script>
+
 </body>

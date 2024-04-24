@@ -356,7 +356,14 @@ body {
     padding: 10px 10px 10px 10px;
 }
 
-
+.wrapper2 {
+    width: 90%;
+    background: white;
+    border:2px solid grey;
+    border-radius: 10px;
+    font-size: 20px;
+    padding: 20px 20px 20px 20px;
+}
 
 .reactivateuser {
     position: relative;
@@ -437,7 +444,7 @@ form {
     color: #fff;
     border-radius: 3px;
     border: 1px solid transparent;
-    font-size: 15px;
+    font-size: 20px;
     text-decoration: none;
     padding: 4px 4px;
 }
