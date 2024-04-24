@@ -59,7 +59,15 @@ module.exports = class Usuario {
             AND p.IDPrivilegio = c.IDPrivilegio `,
             [correo]);
     }
-    
+
+    static cambiar(new_password, correo) {
+        return bcrypt.hash(new_password, 12).then((password_cifrado) => {
+            return db.execute(
+                `UPDATE usuario 
+                SET Contrasena = ? 
+                WHERE Correo_electronico = ?`,[password_cifrado, correo]);
+        })
+    }    
     
     
 

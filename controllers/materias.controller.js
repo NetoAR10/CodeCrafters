@@ -8,7 +8,7 @@ exports.get_materias = async (request, response, next) => {
     mat = matricula[0][0].matricula;
     //console.log(mat)
     ciclo = await materia.fecthCicloEscolar(request.session.correo)
-    //console.log(ciclo);
+    console.log(ciclo);
     nomCiclo = ciclo[0][0].ciclo;
     IDCicExt = ciclo[0][0].IDCicloEXT;
     cicActivo = ciclo[0][0].ciclo_Activo;

@@ -61,6 +61,23 @@ async function getUserGroups(cycle_id, user_ivd_id) {
     },
   )
   return response.data
+
 } 
 
-module.exports = {getUserById, getUserGroups}
+async function getAllUsers(){
+  const token = await getToken()
+  const headers = getHeaders(token)
+  const response = await axiosAdminClient.get(
+    'v1/users/all',
+    {
+      headers,
+      params: {
+        type: 'Users::Student'
+      },
+    }
+  )
+  return response.data
+
+}
+
+module.exports = {getUserById, getUserGroups, getAllUsers}

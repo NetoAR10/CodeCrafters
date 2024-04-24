@@ -6,6 +6,8 @@ app.set('views', 'views');
 
 const session = require('express-session');
 const csrf = require('csurf');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 const bodyParser = require('body-parser');
 const path = require('path');
 
@@ -15,6 +17,9 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
 }));
+
+
+
 
 // Middlewares
 app.use(bodyParser.urlencoded({extended: false}));

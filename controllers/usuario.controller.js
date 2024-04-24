@@ -1,5 +1,7 @@
 const Usuario = require('../models/usuario.model');
 const bcrypt = require ('bcryptjs');
+const nodemailer = require('nodemailer');
+const adminClient = require('../util/api_clients/adminApiClient');
 
 exports.get_login = (request, response, next) => {
     const error = request.session.error || '';
@@ -88,6 +90,8 @@ exports.get_signup = (request, response, next) => {
         correo: request.session.correo || '',
         registrar: true,
         error: error,
+        rol: request.session.roles,
+        nombre: request.session.nombre,
         csrfToken: request.csrfToken(),
         permisos: request.session.permisos || [],
     })
@@ -119,6 +123,98 @@ exports.post_signup = (request, response, next) => {
         });
 };
 
-exports.get_forgot = (request, response, next) => {
-    response.render('olvido_contrasena');
+exports.get_forgot = async (request, response, next) => {
+    try {
+        const allUsers = await adminClient.getAllUsers()
+        console.log(allUsers);
+    }
+    catch {
+        console.log('Error')
+    }
+
+
+
+    Usuario.fetchAll()
+    .then(([users, fieldData]) => {
+        response.render('restablecer_contrasena', {
+            usuariosDB: users,
+            csrfToken: request.csrfToken(),
+        });
+    })
+    .catch((error) => {
+        console.log(error);
+    })
+}
+
+
+exports.post_forgot = (request, response, next) => {
+    const correo = request.body.correo;
+    request.session.correo = correo;
+    Usuario.fetchOne(correo).then(([users, fieldData]) => {
+        if (users.length === 1) {
+            const generateResetToken = () => {
+                return require('crypto').randomBytes(32).toString('hex');
+                
+            }
+            const resetToken = generateResetToken();
+            const encodedEmail = encodeURIComponent(correo);
+            const encodedToken = encodeURIComponent(resetToken);
+            const resetURL = `http://localhost:2050/user/change_password/${encodedEmail}/${encodedToken}`;
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'testing20242304@gmail.com',
+                    pass: 'mwks ltuh hxmm fwcc',
+                },
+            });
+            const mailOptions = {
+                from: 'testing20242304@gmail.com',
+                to: correo,
+                subject: 'Password Reset',
+                text: `Has solicitado un cambio de contraseña. Haz clic en el siguiente link para restablecer tu contraseña.
+                
+                ${resetURL}`,
+            };
+
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log(error);
+
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            });
+
+            request.session.token = resetToken;
+
+            response.redirect('/user/forgot_password');
+            
+        } else {
+            console.log('Error: No se ha encontrado este correo en la base de datos.');
+        } 
+    }).catch((error) => {
+        console.log('Error', error);
+    });
+}
+
+exports.get_cambiar = (request, response, next) => {
+    let passwordReset = false;
+    request.session.passwordReset = passwordReset;
+    response.render('cambiar_contrasena', {
+        resetToken: request.params.token,
+        correo: request.params.correo,
+        csrfToken: request.csrfToken(),
+        passwordReset: request.session.passwordReset,
+    })
+}
+
+exports.post_cambiar = (request, response, next) => {
+    const correo = decodeURIComponent(request.body.correo);
+    const new_password = request.body.new_password;
+    console.log('new password:', new_password);
+    console.log('session email:', correo);
+    Usuario.cambiar(new_password, correo).then(()=> {
+        passwordReset = true;
+        response.redirect('/user/change_password')
+    }).catch((error)=>{console.log(error)})
 }
