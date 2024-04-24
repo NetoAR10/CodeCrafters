@@ -14,6 +14,7 @@ exports.getUpload = (req, res, next) => {
         canUpload: req.canUpload || false,
         canConsultReports: req.canConsultReports || false,
         canConsultUsers: req.canConsultUsers || false,
+        csrfToken: req.csrfToken(),
     });
 };
 
