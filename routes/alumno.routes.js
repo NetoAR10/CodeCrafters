@@ -17,6 +17,6 @@ router.post('/contactar_admin', isAuth, materiasController.post_contactar_admin)
 router.get('/historial-pagos', isAuth, historialPersonalController.getHistorialPagosPersonal);
 
 // Descargar Ficha
-router.get('/descargar-ficha-personal', historialPersonalController.descargarFichaPagoPersonal);
+router.get('/descargar-ficha-personal/pdf', historialPersonalController.descargarFichaPagoPersonal);
 
 module.exports = router;
