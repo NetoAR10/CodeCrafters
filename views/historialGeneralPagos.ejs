@@ -17,7 +17,7 @@
            <thead>
                 <tr>
                     <th>Pago</th>
-		    <th>Porcentaje Pagado</th>
+		            <th>Porcentaje Pagado</th>
                     <th>Referencia</th>
                     <th>Nombre</th>
                     <th>Fecha de Pago</th>
@@ -48,7 +48,7 @@
                         <td><%= pago.Fecha_limite %></td>
                         <td></td>
                         <td>
-                            <button onclick="borrarPago(<%= pago.IDPago %>)">Borrar</button>
+                            <button onclick="borrarPago('<%= pago.IDPago %>')">Borrar</button>
                         </td>
                     </tr>
                 <% }); %>
@@ -87,7 +87,7 @@ const accion_asincrona = () => {
         }
 
         html += `
-        <table id="HISTORIAL_PAGOS">
+        <table id="USUARIOS">
             <tr>
                 <th>Pago</th>
                 <th>Porcentaje Pagado</th>
@@ -100,8 +100,8 @@ const accion_asincrona = () => {
                 <th>Concepto</th>
                 <th>Nota</th>
                 <th>Fecha Límite</th>
-                <td>Modificar Pago</td>
-                <td>Borrar Pago</td>
+                <th>Modificar Pago</th>
+                <th>Borrar Pago</th>
             </tr>
         `;
 

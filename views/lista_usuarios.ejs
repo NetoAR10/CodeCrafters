@@ -52,9 +52,9 @@
                                 <% } else if (user.Alumno_activo == 0) { %>
                                     onclick="reactivar('<%= user.Correo_electronico %>')"
                                 <% } %>>
-                                <% if (user.Alumno_activo == 1) { %>
+                                <% if (user.Alumno_activo === 1) { %>
                                     Desactivar
-                                <% } else if (user.Alumno_activo == 0) { %>
+                                <% } else { %>
                                     Reactivar
                                 <% } %>
                                 </a> </td>
