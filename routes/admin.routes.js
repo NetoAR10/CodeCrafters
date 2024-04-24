@@ -6,6 +6,7 @@ const canResgisterCiclo = require('../util/can-register-ciclo');
 const listaUsuariosController = require('../controllers/lista_usuarios.controller');
 const pagoController = require('../controllers/rPago.controller');
 const deudaController = require('../controllers/deuda.controller');
+const usuarioController = require('../controllers/usuario.controller');
 const pagosDeAlumnosController = require('../controllers/pagos_de_alumnos.controller');
 const historialPagosGeneralController = require('../controllers/historialGeneralPagos.controller');
 const isActive = require('../util/is-active');
@@ -19,6 +20,7 @@ router.post('/ciclo_escolar', isAuth, isActive, cicloEscolarController.post_nuev
 router.get('/usuarios', isAuth, isActive, listaUsuariosController.get_listUsers);
 router.get('/usuarios/buscar/:valor_busqueda', isAuth, isActive, listaUsuariosController.get_buscar);
 router.get('/usuarios/buscar', isAuth, isActive, listaUsuariosController.get_buscar);
+router.post('/usuarios', isAuth, isActive, usuarioController.post_actualizar);
 
 //Desactivar o Reactivas
 router.post('/usuarios/desactivar', isAuth, isActive, listaUsuariosController.post_desactivar);
@@ -45,10 +47,17 @@ router.get('/pagos_de_alumnos', isAuth, isActive, pagosDeAlumnosController.get_l
 router.get('/pagos_de_alumnos/buscar/:valor_busqueda', isAuth, isActive, pagosDeAlumnosController.get_buscar);
 router.get('/pagos_de_alumnos/buscar', isAuth, isActive, pagosDeAlumnosController.get_buscar);
 router.get('/pagos_de_alumnos/historial/:id', isAuth, isActive, pagosDeAlumnosController.getHistorialDePagos);
+router.get('/pagos_de_alumnos/deudas/:id', isAuth, isActive, pagosDeAlumnosController.getHistorialDeDeudas);
 
 // Ruta para Historial de Pagos General
 router.get('/historial-pagos-general', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getHistorialPagosGeneral);
 router.get('/historial-pagos-general/buscar/:valor_busqueda', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getBuscarHistorial);
 router.get('/historial-pagos-general/buscar', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getBuscarHistorial);
+router.delete('/historial-pagos-general/borrar/:id', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.deletePago);
+
+//Actualizar base de datos
+router.post('/actualizar');
+
+
 
 module.exports = router;

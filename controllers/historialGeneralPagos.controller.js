@@ -29,5 +29,17 @@ exports.getBuscarHistorial = (request, response, next) => {
         console.error('Error en la búsqueda:', error);
         response.status(500).send('Error al realizar la búsqueda');
     });
+}
+
+exports.deletePago = (request, response, next) => {
+    const IDPago = request.params.id;
+    HistorialPago.delete(IDPago)
+        .then(() => {
+            response.json({ message: 'Pago eliminado correctamente.' });
+        })
+        .catch(err => {
+            console.error('Error al eliminar el pago:', err);
+            response.status(500).json({ message: 'Error al eliminar el pago.' });
+        });
 };
 

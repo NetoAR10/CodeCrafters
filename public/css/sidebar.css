@@ -457,3 +457,22 @@ form {
     cursor: pointer;
 }
 
+#refresh {
+    position: relative;
+    background-color: #6c0404;
+    color: #fff;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    font-size: 15px;
+    text-decoration: none;
+    padding: 4px 4px;
+    margin: 10px 0;
+}
+
+#refresh:hover {
+    background-color: #fff;
+    color: #6c0404;
+    border: 1px solid #6c0404;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}

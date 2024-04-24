@@ -18,4 +18,7 @@ router.get('/change_password/:correo/:resetToken', usuariosController.get_cambia
 router.get('/change_password', usuariosController.get_cambiar);
 router.post('/change_password', usuariosController.post_cambiar);
 
+//Dar de alta usuario
+router.post('/dar_alta')
+
 module.exports = router;

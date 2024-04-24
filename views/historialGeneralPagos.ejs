@@ -9,6 +9,7 @@
 </head>
 <body>
     <div class="page_content">
+    <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" >
         <h1>Historial de Pagos General</h1>
         <input id="buscar" class="buscar" type="text" placeholder="Buscar"/><br><br>
         <div id="respuesta_ajax">
@@ -16,7 +17,7 @@
            <thead>
                 <tr>
                     <th>Pago</th>
-		    <th>Porcentaje Pagado</th>
+		            <th>Porcentaje Pagado</th>
                     <th>Referencia</th>
                     <th>Nombre</th>
                     <th>Fecha de Pago</th>
@@ -45,6 +46,10 @@
                         <td><%= pago.Concepto %></td>
                         <td><%= pago.Nota %></td>
                         <td><%= pago.Fecha_limite %></td>
+                        <td></td>
+                        <td>
+                            <button onclick="borrarPago('<%= pago.IDPago %>')">Borrar</button>
+                        </td>
                     </tr>
                 <% }); %>
             </tbody>
@@ -82,7 +87,7 @@ const accion_asincrona = () => {
         }
 
         html += `
-        <table id="HISTORIAL_PAGOS">
+        <table id="USUARIOS">
             <tr>
                 <th>Pago</th>
                 <th>Porcentaje Pagado</th>
@@ -95,6 +100,8 @@ const accion_asincrona = () => {
                 <th>Concepto</th>
                 <th>Nota</th>
                 <th>Fecha Límite</th>
+                <th>Modificar Pago</th>
+                <th>Borrar Pago</th>
             </tr>
         `;
 
@@ -112,6 +119,10 @@ const accion_asincrona = () => {
                 <td>${pago.Concepto}</td>
                 <td>${pago.Nota}</td>
                 <td>${pago.Fecha_limite ? pago.Fecha_limite.toISOString().slice(0, 10) : ''}</td>
+                <td></td>
+                <td>
+                    <button onclick="borrarPago(${pago.IDPago})">Borrar</button>
+                </td>
             </tr>
             `;
         }
@@ -127,6 +138,32 @@ const accion_asincrona = () => {
         document.getElementById('respuesta_ajax').innerHTML = '<div class="notification">Error en la búsqueda.</div>';
     });
 };
+
+function borrarPago(IDPago) {
+    if(confirm('¿Estás seguro de que quieres eliminar este pago?')) {
+        fetch('/user/admin/historial-pagos-general/borrar/' + IDPago, {
+            method: 'DELETE',
+            headers: {
+        // Incluir el token CSRF en las cabeceras de la solicitud
+               'CSRF-Token': document.querySelector('input[name="_csrf"]').value
+      },
+      credentials: 'include'
+        })
+        .then(response => {
+            if(response.ok) {
+                return response.json();
+            }
+            throw new Error('Error al borrar el pago.');
+        })
+        .then(data => {
+            // Eliminar la fila de la tabla del pago borrado
+            document.querySelector('#fila-pago-' + IDPago).remove();
+            // Podrías querer actualizar tu tabla o hacer otra búsqueda aquí para reflejar los cambios
+            accion_asincrona(); // Si quieres refrescar la lista después de borrar un pago
+        })
+        .catch(error => console.error('Error:', error));
+    }
+}
 
 document.getElementById('buscar').onkeyup = accion_asincrona;
 </script>
