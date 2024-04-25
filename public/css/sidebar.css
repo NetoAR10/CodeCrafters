@@ -450,3 +450,16 @@ form {
     cursor: pointer;
 }
 
+.payment_plan {
+    position: fixed;   /* Posicionamiento fijo en la pantalla */
+    top: 200;          /* Centrado verticalmente */
+    right: 400;          /* Alineado a la derecha */
+    transform: translateY(-50%); /* Centrado perfecto */
+    width: 400px;      /* Ancho del elemento */
+    background-color: #f4f4f4; /* Color de fondo */
+    padding: 10px;     /* Espaciado interno */
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* Sombra para destacar */
+    text-align: center; /* Texto centrado */
+    z-index: 1000;     /* Asegura que esté por encima de otros elementos */
+}
+
