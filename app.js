@@ -11,28 +11,26 @@ const path = require('path');
 
 // Configuración de la sesión
 app.use(session({
-  secret: 'mi string secreto que debe ser un string aleatorio muy largo, no como éste',
+  secret: 'string secreto muy largo', // Usa un string seguro y largo
   resave: false,
   saveUninitialized: false,
 }));
 
 // Middlewares
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
 app.use(express.static(path.join(__dirname, 'public')));
+
 const csrfProtection = csrf();
 app.use(csrfProtection);
 
 app.use((request, response, next) => {
-    response.locals.csrfToken = request.csrfToken(); // Asegúrate de enviar el token CSRF a las vistas
+    response.locals.csrfToken = request.csrfToken(); // Enviar token CSRF a las vistas
     next();
 });
 
 // Rutas
-
-
 const rutasAlumno = require('./routes/alumno.routes');
 app.use('/user/alumno', rutasAlumno);
 
@@ -48,7 +46,6 @@ app.use('/user', rutasUsuario);
 const rutasHome = require('./routes/home.routes');
 app.use('/', rutasHome);
 
-
 // Manejo de errores de 404
 app.use((request, response, next) => {
   response.status(404);
@@ -58,6 +55,7 @@ app.use((request, response, next) => {
 });
 
 // Iniciar el servidor
-app.listen(2050, () => {
-  console.log('El servidor está corriendo en el puerto 2050');
+const PORT = process.env.PORT || 2050; 
+app.listen(PORT, () => {
+  console.log(`El servidor está corriendo en el puerto ${PORT}`); 
 });
