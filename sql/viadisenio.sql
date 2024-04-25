@@ -1,0 +1,845 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost
+-- Generation Time: Apr 23, 2024 at 08:49 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `viadisenio`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `causan`
+--
+
+CREATE TABLE `causan` (
+  `IDCausan` int(11) NOT NULL,
+  `IDDeuda` int(11) DEFAULT NULL,
+  `IDMateria` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `causan`
+--
+
+INSERT INTO `causan` (`IDCausan`, `IDDeuda`, `IDMateria`) VALUES
+(94, 111, 126),
+(154, 767, 55),
+(219, 119, 768),
+(261, 588, 293),
+(280, 550, 605),
+(478, 566, 524),
+(499, 328, 269),
+(535, 572, 483),
+(554, 181, 677),
+(600, 825, 264),
+(702, 675, 526),
+(743, 660, 583),
+(803, 894, 82),
+(856, 617, 327),
+(886, 253, 586),
+(894, 857, 909),
+(903, 882, 693),
+(957, 290, 319),
+(1001, 449, 300),
+(1002, 956, 800),
+(1003, 21, 217),
+(1004, 76, 513),
+(1005, 305, 556),
+(1006, 445, 249),
+(1007, 529, 749),
+(1008, 750, 195),
+(1009, 702, 139),
+(1010, 596, 991),
+(1011, 683, 922),
+(1012, 87, 419),
+(1013, 885, 554),
+(1014, 385, 745),
+(1015, 185, 44),
+(1016, 48, 954),
+(1017, 839, 120),
+(1018, 309, 268),
+(1019, 175, 866),
+(1020, 806, 676),
+(1021, 29, 646),
+(1022, 412, 224),
+(1023, 58, 838),
+(1024, 174, 487),
+(1025, 787, 778),
+(94, 111, 126),
+(154, 767, 55),
+(219, 119, 768),
+(261, 588, 293),
+(280, 550, 605),
+(478, 566, 524),
+(499, 328, 269),
+(535, 572, 483),
+(554, 181, 677),
+(600, 825, 264),
+(702, 675, 526),
+(743, 660, 583),
+(803, 894, 82),
+(856, 617, 327),
+(886, 253, 586),
+(894, 857, 909),
+(903, 882, 693),
+(957, 290, 319),
+(1001, 449, 300),
+(1002, 956, 800),
+(1003, 21, 217),
+(1004, 76, 513),
+(1005, 305, 556),
+(1006, 445, 249),
+(1007, 529, 749),
+(1008, 750, 195),
+(1009, 702, 139),
+(1010, 596, 991),
+(1011, 683, 922),
+(1012, 87, 419),
+(1013, 885, 554),
+(1014, 385, 745),
+(1015, 185, 44),
+(1016, 48, 954),
+(1017, 839, 120),
+(1018, 309, 268),
+(1019, 175, 866),
+(1020, 806, 676),
+(1021, 29, 646),
+(1022, 412, 224),
+(1023, 58, 838),
+(1024, 174, 487),
+(1025, 787, 778);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cicloescolar`
+--
+
+CREATE TABLE `cicloescolar` (
+  `IDCiclo` int(11) NOT NULL,
+  `Ciclo` varchar(30) DEFAULT NULL,
+  `Fecha_Inicio` date DEFAULT NULL,
+  `Fecha_Fin` date DEFAULT NULL,
+  `Ciclo_activo` tinyint(1) NOT NULL,
+  `Precio_credito` int(11) DEFAULT NULL,
+  `IDCicloEXT` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cicloescolar`
+--
+
+INSERT INTO `cicloescolar` (`IDCiclo`, `Ciclo`, `Fecha_Inicio`, `Fecha_Fin`, `Ciclo_activo`, `Precio_credito`, `IDCicloEXT`) VALUES
+(1, '2024-1', '2024-01-01', '2024-06-29', 1, 1249, 0),
+(2, '2024-2', '2024-06-30', '2024-12-27', 0, 1177, 0),
+(3, '2024-3', '2024-12-28', '2025-06-26', 1, 1481, 0),
+(4, '2024-4', '2025-06-27', '2025-12-24', 0, 1816, 0),
+(5, '2024-5', '2025-12-25', '2026-06-23', 1, 1178, 0),
+(6, '2024-6', '2026-06-24', '2026-12-21', 0, 1664, 0),
+(7, '2024-7', '2026-12-22', '2027-06-20', 1, 1356, 0),
+(8, '2024-8', '2027-06-21', '2027-12-18', 0, 1089, 0),
+(9, '2024-9', '2027-12-19', '2028-06-16', 1, 1170, 0),
+(10, '2024-10', '2028-06-17', '2028-12-14', 0, 1204, 0),
+(11, '2024-11', '2028-12-15', '2029-06-13', 1, 1782, 0),
+(12, '2024-12', '2029-06-14', '2029-12-11', 0, 1621, 0),
+(13, '2024-13', '2029-12-12', '2030-06-10', 1, 1208, 0),
+(14, '2024-14', '2030-06-11', '2030-12-08', 0, 1775, 0),
+(15, '2024-15', '2030-12-09', '2031-06-07', 1, 1958, 0),
+(16, '2024-16', '2031-06-08', '2031-12-05', 0, 1914, 0),
+(17, '2024-17', '2031-12-06', '2032-06-03', 1, 1586, 0),
+(18, '2024-18', '2032-06-04', '2032-12-01', 0, 1507, 0),
+(19, '2024-19', '2032-12-02', '2033-05-31', 1, 1193, 0),
+(20, '2024-20', '2033-06-01', '2033-11-28', 0, 1917, 0),
+(21, '2024-21', '2033-11-29', '2034-05-28', 1, 1510, 0),
+(22, '2024-22', '2034-05-29', '2034-11-25', 0, 1048, 0),
+(23, '2024-23', '2034-11-26', '2035-05-25', 1, 1862, 0),
+(24, '2024-24', '2035-05-26', '2035-11-22', 0, 1641, 0),
+(28, 'Enero - Junio 2024', '2024-04-02', '2024-04-28', 1, 87878, 0),
+(29, 'Enero - Junio 2024', '2024-04-02', '2024-04-27', 1, 555, 13),
+(30, 'Enero - Junio 2024', '2024-04-02', '2024-05-03', 1, 123, 0),
+(31, 'Enero - Junio 2024', '2024-04-02', '2024-04-28', 1, 555, 0),
+(32, 'Julio - Diciembre 2024', '2024-07-12', '2024-12-05', 0, 678, 0),
+(33, '', '0000-00-00', '0000-00-00', 1, 0, 0),
+(34, '', '0000-00-00', '0000-00-00', 1, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contiene`
+--
+
+CREATE TABLE `contiene` (
+  `IDContiene` int(11) NOT NULL,
+  `IDRol` int(11) DEFAULT NULL,
+  `IDPrivilegio` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `contiene`
+--
+
+INSERT INTO `contiene` (`IDContiene`, `IDRol`, `IDPrivilegio`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 1, 4),
+(5, 1, 5),
+(6, 1, 6),
+(7, 1, 7),
+(8, 1, 8),
+(9, 1, 9),
+(10, 1, 10),
+(11, 1, 11),
+(12, 1, 12),
+(13, 1, 13),
+(14, 1, 14),
+(15, 2, 10),
+(16, 2, 14),
+(17, 3, 1),
+(18, 3, 2),
+(19, 3, 4),
+(20, 3, 9),
+(21, 3, 10),
+(22, 3, 12),
+(26, 1, 15);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `deuda`
+--
+
+CREATE TABLE `deuda` (
+  `IDDeuda` int(11) NOT NULL,
+  `IDUsuario` int(11) DEFAULT NULL,
+  `Total_deuda` float DEFAULT NULL,
+  `Plan_pago` varchar(50) DEFAULT NULL,
+  `Concepto` varchar(50) DEFAULT NULL,
+  `Mes` varchar(20) DEFAULT NULL,
+  `Fecha_limite` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `deuda`
+--
+
+INSERT INTO `deuda` (`IDDeuda`, `IDUsuario`, `Total_deuda`, `Plan_pago`, `Concepto`, `Mes`, `Fecha_limite`) VALUES
+(1, 39, 7626.82, 'Mensual', 'Colegiatura', 'Julio', NULL),
+(2, 46, 9132.64, 'Bimestral', 'Colegiatura', 'Abril', NULL),
+(3, 8, 502.38, 'Bimestral', 'Colegiatura', 'Diciembre', NULL),
+(4, 27, 1156.18, 'Trimestral', 'Material', 'Julio', NULL),
+(5, 12, 3720.85, 'Mensual', 'Colegiatura', 'Mayo', NULL),
+(6, 20, 4669.78, 'Bimestral', 'Inscripción', 'Noviembre', NULL),
+(7, 16, 2601.81, 'Mensual', 'Material', 'Diciembre', NULL),
+(8, 26, 6074.04, 'Bimestral', 'Inscripción', 'Abril', NULL),
+(9, 21, 811.57, 'Bimestral', 'Material', 'Septiembre', NULL),
+(10, 7, 5680.25, 'Mensual', 'Material', 'Abril', NULL),
+(11, 29, 4305.47, 'Bimestral', 'Colegiatura', 'Octubre', NULL),
+(12, 1, 3132.31, 'Trimestral', 'Inscripción', 'Diciembre', NULL),
+(13, 19, 7084.32, 'Trimestral', 'Inscripción', 'Diciembre', NULL),
+(14, 47, 1503.99, 'Mensual', 'Inscripción', 'Julio', NULL),
+(15, 32, 5036.65, 'Trimestral', 'Inscripción', 'Abril', NULL),
+(16, 31, 5705.96, 'Trimestral', 'Material', 'Septiembre', NULL),
+(17, 39, 8882.99, 'Bimestral', 'Colegiatura', 'Mayo', NULL),
+(18, 37, 4729.32, 'Bimestral', 'Colegiatura', 'Julio', NULL),
+(19, 33, 8554.31, 'Bimestral', 'Material', 'Junio', NULL),
+(20, 31, 5020.48, 'Bimestral', 'Material', 'Junio', NULL),
+(21, 41, 5603.88, 'Mensual', 'Inscripción', 'Febrero', NULL),
+(22, 28, 8166.53, 'Trimestral', 'Inscripción', 'Mayo', NULL),
+(23, 43, 2381.81, 'Mensual', 'Material', 'Marzo', NULL),
+(24, 34, 5569.51, 'Mensual', 'Colegiatura', 'Mayo', NULL),
+(25, 24, 6616.12, 'Trimestral', 'Colegiatura', 'Julio', NULL),
+(26, 200001, 5000, 'Mensual', 'Colegiatura', 'Octubre', NULL),
+(27, 200002, 3000, 'Bimestral', 'Inscripción', 'Septiembre', NULL),
+(28, 200003, 4500, 'Mensual', 'Material', 'Noviembre', NULL),
+(29, 200004, 6000, 'Bimestral', 'Colegiatura', 'Octubre', NULL),
+(30, 200005, 2500, 'Mensual', 'Inscripción', 'Noviembre', NULL),
+(31, 1, 5000, 'Mensual', 'Colegiatura', 'Enero', '2024-12-31'),
+(100, 36, 2500, 'Mensual', 'Colegiatura', 'Abril', '2024-04-30'),
+(101, 36, 3000, 'Bimestral', 'Inscripción', 'Mayo', '2024-05-30'),
+(102, 36, 3500, 'Trimestral', 'Material', 'Junio', '2024-06-30');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `materias`
+--
+
+CREATE TABLE `materias` (
+  `IDMateria` int(11) NOT NULL,
+  `Nombre_mat` varchar(255) DEFAULT NULL,
+  `Creditos` decimal(10,2) DEFAULT NULL,
+  `IDMateriaEXT` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `materias`
+--
+
+INSERT INTO `materias` (`IDMateria`, `Nombre_mat`, `Creditos`, `IDMateriaEXT`) VALUES
+(1, 'Fundamentos del Diseño', 6.00, NULL),
+(2, 'Textiles', 6.00, NULL),
+(3, 'Ilustración técnica de la Moda I', 6.00, NULL),
+(4, 'Teoría del Color', 6.00, NULL),
+(5, 'Trazo Plano de Prendas Básicas', 6.00, NULL),
+(6, 'Confección de Prendas Básicas', 6.00, NULL),
+(7, 'Herramientas y Puntadas Básicas', 6.00, NULL),
+(8, 'Historia del Arte', 6.00, NULL),
+(9, 'Ilustración Gráfica Digital', 6.00, NULL),
+(10, 'Conceptos y tendencias de Moda I', 6.00, NULL),
+(11, 'Ilustración técnica de la Moda II', 6.00, NULL),
+(12, 'Trazo Plano de Prendas Femeninas', 6.00, NULL),
+(13, 'Confección de Prendas Femeninas', 6.00, NULL),
+(14, 'Modelado en Maniquí I', 6.00, NULL),
+(15, 'Historia de la Moda', 6.00, NULL),
+(16, 'Ilustración Técnica de la Moda III', 6.00, NULL),
+(17, 'Fundamentos de Administración', 6.00, NULL),
+(18, 'Aplicación Textil I', 6.00, NULL),
+(19, 'Trazo Plano de Prendas Masculinas', 6.00, NULL),
+(20, 'Confección de Prendas Masculinas', 6.00, NULL),
+(21, 'Herramientas Industriales', 6.00, NULL),
+(22, 'Aplicación Textil II', 6.00, NULL),
+(23, 'Fundamentos de Mercadotecnia', 6.00, NULL),
+(24, 'Edición Digital de Imagen', 6.00, NULL),
+(25, 'Diseño de Joyería', 6.00, NULL),
+(26, 'Trazo Plano de Prendas Infantiles', 6.00, NULL),
+(27, 'Confección de Prendas Infantiles', 6.00, NULL),
+(28, 'Conceptos y Tendencias de Moda II', 6.00, NULL),
+(29, 'Análisis de Culturas', 6.00, NULL),
+(30, 'Graduación de Tallas', 6.00, NULL),
+(31, 'Trazo Plano de Lencería y Traje de Baño', 6.00, NULL),
+(32, 'Confección de Lencería y Traje de Baño', 6.00, NULL),
+(33, 'Mercadotecnia de la Moda ', 6.00, NULL),
+(34, 'Diseño de Moda Asistido por Computadora', 6.00, NULL),
+(35, 'Taller Experimental de Moda', 6.00, NULL),
+(36, 'Optimización de Punto de Venta', 6.00, NULL),
+(37, 'Trazo Plano de Alta Costura', 6.00, NULL),
+(38, 'Confección de Alta Costura', 6.00, NULL),
+(39, 'Modelado en Maniquí II', 6.00, NULL),
+(40, 'Portafolio Profesional', 6.00, NULL),
+(41, 'Metodología para el Desarrollo de una Colección', 6.00, NULL),
+(42, 'Trazo Plano de Sastrería para Dama', 6.00, NULL),
+(43, 'Confección de Sastrería para Dama', 6.00, NULL),
+(44, 'Sistemas de Producción', 6.00, NULL),
+(45, 'Imagen Corporativa', 6.00, NULL),
+(46, 'Desarrollo Empresarial', 6.00, NULL),
+(47, 'Coordinación de Eventos de Moda', 6.00, NULL),
+(48, 'Trazo Plano de Sastrería para Caballero', 6.00, NULL),
+(49, 'Confección de Sastrería para Caballero', 6.00, NULL),
+(50, 'Desarrollo de Proyecto Integrador', 12.00, NULL),
+(51, 'Fundamentos del Diseño', 4.00, NULL),
+(52, 'Materiales Textiles', 4.00, NULL),
+(53, 'Teoría del Color', 4.00, NULL),
+(54, 'Técnicas de Representación', 5.00, NULL),
+(55, 'Herramientas y Puntadas', 5.00, NULL),
+(56, 'Patronaje de Prendas Básicas', 4.00, NULL),
+(57, 'Confección de Prendas Básicas', 9.00, NULL),
+(58, 'Ilustración Gráfica Digital', 6.00, NULL),
+(59, 'Conceptos y Tendencias de la Moda I', 4.00, NULL),
+(60, 'Ilustración Técnica de la Moda I', 4.00, NULL),
+(61, 'Diseño de Accesorios', 6.00, NULL),
+(62, 'Patronaje de Prendas Femeninas', 4.00, NULL),
+(63, 'Confección de Prendas Femeninas', 9.00, NULL),
+(64, 'Historia del Arte', 4.00, NULL),
+(65, 'Ilustración Técnica de la Moda II', 6.00, NULL),
+(66, 'Fundamentos de Administración', 4.00, NULL),
+(67, 'Herramientas Industriales', 6.00, NULL),
+(68, 'Patronaje de Prendas Infantiles', 4.00, NULL),
+(69, 'Confección de Prendas Infantiles', 9.00, NULL),
+(70, 'Historia de la Moda', 4.00, NULL),
+(71, 'Ilustración Técnica de la Moda III', 4.00, NULL),
+(72, 'Taller de Lectura Y Redacción', 6.00, NULL),
+(73, 'Modelado en Maniquí I', 6.00, NULL),
+(74, 'Patronaje de Prendas Masculinas', 4.00, NULL),
+(75, 'Confección de Prendas Masculinas', 9.00, NULL),
+(76, 'Aplicación Textil I', 6.00, NULL),
+(77, 'Análisis de Culturas', 4.00, NULL),
+(78, 'Modelado en Maniquí II', 6.00, NULL),
+(79, 'Conceptos y Tendencias de la Moda II', 4.00, NULL),
+(80, 'Patronaje de Lencería y Traje de Baño', 4.00, NULL),
+(81, 'Confección de Lencería y Traje de Baño', 9.00, NULL),
+(82, 'Edición Digital de Imagen', 6.00, NULL),
+(83, 'Aplicación Textil II', 4.00, NULL),
+(84, 'Graduación de Tallas', 6.00, NULL),
+(85, 'Fundamentos de Mercadotecnia', 4.00, NULL),
+(86, 'Patronaje de Alta Costura', 4.00, NULL),
+(87, 'Confección de Alta Costura', 9.00, NULL),
+(88, 'Taller Experimental de Moda', 6.00, NULL),
+(89, 'Mercadotecnia de la Moda', 4.00, NULL),
+(90, 'Comunicación Efectiva', 4.00, NULL),
+(91, 'Optimización de Punto de Venta', 5.00, NULL),
+(92, 'Patronaje de Sastrería para Dama', 4.00, NULL),
+(93, 'Confección de Sastrería para Dama', 9.00, NULL),
+(94, 'Sistemas de Producción', 5.00, NULL),
+(95, 'Diseño de Moda Asistido por Computadora', 7.00, NULL),
+(96, 'Técnicas de Joyería Fina', 6.00, NULL),
+(97, 'Metodología para el Desarrollo de una Colección', 10.00, NULL),
+(98, 'Imagen Corporativa', 5.00, NULL),
+(99, 'Portafolio Profesional', 7.00, NULL),
+(100, 'Desarrollo Empresarial', 4.00, NULL),
+(101, 'Coordinación de Eventos de Moda', 6.00, NULL),
+(102, 'Ética Profesional', 4.00, NULL),
+(103, 'Desarrollo de Proyecto Integrador', 11.00, NULL),
+(104, 'Introduccion al Diseño y Arquitectura de Interiores', 5.00, NULL),
+(105, 'Historia del Arte', 4.00, NULL),
+(106, 'Geometría Descriptiva', 6.00, NULL),
+(107, 'Teoría del Color', 4.00, NULL),
+(108, 'Técnicas de Representación', 6.00, NULL),
+(109, 'Modelos y Maquetas', 6.00, NULL),
+(110, 'Desarrollo del Pensamiento Creativo', 5.00, NULL),
+(111, 'Historia de la Arquitectura I', 5.00, NULL),
+(112, 'Taller de Diseño del Espacio Habitable', 9.00, NULL),
+(113, 'Fundamentos del Diseño', 4.00, NULL),
+(114, 'Taller de Dibujo Arquitectónico', 5.00, NULL),
+(115, 'Ergonomía', 5.00, NULL),
+(116, 'Metodología del Diseño', 5.00, NULL),
+(117, 'Taller de Lectura y Redacción', 4.00, NULL),
+(118, 'Historia de la Arquitectura II', 5.00, NULL),
+(119, 'Teoría del Diseño de Interiores', 4.00, NULL),
+(120, 'Taller de Diseño de Viviendas Residenciales', 10.00, NULL),
+(121, 'Ambientación de Planos Arquitectonicos', 6.00, NULL),
+(122, 'Dibujo Arquitectónico Digital', 5.00, NULL),
+(123, 'Materiales Textiles', 4.00, NULL),
+(124, 'Taller de Diseño de Construcciones Efímeras', 10.00, NULL),
+(125, 'Materiales Pétreos y Madera', 4.00, NULL),
+(126, 'Fundamentos de Administración', 5.00, NULL),
+(127, 'Dibujo y Modelación Digital', 6.00, NULL),
+(128, 'Historia del Mueble', 4.00, NULL),
+(129, 'Psicología del Espacio', 4.00, NULL),
+(130, 'Taller de Diseño de Espacios Comerciales', 10.00, NULL),
+(131, 'Recubrimientos y Acabados', 5.00, NULL),
+(132, 'Modelación Digital I', 5.00, NULL),
+(133, 'Instalaciones', 4.00, NULL),
+(134, 'Modelos y Prototipos de Mobiliario', 6.00, NULL),
+(135, 'Apreciación Estética de la Arquitectura Mexicana', 4.00, NULL),
+(136, 'Taller de Diseño de Espacios Turísticos', 10.00, NULL),
+(137, 'Procedimientos de Construcción', 4.00, NULL),
+(138, 'Optimización de Punto de Venta', 4.00, NULL),
+(139, 'Modelación Digital II', 4.00, NULL),
+(140, 'Modelos y Prototipos de Artículos Decorativos', 7.00, NULL),
+(141, 'Iluminación y Acústica', 4.00, NULL),
+(142, 'Diseño de Paisaje', 6.00, NULL),
+(143, 'Taller de Diseño de Espacios Comunitarios', 11.00, NULL),
+(144, 'Arquitectura Sustentable', 4.00, NULL),
+(145, 'Ilustración Gráfica Digital', 4.00, NULL),
+(146, 'Renderización y Recorridos Virtuales', 5.00, NULL),
+(147, 'Domótica', 4.00, NULL),
+(148, 'Costos y Presupuestos', 4.00, NULL),
+(149, 'Taller de Diseño; Proyecto Integrador', 14.00, NULL),
+(150, 'Imagen Corporativa', 4.00, NULL),
+(151, 'Fundamentos de Mercadotecnia', 5.00, NULL),
+(152, 'Edición Digital de Imagen', 5.00, NULL),
+(153, 'Desarrollo Empresarial', 6.00, NULL),
+(154, 'Portafolio Profesional', 6.00, NULL),
+(155, 'Ética Profesional', 4.00, NULL),
+(156, 'Comunicación Efectiva', 4.00, NULL),
+(157, 'Desarrollo de Proyecto Integrador', 13.00, NULL),
+(158, 'Taller de diseño', 7.00, 309),
+(159, 'Confección de prendas infantiles', 5.00, 317),
+(160, 'Taller para representación', 6.00, 325),
+(161, 'Taller para representación', 6.00, 325),
+(162, 'Confección de representación', 9.00, 333),
+(163, 'Diseño de diseño', 8.00, 341),
+(164, 'Fundamentos para prendas masculinas', 8.00, 349),
+(165, 'Taller de diseño', 7.00, 309),
+(166, 'Confección de prendas infantiles', 5.00, 317),
+(167, 'Taller para representación', 6.00, 325),
+(168, 'Taller para representación', 6.00, 325),
+(169, 'Confección de representación', 9.00, 333),
+(170, 'Diseño de diseño', 8.00, 341),
+(171, 'Fundamentos para prendas masculinas', 8.00, 349);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pago`
+--
+
+CREATE TABLE `pago` (
+  `IDPago` int(11) NOT NULL,
+  `IDUsuario` int(11) DEFAULT NULL,
+  `IDDeuda` int(11) DEFAULT NULL,
+  `Cant_pagada` float DEFAULT NULL,
+  `Fecha_de_pago` date DEFAULT NULL,
+  `Metodo` varchar(50) DEFAULT NULL,
+  `Banco` varchar(30) DEFAULT NULL,
+  `Nota` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `pago`
+--
+
+INSERT INTO `pago` (`IDPago`, `IDUsuario`, `IDDeuda`, `Cant_pagada`, `Fecha_de_pago`, `Metodo`, `Banco`, `Nota`) VALUES
+(1, 7, 13, 863.83, '2024-03-09', 'Efectivo', 'Banco A', 'Pago realizado satisfactoriamente'),
+(2, 28, 6, 782.83, '2024-03-09', 'Transferencia', 'Banco C', 'Pago realizado satisfactoriamente'),
+(3, 14, 19, 230.57, '2024-03-09', 'Efectivo', 'N/A', 'Pago realizado satisfactoriamente'),
+(4, 36, 19, 256.85, '2024-03-09', 'Efectivo', 'Banco A', 'Pago realizado satisfactoriamente'),
+(5, 46, 25, 336.57, '2024-03-09', 'Transferencia', 'Banco A', 'Pago realizado satisfactoriamente'),
+(6, 9, 9, 862.11, '2024-03-09', 'Transferencia', 'Banco A', 'Pago realizado satisfactoriamente'),
+(7, 49, 12, 681.27, '2024-03-09', 'Transferencia', 'Banco C', 'Pago realizado satisfactoriamente'),
+(8, 25, 25, 756.99, '2024-03-09', 'Efectivo', 'Banco A', 'Pago realizado satisfactoriamente'),
+(9, 38, 13, 943.02, '2024-03-09', 'Efectivo', 'Banco C', 'Pago realizado satisfactoriamente'),
+(10, 20, 5, 718.49, '2024-03-09', 'Tarjeta de crédito', 'N/A', 'Pago realizado satisfactoriamente'),
+(11, 43, 1, 218.17, '2024-03-09', 'Efectivo', 'N/A', 'Pago realizado satisfactoriamente'),
+(12, 21, 13, 350.46, '2024-03-09', 'Tarjeta de crédito', 'Banco A', 'Pago realizado satisfactoriamente'),
+(13, 47, 6, 821.74, '2024-03-09', 'Tarjeta de crédito', 'Banco B', 'Pago realizado satisfactoriamente'),
+(14, 6, 20, 184.98, '2024-03-09', 'Efectivo', 'Banco C', 'Pago realizado satisfactoriamente'),
+(15, 15, 3, 330.61, '2024-03-09', 'Efectivo', 'N/A', 'Pago realizado satisfactoriamente'),
+(16, 42, 9, 176.34, '2024-03-09', 'Transferencia', 'N/A', 'Pago realizado satisfactoriamente'),
+(17, 17, 14, 281.41, '2024-03-09', 'Efectivo', 'Banco B', 'Pago realizado satisfactoriamente'),
+(18, 23, 7, 833.51, '2024-03-09', 'Efectivo', 'Banco A', 'Pago realizado satisfactoriamente'),
+(19, 49, 14, 181.81, '2024-03-09', 'Transferencia', 'Banco C', 'Pago realizado satisfactoriamente'),
+(20, 13, 9, 385.07, '2024-03-09', 'Efectivo', 'Banco B', 'Pago realizado satisfactoriamente'),
+(21, 3, 19, 500.07, '2024-03-09', 'Transferencia', 'Banco C', 'Pago realizado satisfactoriamente'),
+(22, 30, 15, 269.2, '2024-03-09', 'Efectivo', 'Banco A', 'Pago realizado satisfactoriamente'),
+(23, 3, 7, 849.94, '2024-03-09', 'Transferencia', 'Banco B', 'Pago realizado satisfactoriamente'),
+(24, 18, 4, 176.41, '2024-03-09', 'Efectivo', 'Banco C', 'Pago realizado satisfactoriamente'),
+(25, 12, 2, 713.11, '2024-03-09', 'Efectivo', 'Banco A', 'Pago realizado satisfactoriamente'),
+(26, 200001, 101, 5000, '2024-10-05', 'Transferencia', 'Banco Z', 'Pago total colegiatura Octubre'),
+(27, 200002, 102, 1500, '2024-09-15', 'Efectivo', 'N/A', 'Abono inscripción Septiembre'),
+(28, 200003, 103, 4500, '2024-11-01', 'Tarjeta de crédito', 'Banco Y', 'Pago total material Noviembre'),
+(29, 200004, 104, 3000, '2024-10-20', 'Transferencia', 'Banco X', 'Abono colegiatura Octubre'),
+(30, 200005, 105, 2500, '2024-11-10', 'Efectivo', 'N/A', 'Pago total inscripción Noviembre'),
+(31, 1, 1, 1000, '2024-01-10', 'Transferencia', 'Banco A', 'Pago parcial de colegiatura'),
+(32, 34, 24, 500, '2024-03-01', 'Transferencia', 'Banco A', 'Pago inicial'),
+(33, 34, 24, 300, '2024-03-15', 'Efectivo', 'Banco B', 'Pago parcial'),
+(34, 34, 24, 200, '2024-03-30', 'Tarjeta de crédito', 'Banco C', 'Pago final'),
+(200, 36, 100, 2500, '2024-04-15', 'Tarjeta de crédito', 'Banco A', 'Pago de colegiatura'),
+(201, 36, 101, 3000, '2024-05-15', 'Transferencia', 'Banco B', 'Pago de inscripción'),
+(202, 36, 102, 3500, '2024-06-15', 'Efectivo', 'Banco C', 'Pago de material');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pertenece`
+--
+
+CREATE TABLE `pertenece` (
+  `IDPertenece` int(11) NOT NULL,
+  `IDMateria` int(11) DEFAULT NULL,
+  `IDCiclo` int(11) DEFAULT NULL,
+  `Beca` int(11) DEFAULT NULL,
+  `IDUsuario` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `pertenece`
+--
+
+INSERT INTO `pertenece` (`IDPertenece`, `IDMateria`, `IDCiclo`, `Beca`, `IDUsuario`) VALUES
+(1, 63, 4, 1, 1),
+(2, 86, 1, 1, NULL),
+(3, 76, 4, 1, NULL),
+(4, 92, 1, 0, NULL),
+(5, 88, 4, 1, NULL),
+(6, 82, 2, 0, NULL),
+(7, 98, 1, 1, NULL),
+(8, 34, 7, 1, NULL),
+(9, 32, 2, 0, NULL),
+(10, 76, 4, 0, NULL),
+(11, 44, 3, 0, NULL),
+(12, 90, 2, 0, NULL),
+(13, 20, 5, 1, NULL),
+(14, 70, 6, 1, NULL),
+(15, 28, 2, 1, NULL),
+(16, 56, 1, 0, NULL),
+(17, 89, 6, 1, NULL),
+(18, 81, 8, 0, NULL),
+(19, 61, 5, 1, NULL),
+(20, 85, 7, 0, NULL),
+(21, 99, 8, 0, NULL),
+(22, 11, 5, 0, NULL),
+(23, 82, 8, 0, NULL),
+(24, 61, 3, 0, NULL),
+(25, 34, 29, 50, 33),
+(300, 1, 1, 0, 36),
+(301, 2, 2, 0, 36),
+(302, 3, 3, 0, 36);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `privilegios`
+--
+
+CREATE TABLE `privilegios` (
+  `IDPrivilegio` int(11) NOT NULL,
+  `Actividades` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `privilegios`
+--
+
+INSERT INTO `privilegios` (`IDPrivilegio`, `Actividades`) VALUES
+(1, 'generar ficha'),
+(2, 'modificar ficha'),
+(3, 'modificar pago'),
+(4, 'modificar prorroga'),
+(5, 'modificar usuario'),
+(6, 'registrar ciclo'),
+(7, 'registrar pago'),
+(8, 'registrar usuario'),
+(9, 'pedir pago'),
+(10, 'restaurar contrasena'),
+(11, 'subir transferencias'),
+(12, 'ver historial todos'),
+(13, 'ver historial propio'),
+(14, 'ver materias'),
+(15, 'ver reporte');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rol`
+--
+
+CREATE TABLE `rol` (
+  `IDRol` int(11) NOT NULL,
+  `Tipo_rol` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `rol`
+--
+
+INSERT INTO `rol` (`IDRol`, `Tipo_rol`) VALUES
+(1, 'Administrador'),
+(2, 'Alumno'),
+(3, 'Lector');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tiene`
+--
+
+CREATE TABLE `tiene` (
+  `IDTiene` int(11) NOT NULL,
+  `IDUsuario` int(11) NOT NULL,
+  `IDRol` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Dumping data for table `tiene`
+--
+
+INSERT INTO `tiene` (`IDTiene`, `IDUsuario`, `IDRol`) VALUES
+(1, 33, 1),
+(2, 34, 2),
+(3, 38, 2),
+(4, 35, 1),
+(5, 36, 1),
+(6, 37, 1),
+(7, 39, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `IDUsuario` int(11) NOT NULL,
+  `Nombre` varchar(255) DEFAULT NULL,
+  `Matricula` int(11) DEFAULT NULL,
+  `Correo_electronico` varchar(255) DEFAULT NULL,
+  `Contrasena` varchar(255) DEFAULT NULL,
+  `Beca_actual` int(11) DEFAULT NULL,
+  `Referencia` int(11) DEFAULT NULL,
+  `Alumno_activo` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `usuario`
+--
+
+INSERT INTO `usuario` (`IDUsuario`, `Nombre`, `Matricula`, `Correo_electronico`, `Contrasena`, `Beca_actual`, `Referencia`, `Alumno_activo`) VALUES
+(1, 'Juan', 123456, 'juan@example.com', 'contraseña123', 0, 0, NULL),
+(2, 'María', 234567, 'maria@example.com', 'abc123', 0, 0, NULL),
+(3, 'Carlos', 345678, 'carlos@example.com', 'password', 0, 0, NULL),
+(4, 'Ana', 456789, 'ana@example.com', 'pass123', 0, 0, NULL),
+(5, 'Luis', 567890, 'luis@example.com', 'securepass', 0, 0, NULL),
+(6, 'Laura', 678901, 'laura@example.com', 'userpass', 0, 0, NULL),
+(7, 'Pedro', 789012, 'pedro@example.com', '123abc', 0, 0, NULL),
+(8, 'Sofía', 890123, 'sofia@example.com', 'letmein', 0, 0, NULL),
+(9, 'Daniel', 901234, 'daniel@example.com', 'password123', 0, 0, NULL),
+(10, 'Alejandra', 123, 'alejandra@example.com', 'abc123', 0, 0, NULL),
+(11, 'Javier', 234, 'javier@example.com', 'qwerty', 0, 0, NULL),
+(12, 'Paula', 345, 'paula@example.com', 'password', 0, 0, NULL),
+(13, 'Roberto', 456, 'roberto@example.com', 'pass123', 0, 0, NULL),
+(14, 'Elena', 567, 'elena@example.com', 'securepass', 0, 0, NULL),
+(15, 'Marta', 678, 'marta@example.com', 'userpass', 0, 0, NULL),
+(16, 'Héctor', 789, 'hector@example.com', '123abc', 0, 0, NULL),
+(17, 'Carmen', 890, 'carmen@example.com', 'letmein', 0, 0, NULL),
+(18, 'Diego', 901, 'diego@example.com', 'password123', 0, 0, NULL),
+(19, 'Ana', 123456789, 'ana2@example.com', 'abc123', 0, 0, NULL),
+(20, 'María', 234567890, 'maria2@example.com', 'qwerty', 0, 0, NULL),
+(21, 'Carlos', 345678901, 'carlos2@example.com', 'password', 0, 0, NULL),
+(22, 'Ana', 456789012, 'ana3@example.com', 'pass123', 0, 0, NULL),
+(23, 'Luis', 567890123, 'luis2@example.com', 'securepass', 0, 0, NULL),
+(24, 'Laura', 678901234, 'laura2@example.com', 'userpass', 0, 0, NULL),
+(25, 'Pedro', 789012345, 'pedro2@example.com', '123abc', 0, 0, NULL),
+(27, 'ejemplo', 123456789, 'ejemplo@gmail.com', '$2a$12$Jf5YITGVYsV31hG3cyCdWOBJb5AVrTyQp/OhBWYsctRKQJUx5QeR2', 0, 0, NULL),
+(28, 'Roberta Espinoza', 200001, 'roberta@example.com', 'contraseñaRoberta', 0, 0, NULL),
+(29, 'Miguel Ángel Torres', 200002, 'miguel@example.com', 'contraseñaMiguel', 0, 0, NULL),
+(30, 'Samantha Ruiz', 200003, 'samantha@example.com', 'contraseñaSamantha', 0, 0, NULL),
+(31, 'Alejandro Mendoza', 200004, 'alejandro@example.com', 'contraseñaAlejandro', 0, 0, NULL),
+(32, 'Patricia Solano', 200005, 'patricia@example.com', 'contraseñaPatricia', 0, 0, NULL),
+(33, 'Ernesto Acosta', 100007, 'neto@gmail.com', '$2a$12$z8h.xsnjJZjAoU5vhBjDlOBiKZ6KP6Us4a3F.eVkUIG456dFkrrwm', 50, 13649821, 1),
+(34, 'alumno', 12345678, 'alumno@edu.mx', '$2a$12$kCBfPQ395MgXIu/ii5IxYOamqZPsf28Q.RRbU9isS95e76NpU62da', 10, 123456781, 1),
+(35, 'Levi', 1234567, 'levi@correo.com', '$2a$12$474BO8FQf3BiTL4JjomlIeUgYnuMZBnS92Dymmyx1tNQXErzxoSFy', 0, 0, NULL),
+(36, 'Arturo', 1275427, 'arturo@gmail.com', '$2a$12$38i/IeL3JGN4gJ2q4Friu.I54cHkhWJWziHi4NZ4/rJ8HIfg9ZCt.', 0, 0, 1),
+(37, 'daniel', 1234, 'hola@gmail.com', '$2a$12$yc02XJjfPceyDI39jzG6luAS3jxFCkzkj4s9SfpaLSZqE5ix6Wn6S', 0, 0, NULL),
+(38, 'wqesd', 12313, 'test@edu.mx', '$2a$12$DueRfYp7c86EQqtjGbGqf.Mj.iVtk3iUYwad.gBwX3nSqsrpU0Um6', 12, 2131231, NULL),
+(39, 'lector', 12321, 'lector@edu.mx', '$2a$12$4xx64y6THqvvjDhfKaAnGewdwZssZn3aJiOIq3PbdgkulMW44JGAa', 111, 111, NULL);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `cicloescolar`
+--
+ALTER TABLE `cicloescolar`
+  ADD PRIMARY KEY (`IDCiclo`);
+
+--
+-- Indexes for table `contiene`
+--
+ALTER TABLE `contiene`
+  ADD PRIMARY KEY (`IDContiene`);
+
+--
+-- Indexes for table `deuda`
+--
+ALTER TABLE `deuda`
+  ADD PRIMARY KEY (`IDDeuda`);
+
+--
+-- Indexes for table `materias`
+--
+ALTER TABLE `materias`
+  ADD PRIMARY KEY (`IDMateria`);
+
+--
+-- Indexes for table `pago`
+--
+ALTER TABLE `pago`
+  ADD PRIMARY KEY (`IDPago`);
+
+--
+-- Indexes for table `pertenece`
+--
+ALTER TABLE `pertenece`
+  ADD PRIMARY KEY (`IDPertenece`);
+
+--
+-- Indexes for table `privilegios`
+--
+ALTER TABLE `privilegios`
+  ADD PRIMARY KEY (`IDPrivilegio`);
+
+--
+-- Indexes for table `rol`
+--
+ALTER TABLE `rol`
+  ADD PRIMARY KEY (`IDRol`);
+
+--
+-- Indexes for table `tiene`
+--
+ALTER TABLE `tiene`
+  ADD PRIMARY KEY (`IDTiene`);
+
+--
+-- Indexes for table `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`IDUsuario`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `cicloescolar`
+--
+ALTER TABLE `cicloescolar`
+  MODIFY `IDCiclo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+
+--
+-- AUTO_INCREMENT for table `contiene`
+--
+ALTER TABLE `contiene`
+  MODIFY `IDContiene` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
+-- AUTO_INCREMENT for table `deuda`
+--
+ALTER TABLE `deuda`
+  MODIFY `IDDeuda` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+
+--
+-- AUTO_INCREMENT for table `materias`
+--
+ALTER TABLE `materias`
+  MODIFY `IDMateria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=172;
+
+--
+-- AUTO_INCREMENT for table `pago`
+--
+ALTER TABLE `pago`
+  MODIFY `IDPago` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=203;
+
+--
+-- AUTO_INCREMENT for table `pertenece`
+--
+ALTER TABLE `pertenece`
+  MODIFY `IDPertenece` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=303;
+
+--
+-- AUTO_INCREMENT for table `privilegios`
+--
+ALTER TABLE `privilegios`
+  MODIFY `IDPrivilegio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT for table `rol`
+--
+ALTER TABLE `rol`
+  MODIFY `IDRol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
+-- AUTO_INCREMENT for table `tiene`
+--
+ALTER TABLE `tiene`
+  MODIFY `IDTiene` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `IDUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

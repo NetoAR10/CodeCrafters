@@ -1,0 +1,452 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 78px;
+    background: #5A0000;
+    padding: 6px 14px;
+    transition: all 0.5s ease;
+    z-index: 2;
+}
+
+.sidebar.active{
+    width: 240px;
+}
+
+
+.sidebar .logo_content .logo img{
+    position: relative;
+    display: flex;
+    max-width: 100px;
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+    transition: all 0.5s ease;
+}
+
+.sidebar.active .logo_content .logo img{
+    opacity: 1;
+    pointer-events: none;
+}
+
+.sidebar #btn{
+    position: absolute;
+    color: #fff;
+    top: 6px;
+    left: 50%;
+    font-size: 20px;
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    line-height: 50px;
+    transform: translateX(-50%);
+}
+
+.sidebar.active #btn{
+    left: 90%;
+
+}
+
+.sidebar ul {
+    margin-top: 20px;
+}
+.sidebar ul li {
+    position: relative;
+    height: 50px;
+    width: 100%;
+    margin: 0 5px;
+    list-style: none;
+    line-height: 50px;
+}
+
+.sidebar ul li .tooltip{
+    position: absolute;
+    left: 122px;
+    top: 0;
+    transform: translate(-50% , -50%);
+    border-radius: 6px;
+    height: 35px;
+    width: 122px;
+    background: #fff;
+    line-height: 35px;
+    text-align: center;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    transition: 0s;
+    opacity: 0;
+    pointer-events: none;
+    display: block;
+}
+
+.sidebar.active ul li:hover .tooltip{
+    display: none;
+}
+
+.sidebar ul li:hover .tooltip{
+    transition: all 0.5s ease;
+    top: 50%;
+    opacity: 1;
+}
+
+.sidebar ul li a{
+    color: #fff;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+.sidebar ul li a:hover{
+    color:#5A0000;
+    background: #fff;
+
+}
+
+.sidebar ul li search{
+    color:rgb(44, 44, 44);
+}
+
+.sidebar ul li input{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    border-radius: 12px;
+    outline: none;
+    border: none;
+    background: #350202;
+    padding-left: 50px;
+    font-size: 18px;
+    color: #fff;
+}
+
+.sidebar ul li i{
+    height: 50px;
+    min-width: 50px;
+    border-radius: 12px;
+    line-height: 50px;
+    text-align: center;
+}
+
+.sidebar .links_name{
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sidebar.active .links_name{
+    opacity: 1;
+    pointer-events: auto;
+    
+}
+
+.sidebar .profile_content{
+    position: absolute;
+    background-color: #6c0404;
+    color: #fff;
+    width: 100%;
+    margin: 0;
+    list-style: none;
+    bottom: 0;
+    left: 0;
+}
+
+.sidebar .profile_content i{
+    color: #fff;
+    margin-right: 5px;
+}
+
+.sidebar .profile_content .profile {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    padding: 10px 6px;
+    height: 60px;
+}
+
+
+.profile_content .profile .profile_details {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+    transition: all 0.5s ease;
+}
+
+.sidebar.active .profile_content .profile .profile_details{
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+.profile_content .profile a{
+    color:#fff;
+}
+
+.profile .profile_details img{
+    background-color: #fff;
+    height: 45px;
+    width: 45px;
+    object-fit: cover;
+    border-radius: 12px;
+    align-items: center;
+}
+
+.profile .profile_details .name_role{
+    margin-left: 10px;
+}
+
+.profile_details .name_role .name {
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.profile_details .name_role .role {
+    font-size: 13px;
+}
+
+
+.profile #log_out {
+    position: absolute;
+    left: 50%;
+    bottom: 5px;
+    line-height: 50px;
+    font-size: 25px;
+    border-radius: 12px;
+    min-width: 50px;
+    text-align: center;
+    transform: translateX(-50%)
+}
+
+.sidebar.active .profile #log_out {
+    left: 80%;
+}
+
+.page_content{
+    position: absolute;
+    margin: 50px;
+    height: 100%;
+    width: calc(100% - 150px);
+    left: 78px;
+    transition: all 0.5s ease;
+}
+
+.sidebar.active ~ .page_content{
+    width: calc(100% - 240px);
+    left: 240px;
+}
+
+.page_content h1{
+    color:rgb(43, 43, 43);
+}
+
+.title_materias{
+    padding: 0 0 0 0px;
+}
+
+.page_items{
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 0 0px;
+}
+
+.item {
+    margin-top: 10px;
+    outline-color:#350202;
+    outline-width: 10px;
+    width: 50%;
+    height: 100%;
+    background-color: #f4f4f4;
+    border-radius: 12px;
+    padding: 12px;
+    justify-content: center;
+    color:#484848;
+    z-index: -1;
+}
+
+#USUARIOS, th, td {
+    border: 1px solid #adadad;
+    font-size: 15px;
+}
+
+
+#USUARIOS {
+    position: relative;
+    width: 90%;
+    border-collapse: collapse;
+}
+
+#USUARIOS th, #USUARIOS td {
+    padding: 8px;
+    justify-content: center;
+}
+
+.modifyuser {
+    position: relative;
+    background-color: #6c0404;
+    color: #fff;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    font-size: 15px;
+    text-decoration: none;
+    padding: 4px 4px;
+    left: 10px;
+}
+
+
+.modifyuser:hover {
+    background-color: #fff;
+    color: #6c0404;
+    border: 1px solid #6c0404;
+    transition-duration: 0.3s;
+    cursor: pointer;
+}
+
+.deleteuser {
+    position: relative;
+    background-color: #c07021;
+    color: #fff;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    font-size: 15px;
+    padding: 4px 4px;
+    left: 10px;
+}
+
+
+.deleteuser:hover {
+    background-color: #fff;
+    color: #c07021;
+    border: 1px solid #c07021;
+    transition-duration: 0.3s;
+    cursor: pointer;
+}
+
+.buscar {
+    position: relative;
+    width: 90%;
+    padding: 4px 4px;
+}
+
+.wrapper {
+    width: 420px;
+    background: white;
+    border:2px solid grey;
+    border-radius: 10px;
+    padding: 10px 10px 10px 10px;
+}
+
+
+
+.reactivateuser {
+    position: relative;
+    background-color: #c09a75;
+    color: #fff;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    font-size: 15px;
+    padding: 4px 4px;
+    left: 10px;
+}
+
+
+.reactivateuser:hover {
+    background-color: #fff;
+    color: #c09a75;
+    border: 1px solid #c09a75;
+    transition-duration: 0.3s;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+.button-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+}
+
+.btn2 {
+    padding: 10px 20px;   
+    font-size: 16px;          
+    font-weight: bold;    
+    color: white;              
+    background-color: #5A0000;
+    border: none;              
+    border-radius: 5px;        
+    cursor: pointer;           
+    outline: none;             
+    transition: all 0.3s ease; 
+}
+
+
+.btn2:hover {
+    background-color: #e40c0c; 
+} 
+
+Efecto cuando el botón está siendo presionado
+
+.btn2:active {
+    background-color: #aa0505; 
+    transform: translateY(2px); 
+}
+
+
+.button-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+}
+
+
+form {
+    margin-right: 10px;
+}
+
+.inactiveStudent {
+    background-color: #dcdcdc;
+}
+
+.rolcambio {
+    position: relative;
+    background-color: #6c0404;
+    color: #fff;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    font-size: 15px;
+    text-decoration: none;
+    padding: 4px 4px;
+}
+
+.rolcambio:hover {
+    background-color: #fff;
+    color: #6c0404;
+    border: 1px solid #6c0404;
+    transition-duration: 0.3s;
+    cursor: pointer;
+}
+

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Reporte de Finanzas</title>
+  <link rel="stylesheet" type="text/css" href="/public/estilo.css"> <!-- Archivo CSS para estilos -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Incluir la barra lateral -->
+  <%- include('includes/sidebar.ejs', {
+    correo: correo,
+    permisos: permisos,
+    rol: rol,
+    nombre: nombre,
+    rolUser: rolUser,
+  }) %>
+
+  <!-- Contenedor principal para el contenido -->
+  <div class="main-content" style="margin-left: 270px; padding: 20px;">
+    <h1>Reporte de Finanzas</h1>
+
+    <!-- Cuadrícula para acomodar las gráficas -->
+    <div class="chart-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; padding: 20px;">
+      <!-- Gráfico 1: Total de Deudas y Pagos -->
+      <div class="chart-container" style="width: 350px; height: 250px;">
+        <canvas id="deudasPagosChart"></canvas>
+      </div>
+
+      <!-- Gráfico 2: Deuda por Concepto -->
+      <div class="chart-container" style="width: 350px; height: 250px;">
+        <canvas id="deudaPorConceptoChart"></canvas>
+      </div>
+
+      <!-- Gráfico 3: Pagos por Método -->
+      <div class="chart-container" style="width: 350px; height: 250px;">
+        <canvas id="pagosPorMetodoChart"></canvas>
+      </div>
+
+      <!-- Gráfico 4: Materias por Ciclo -->
+      <div class="chart-container" style="width: 350px; height: 250px;">
+        <canvas id="materiasPorCicloChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Configuración de Chart.js -->
+  <script>
+    const totalDeudas = <%= totalDeudas %>;
+    const totalPagos = <%= totalPagos %>;
+    const totalDeuda = <%= totalDeuda %>;
+    const totalPago = <%= totalPago %>;
+
+    const deudaPorConcepto = <%- JSON.stringify(deudaPorConcepto) %>;
+    const pagosPorMetodo = <%- JSON.stringify(pagosPorMetodo) %>;
+
+    // Gráfico 1: Total de Deudas y Pagos
+    const ctx1 = document.getElementById('deudasPagosChart').getContext('2d');
+    new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: ['Deudas', 'Pagos'],
+        datasets: [{
+          label: 'Total',
+          data: [totalDeuda, totalPago],
+          backgroundColor: ['#FF6384', '#36A2EB']
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    // Gráfico 2: Deuda por Concepto
+    const ctx2 = document.getElementById('deudaPorConceptoChart').getContext('2d');
+    const deudaPorConceptoLabels = deudaPorConcepto.map(item => item.Concepto);
+    const deudaPorConceptoData = deudaPorConcepto.map(item => item.totalDeuda);
+
+    new Chart(ctx2, {
+      type: 'pie',
+      data: {
+        labels: deudaPorConceptoLabels,
+        datasets: [{
+          label: 'Deuda por Concepto',
+          data: deudaPorConceptoData,
+          backgroundColor: ['#FFCE56', '#FF6384', '#36A2EB', '#FF9F40']
+        }]
+      }
+    });
+
+    // Gráfico 3: Pagos por Método
+    const ctx3 = document.getElementById('pagosPorMetodoChart').getContext('2d');
+    const pagosPorMetodoLabels = pagosPorMetodo.map(item => item.Metodo);
+    const pagosPorMetodoData = pagosPorMetodo.map(item => item.totalPagos);
+
+    new Chart(ctx3, {
+      type: 'doughnut',
+      data: {
+        labels: pagosPorMetodoLabels,
+        datasets: [{
+          label: 'Pagos por Método',
+          data: pagosPorMetodoData,
+          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+        }]
+      }
+    });
+
+    // Gráfico 4: Materias por Ciclo
+    const ctx4 = document.getElementById('materiasPorCicloChart').getContext('2d');
+    const materiasPorCicloLabels = materiasPorCiclo.map(item => item.Ciclo);
+    const materiasPorCicloData = materiasPorCiclo.map(item => item.Nombre_mat);
+
+    new Chart(ctx4, {
+      type: 'bar',
+      data: {
+        labels: materiasPorCicloLabels,
+        datasets: [{
+          label: 'Materias por Ciclo',
+          data: materiasPorCicloData,
+          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+        }]
+      }
+    });
+  </script>
+</body>
+</html>

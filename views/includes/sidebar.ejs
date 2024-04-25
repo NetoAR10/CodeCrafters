@@ -1,0 +1,145 @@
+<%- include ('headsb.ejs', {
+    correo: correo,
+    permisos: permisos,
+    rol: rol,
+    nombre: nombre
+})%>
+    <body>
+        <div class="sidebar">
+            <div class="logo_content">
+                <div class="logo">
+                    <img src="/viadisenologo2.png" alt="">
+                    
+                </div>
+                <i class='bx bx-menu' id="btn"></i>
+                </div>
+                <ul class="nav_list">
+                    <li>
+                        <a href="/">
+                            <i class='bx bxs-grid-alt' ></i>
+                            <span class="links_name">Tablero</span>
+                        </a>
+                        <span class="tooltip">Tablero</span>
+                    </li>
+
+                    <% for (let permiso of permisos) {%>
+                        <% if (permiso.Actividades == 'modificar usuario') { %>
+
+                            <li>
+                                <a href="/user/admin/usuarios">
+                                    <i class='bx bxs-user-rectangle'></i>
+                                    <span class="links_name">Usuarios</span>
+                                </a>
+                                <span class="tooltip">Usuarios</span>
+                            </li>
+
+                        <% } %>
+                        <% if (permiso.Actividades == 'generar ficha') { %>
+
+                            <li>
+                                <a href="/user/alumno/materias">
+                                    <i class='bx bx-book-open' ></i>
+                                    <span class="links_name">Materias</span>
+                                </a>
+                                <span class="tooltip">Materias</span>
+                            </li>
+
+                        <% } %>
+                        <% if (permiso.Actividades == 'registrar pago') { %>
+
+                            <li>
+                                <a href="/user/admin/registrarPago">
+                                    <i class='bx bx-money-withdraw'></i>
+                                    <span class="links_name">Registrar Pago</span>
+                                </a>
+                                <span class="tooltip">R. Pago</span>
+                            </li>
+
+                        <% } %>
+                        <% if (permiso.Actividades == 'ver historial todos') { %>
+
+                            <li>
+                                <a href="/user/admin/pagos_de_alumnos"">
+                                    <i class='bx bx-objects-horizontal-left'></i>
+                                    <span class="links_name">Historial Alumnos</span>
+                                </a>
+                                <span class="tooltip">H. Alumnos</span>
+                            </li>
+
+                        <% } %>
+                        <% if (permiso.Actividades == 'ver reporte') { %>
+                            <li>
+                                <a href="/user/admin/reportes"> 
+                                    <i class='bx bxs-report'></i> 
+                                    <span class="links_name">Reportes</span> 
+                                </a>
+                                <span class="tooltip">Reportes</span> 
+                            </li>
+                            <% } %>
+                    <% } %>
+
+                    <li>
+                        <a href="/user/alumno/historial-pagos">
+                            <i class='bx bx-history'></i>
+                            <span class="links_name">Historial de Pagos</span>
+                        </a>
+                        <span class="tooltip">H. Personal</span>
+                    </li>
+
+                    <li>
+                        <a href="/user/admin/crearDeuda">
+                            <i class='bx bxs-edit-alt'></i>
+                            <span class="links_name">Crear Deuda</span>
+                        </a>
+                        <span class="tooltip">Deuda</span>
+                    </li>
+
+                    <li>
+                        <a href="/user/admin/historial-pagos-general"">
+                            <i class='bx bxs-bank'></i>
+                            <span class="links_name">Historial General</span>
+                        </a>
+                        <span class="tooltip">H. General</span>
+                    </li>
+                            
+                    <li>
+                        <a href="#">
+                            <i class='bx bxs-cog' ></i>
+                            <span class="links_name">Configuración</span>
+                        </a>
+                        <span class="tooltip">Configuración</span>
+                    </li>
+
+                </ul>
+
+                
+                <div class="profile_content">
+                    <div class="profile">
+                        <div class="profile_details">
+                            <img src="/profile.png" alt="">
+                            <div class="name_role">
+                                <div class="name">
+                                        
+                                        <%= nombre %>
+                                        
+                                    </div>
+                                    <div class="role">
+                       
+                                            <%= rol %>
+            
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="/user/logout">
+                                <i class='bx bx-log-out' id="log_out"></i>
+                            </a>
+                        </div>
+                        
+                    </div>
+
+            </div>
+            
+        </div>
+
+        <script src="/sidebar.js"></script>
+    

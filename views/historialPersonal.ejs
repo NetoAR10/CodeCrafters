@@ -1,0 +1,46 @@
+<%- include('includes/sidebar.ejs') %>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Historial de Pagos</title>
+    <link rel="stylesheet" href="/css/sidebar.css">
+</head>
+<body>
+    <div class="page_content">
+        <h1>Mi Historial de Pagos</h1>
+        <table id="HISTORIAL_PAGOS">
+            <thead>
+                <tr>
+                    <th>Mes</th>
+                    <th>Porcentaje Pagado</th>
+                    <th>Referencia</th>
+                    <th>Fecha de Pago</th>
+                    <th>Cantidad Pagada</th>
+                    <th>Método</th>
+                    <th>Banco</th>
+                    <th>Nota</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% pagos.forEach(function(pago) { %>
+                    <tr>
+                        <td><%= pago.Mes %></td>
+                        <td><%= (pago.PorcentajePagado * 100).toFixed(2) %></td>
+                        <td><%= pago.Referencia %></td>
+                        <td><%= pago.Fecha_de_pago.toISOString().slice(0, 10) %></td>
+                        <td><%= pago.Cant_pagada.toFixed(2) %></td>
+                        <td><%= pago.Metodo %></td>
+                        <td><%= pago.Banco %></td>
+                        <td><%= pago.Nota %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+        <div>
+            <a href="/user/alumno//descargar-ficha-personal/pdf" class="btn btn-primary">Descargar Ficha</a> 
+        </div>       
+    </div>
+</body>
+</html>
