@@ -65,6 +65,10 @@ module.exports = class Usuario {
         })
     }    
     
-    
+    static contrasenaIsNull(){
+        return db.execute(
+            `SELECT Correo_electronico FROM usuario WHERE Contrasena IS NULL`
+        )
+    }
 
 }

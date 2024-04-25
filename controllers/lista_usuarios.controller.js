@@ -119,16 +119,21 @@ exports.post_actualizar = async (request, response, next) => {
                     } = user;
                     // console.log(ivd_id);
                     if(normalizedMails.includes(email)){
-                        console.log(`${email} está en la base de datos`)
+                        // console.log(`${email} está en la base de datos`)
                     } else {
                         let fullName = `${name} ${first_surname} ${second_surname}`;
-                        // console.log('Nombre completo:', fullName, 'Correo:', email);
+                        console.log('Nombre completo:', fullName, 'Correo:', email);
+                        
+                        
                         console.log(`Ingresando ${email} dentro de la base de datos`)
                         const nuevo_usuario = new Usuario(fullName, ivd_id, email);
                         nuevo_usuario.save();
                         
                     }
                     
+                    Usuario.contrasenaIsNull().then(([correosSC, fieldData])=> {
+                        // console.log('No tiene contraseña: ', correosSC[0]);
+                    })
                 })
                 
             })
