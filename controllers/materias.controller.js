@@ -3,17 +3,17 @@ const adminClient = require('../util/api_clients/adminApiClient');
 const db = require('../util/database');
 
 exports.get_materias = async (request, response, next) => {
-    matricula = await materia.fetchMatricula(request.session.correo)
-    //console.log(matricula)
-    mat = matricula[0][0].matricula;
-    //console.log(mat)
-    ciclo = await materia.fecthCicloEscolar(request.session.correo)
-    //console.log(ciclo);
+    usuario = await materia.fetchInfoUsuario(request.session.correo)
+    mat = usuario[0][0].matricula;
+    IDUsu = usuario[0][0].IDUsuario;
+    beca = usuario[0][0].Beca_actual;
+
+    ciclo = await materia.fecthCicloEscolar()
     nomCiclo = ciclo[0][0].ciclo;
     IDCicExt = ciclo[0][0].IDCicloEXT;
-    cicActivo = ciclo[0][0].ciclo_Activo;
     precioCred = ciclo[0][0].Precio_credito;
-    beca = ciclo[0][0].Beca;
+    IDCic = ciclo[0][0].IDCiclo;
+
     try {
         const userGroups = await adminClient.getUserGroups(IDCicExt, mat); 
         if (!userGroups || !userGroups.data) {
@@ -57,7 +57,6 @@ exports.get_materias = async (request, response, next) => {
             nombre: request.session.nombre,
             cursos: cursos,
             cicloActual: nomCiclo,
-            activo: cicActivo,
             costoCred: precioCred,
             beca: beca
         });
@@ -92,23 +91,28 @@ exports.post_materias = async (request, response, next) => {
 
         for (let curso of cursos) {
             //buscar o insertar mi materia en db
-            IDMat = db.execute(
+            let [results] = await db.execute(
                 `SELECT IDMateria FROM materias WHERE IDMateriaEXT = ?`,
                 [curso.idMateria]
             )
-            if(IDMat === null){
+            let IDMat;
+            if(results.length === 0) {
                 let nuevo_curso = new materia(
                     curso.nombreMat,
                     curso.creditos,  
                     curso.idMateria
                 );
-                //console.log(nuevo_curso);
-                IDMat = await nuevo_curso.save(); 
+                let [result] = await nuevo_curso.save()
+                IDMat = result.insertId;
+            } else {
+                IDMat = results[0].IDMateria;
             }
             //ahora insertar a pertenece 
-            
+            await db.execute(
+                'INSERT INTO Pertenece (IDMateria, IDCiclo, Beca, IDUsuario) VALUES (?, ?, ?, ?)',
+                [IDMat, IDCic, beca, IDUsu]
+            );
         }
-
         response.redirect('/');
     } catch (err) {
         console.error('Error al guardar los cursos:', err);
