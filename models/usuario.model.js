@@ -3,28 +3,20 @@ const bcrypt = require('bcryptjs');
 
 module.exports = class Usuario {
 
-    constructor(mi_correo, mi_nombre, mi_matricula, mi_beca, mi_ref, mi_password){
-        this.correo = mi_correo;
-        this.password = mi_password;
+    constructor(mi_nombre, mi_matricula, mi_correo){
         this.nombre = mi_nombre;
         this.matricula = mi_matricula;
-        this.beca = mi_beca;
-        this.ref = mi_ref;
+        this.correo = mi_correo;
     }
 
     save() {
-        console.log(this.nombre);
-        console.log(this.matricula)
-        console.log(this.correo);
-        console.log(this.password);
-        console.log(this.beca);
-        console.log(this.ref);
-        return bcrypt.hash(this.password, 12).then((password_cifrado) => {
-            return db.execute(
-                'INSERT INTO Usuario (Nombre, Matricula, Correo_electronico, Contrasena, Beca_actual, Referencia) VALUES (?, ?, ?, ?, ? , ?)',
-                [this.nombre, this.matricula, this.correo, password_cifrado, this.beca, this.ref]
-            );
-        })
+        console.log('Nombre:', this.nombre);
+        console.log('Matricula:', this.matricula)
+        console.log('Correo:', this.correo);
+        return db.execute(
+            'INSERT INTO Usuario (Nombre, Matricula, Correo_electronico) VALUES (?, ? , ?)',
+            [this.nombre, this.matricula, this.correo]
+        )
         .catch((error) => {
             console.log(error);
             throw Error('Error. Corrige.')
