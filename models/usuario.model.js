@@ -35,10 +35,6 @@ module.exports = class Usuario {
         return db.execute('SELECT * FROM Usuario');
     }
 
-    static fetchAllMails() {
-        return db.execute('SELECT Correo_electronico FROM Usuario');
-    }
-
     static fetchOne(correo) {
         return db.execute(
             'SELECT * FROM Usuario WHERE Correo_electronico=?',

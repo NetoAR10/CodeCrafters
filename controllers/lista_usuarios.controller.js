@@ -1,5 +1,6 @@
 const ListaUsuario = require('../models/lista_usuarios.model');
 const Usuario = require('../models/usuario.model');
+const adminClient = require('../util/api_clients/adminApiClient');
 
 exports.get_listUsers = (request, response, next) => {
     ListaUsuario.getVariosRol()
@@ -81,8 +82,11 @@ exports.post_modificarRol = (request, response, next) => {
     response.redirect('/user/admin/usuarios');
 }
 
-exports.post_actualizar = (request, response, next) => {
-    Usuario.fetchAllMails().then(([users, fieldData]) => {
-        console.log(users);
+exports.post_actualizar = async (request, response, next) => {
+    APIUsers = await adminClient.getAllUsers();
+    // console.log(APIUsers)
+    Usuario.fetchAll().then(([users, fieldData]) => {
+        // console.log(users);
     })
+
 }
