@@ -26,7 +26,7 @@ const csrfProtection = csrf();
 app.use(csrfProtection);
 
 app.use((request, response, next) => {
-    response.locals.csrfToken = request.csrfToken(); // Enviar token CSRF a las vistas
+    response.locals.csrfToken = request.csrfToken(); 
     next();
 });
 
@@ -37,7 +37,7 @@ app.use('/user/alumno', rutasAlumno);
 const rutasAdmin = require('./routes/admin.routes');
 app.use('/user/admin', rutasAdmin);
 
-const rutasPago = require('./routes/pago.routes'); // Asegúrate de que la ruta sea correcta
+const rutasPago = require('./routes/pago.routes'); 
 app.use('/pagos', rutasPago);
 
 const rutasUsuario = require('./routes/usuario.routes');
