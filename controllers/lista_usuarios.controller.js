@@ -83,10 +83,41 @@ exports.post_modificarRol = (request, response, next) => {
 }
 
 exports.post_actualizar = async (request, response, next) => {
-    APIUsers = await adminClient.getAllUsers();
-    // console.log(APIUsers)
-    Usuario.fetchAll().then(([users, fieldData]) => {
-        // console.log(users);
-    })
+    try {
+        const APIUsers = await adminClient.getAllUsers();
+        // console.log(APIUsers);
+        const correosAPI = APIUsers.data.map(APIUsers => {
+            const {
+                email = ''
+            } = APIUsers;
+
+            return email;
+        });
+        //console.log(correosAPI);
+        
+        Usuario.fetchAll().then(([users, fieldData]) => {
+            //console.log(users);
+            Usuario.fetchAllMails().then(([mails, fieldData]) => {
+                // console.log(mails);
+
+                const normalizedCorreosAPI = correosAPI.map(email => email.replace(/"/g, "'"));
+                const normalizedMails = mails.map(mail => mail.Correo_electronico.replace(/"/g, "'"));
+                
+                normalizedCorreosAPI.forEach(email => {
+                    if(normalizedMails.includes(email)){
+                        console.log(`${email} está en la base de datos`)
+                    } else {
+                        console.log(`${email} no está en la base de datos`)
+                    }
+                })
+            })
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+    catch (error) {
+        console.log(error);
+    }
+    
 
 }
