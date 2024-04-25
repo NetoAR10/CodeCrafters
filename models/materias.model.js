@@ -10,10 +10,11 @@ module.exports = class materia {
 
     save() {
         return db.execute(
-            'INSERT INTO materias (Nombre_mat, Creditos, IDMateriaEXT) VALUES (?, ?, ?)',
+            'INSERT INTO materias (Nombre_mat, Creditos, IDMateriaEXT) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE IDMateriaEXT = IDMateriaEXT',
             [this.Nombre_mat, this.Creditos, this.IDMateriaEXT]
         );
     }
+    
 
     static fetchAll() {
         return db.execute('SELECT * FROM materias');
@@ -34,20 +35,17 @@ module.exports = class materia {
         }
     }
 
-    static fetchMatricula(correo) {
+    static fetchInfoUsuario(correo) {
         return db.execute(
-            'SELECT matricula FROM usuario WHERE Correo_electronico=?',
+            'SELECT matricula, IDUsuario, Beca_actual FROM usuario WHERE Correo_electronico=?',
             [correo]
         );
     }
 
-    static fecthCicloEscolar(correo) {
+    static fecthCicloEscolar() {
         return db.execute(
-            `SELECT C.ciclo, C.IDCicloEXT, C.ciclo_Activo, C.Precio_credito, P.Beca
-            FROM cicloescolar C, pertenece 	p, usuario U
-            WHERE C.IDCiclo = P.IDCiclo AND U.IDUsuario = P.IDUsuario
-            AND U.Correo_electronico = ? `,
-            [correo]
+            `SELECT ciclo, IDCicloEXT, Precio_credito, IDCiclo
+            FROM cicloescolar WHERE Ciclo_activo = 1 `
         );
     }
 

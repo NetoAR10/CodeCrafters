@@ -60,6 +60,20 @@
                 <h5>Si requiere cambios, da click en el botón de pedir cambios.</h5>
                 <input type="submit" value="Pedir cambios" class="btn2" style="margin-top: 20px;">
             </form>
-        </div>     
+        </div>  
+        <div class="payment_plan">
+            <h4>Selecciona plan de pago</h4>
+            <form id="payment_form" action="/user/alumno/materias" method="POST">
+                <label>
+                    <br><input type="radio" name="payment_option" value="contado"> Pagar de contado
+                </label>
+                <label>
+                    <br><input type="radio" name="payment_option" value="plazos"> Pagar en plazos
+                </label>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <br>
+                <br><input type="submit" value="Confirmar pago" class="btn2" id="confirmar_pago">
+            </form>
+        </div>       
     </body>
 </html>
