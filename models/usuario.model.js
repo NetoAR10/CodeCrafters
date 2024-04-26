@@ -15,7 +15,7 @@ module.exports = class Usuario {
         console.log('Correo:', this.correo);
         return db.execute(
             'INSERT INTO Usuario (Nombre, Matricula, Correo_electronico) VALUES (?, ? , ?)',
-            [this.nombre, this.matricula, this.correo],
+            [this.nombre, this.matricula, this.correo]
         )
         .catch((error) => {
             console.log(error);

@@ -72,7 +72,8 @@ async function getAllUsers(){
     {
       headers,
       params: {
-        type: 'Users::Student'
+        type: ['Users::Student', 'Users::Admin']
+
       },
     }
   )
