@@ -70,7 +70,8 @@ module.exports = class HistorialPago {
             deuda.Concepto,
             deuda.Fecha_limite,
             usuario.IDUsuario,
-            deuda.IDDeuda
+            deuda.IDDeuda,
+	    deuda.Mes
         FROM usuario
         JOIN pago ON usuario.IDUsuario = pago.IDUsuario
         JOIN deuda ON pago.IDDeuda = deuda.IDDeuda

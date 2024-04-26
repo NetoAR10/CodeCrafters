@@ -52,5 +52,6 @@ router.get('/historial-pagos-general/buscar/:valor_busqueda', isAuth, isActive, 
 router.get('/historial-pagos-general/buscar', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getBuscarHistorial);
 router.delete('/historial-pagos-general/borrar/:id', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.deletePago);
 router.get('/historial-pagos-general/editar-pago/:id',isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.editPago);
+router.post('/historial-pagos-general/editar-pago/:id', isAuth, isActive, canViewHistorialTodos, pagoController.postRegistrarPago);
 
 module.exports = router;

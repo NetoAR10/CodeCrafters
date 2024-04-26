@@ -12,6 +12,7 @@ exports.getHistorialPagosGeneral = async (request, response,next) => {
             permisos: request.session.permisos,
             rol: request.session.roles,
             nombre: request.session.nombre,
+
         });
     } catch (error) {
         console.error('Error fetching payment history:', error);
@@ -45,13 +46,19 @@ exports.deletePago = (request, response, next) => {
 
 exports.editPago = async (request, response, next) => {
     console.log('hola')
-    const IDPago = request.query.IDPago; // Recuperar ID del pago desde la query string
+    const IDPago = request.params.id; 
+    console.log(IDPago)
     try {
         const [pagoDetails] = await HistorialPago.buscarID(IDPago);
         if (pagoDetails.length > 0) {
             response.render('registrarPago', {
                 pago: pagoDetails[0],
-                titulo: 'Modificar Pago'
+                titulo: 'Modificar Pago',
+	        correo: request.session.permisos,
+		permisos: request.session.permisos,
+		rol: request.session.roles,
+		nombre: request.session.nombre,
+		csrfToken: request.csrfToken(),
             });
         } else {
             response.status(404).send('Pago no encontrado');
@@ -61,6 +68,3 @@ exports.editPago = async (request, response, next) => {
         response.status(500).send('Error al editar el pago');
     }
 };
-
-
-

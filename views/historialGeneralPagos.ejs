@@ -47,7 +47,7 @@
                         <td><%= pago.Nota %></td>
                         <td><%= pago.Fecha_limite %></td>
                         <td>
-                            <button onclick="window.location.href='/user/admin/historial-general-pagos/editar-pago/<%= pago.IDPago %>'">Modificar</button>
+                            <button onclick="window.location.href='/user/admin/historial-pagos-general/editar-pago/<%= pago.IDPago %>'">Modificar</button>
                         </td>
                         <td>
                             <button onclick="borrarPago('<%= pago.IDPago %>')">Borrar</button>
@@ -122,7 +122,7 @@ const accion_asincrona = () => {
                 <td>${pago.Nota}</td>
                 <td>${pago.Fecha_limite ? pago.Fecha_limite.toISOString().slice(0, 10) : ''}</td>
                 <td>
-                    <button onclick="borrarPago(<%= pago.IDPago %>)">Borrar</button>
+                    <button onclick="window.location.href='/user/admin/historial-pagos-general/editar-pago/${pago.IDPago})">Modificar</button>
                 </td>
                 <td>
                     <button onclick="borrarPago(${pago.IDPago})">Borrar</button>

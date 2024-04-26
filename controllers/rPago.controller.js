@@ -2,30 +2,29 @@ const pago = require('../models/rPago.model');
 
 exports.getRegistrarPago = (request, response, next) => {
     response.render('registrarPago', { 
-        csrfToken: request.csrfToken(),
-        correo: request.session.correo,
+        correo: request.session.correo || '',
         permisos: request.session.permisos,
         rol: request.session.roles,
         nombre: request.session.nombre,
+        csrfToken: request.csrfToken(),
     });
 };
 
 exports.postRegistrarPago = async (request, response, next) => {
+    console.log('hola');
     const { IDPago, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota } = request.body;
     try {
-        if (IDPago) {
-            // Update existing payment
-            await pago.update(IDPago, { Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota });
-            response.send('Pago creado con éxito'); // Redirect after updating
+        if (IDPago) { 
+            await pago.save(IDPago, { Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota });
+            response.send('Pago actualizado con éxito'); 
         } else {
-            // Create new payment
             const nuevoPago = new pago({ Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota });
             await nuevoPago.save();
-            response.send('Pago creado con éxito'); // Redirect after creating
+            response.send('Pago creado con éxito');
         }
     } catch (err) {
         console.log(err);
         response.status(500).send('Error en la operación del pago.');
+	csrfToken: request.csrfToken()
     }
 };
-

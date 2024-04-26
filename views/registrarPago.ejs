@@ -1,32 +1,24 @@
 <%- include('includes/sidebar.ejs') %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width-device-width, initial-scale=1.0">
-    <title>Registrar Pago</title>
-    <link rel="stylesheet" href="/css/login.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-</head>
 <body>
     <div class="container">
+	<div class="page_content">
         <div class="info-box">
             <p><strong>Nombre:</strong> <%= pago.Nombre %></p>
             <p><strong>Referencia:</strong> <%= pago.Referencia %></p>
-            <p><strong>Total deuda:</strong> <%= pago.Total_deuda %></p>
-            <p><strong>Plan de pago:</strong> <%= pago.Plan_pago %></p>
+            <p><strong>Total deuda:</strong> <%= pago.Total_deuda.toFixed(2) %></p>
             <p><strong>Concepto:</strong> <%= pago.Concepto %></p>
             <p><strong>Mes:</strong> <%= pago.Mes %></p>
-            <p><strong>Fecha límite:</strong> <%= pago.Fecha_limite.toISOString().slice(0, 10) %></p>
+            <p><strong>Fecha límite:</strong> <%= pago.Fecha_limite %></p>
         </div>
         <div class="wrapper">
-            <form action="/user/admin/registrarPago" method="POST"> 
+            <form action="/user/admin/historial-pagos-general/editar-pago/<%= pago.IDPago %>" method="POST"> 
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-                <input type="hidden" name="IDPago" value="<%= pago ? pago.IDPago : '' %>" required>
-
-                <!-- Input fields for payment details -->
+                <input type="hidden" name="IDPago" value="<%= pago ? pago.IDPago: '' %>" required>
+     
                 <div class="input-box">
                     <label for="Cantidad pagada">Cantidad pagada:</label>
-                    <input type="number" name="Cant_pagada" value="<%= pago ? pago.Cant_pagada : '' %>" placeholder="1545" step="0.01" required>
+                    <input type="number" name="Cant_pagada" value="<%= pago ? pago.Cant_pagada.toFixed(2) : '' %>" step="0.01" placeholder="1545" step="0.01" required>
                 </div>
                 <div class="input-box">
                     <label for="Fecha de pago">Fecha de pago:</label>
@@ -49,7 +41,6 @@
                 <button type="button" onclick="window.location.href='http://localhost:2050/'" class="btn">Cancelar</button>
             </form>
         </div> 
+	</div>
     </body>
 </html>
-
-
