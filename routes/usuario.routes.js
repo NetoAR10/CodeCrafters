@@ -1,7 +1,7 @@
 const express = require ('express');
 const router = express.Router();
 const isAuth = require('../util/is-auth');
-const isActive = require('../util/is-active');
+const listaController = require('../controllers/lista_usuarios.controller');
 
 const usuariosController = require('../controllers/usuario.controller');
 
@@ -19,6 +19,10 @@ router.get('/change_password', usuariosController.get_cambiar);
 router.post('/change_password', usuariosController.post_cambiar);
 
 //Dar de alta usuario
-router.post('/dar_alta')
+router.get('/dar_alta', listaController.get_darAlta);
+router.get('/dar_alta/:correo/:resetToken', listaController.get_darAlta);
+router.post('/dar_alta', listaController.post_darAlta);
+router.post('/usuarios', listaController.post_actualizar);
+
 
 module.exports = router;

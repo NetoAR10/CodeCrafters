@@ -23,6 +23,11 @@ exports.post_login = (request, response, next) => {
     .then(([users, fieldData]) => {
         if(users.length == 1) {
             const user = users[0];
+            if (!user.Contrasena) {
+                // Password is NULL, send an error message
+                request.session.error = 'La contraseña no está configurada para este usuario.';
+                return response.redirect('/user/login');
+            }
             bcrypt.compare(request.body.password, user.Contrasena)
             .then(doMatch => {
                 if (doMatch) {
@@ -55,6 +60,9 @@ exports.post_login = (request, response, next) => {
             request.session.error = 'El correo y/o contraseña son incorrectos.'
             response.redirect('/user/login');
         }
+    }).catch((error) => {
+        request.session.error = 'Error Técnico: La base de datos no está conectada.'
+        response.redirect('/user/login');
     })
 }
 
@@ -126,7 +134,7 @@ exports.post_signup = (request, response, next) => {
 exports.get_forgot = async (request, response, next) => {
     try {
         const allUsers = await adminClient.getAllUsers()
-        console.log(allUsers);
+        // console.log(allUsers);
     }
     catch {
         console.log('Error')
@@ -211,8 +219,8 @@ exports.get_cambiar = (request, response, next) => {
 exports.post_cambiar = (request, response, next) => {
     const correo = decodeURIComponent(request.body.correo);
     const new_password = request.body.new_password;
-    console.log('new password:', new_password);
-    console.log('session email:', correo);
+    // console.log('new password:', new_password);
+    // console.log('session email:', correo);
     Usuario.cambiar(new_password, correo).then(()=> {
         passwordReset = true;
         response.redirect('/user/change_password')

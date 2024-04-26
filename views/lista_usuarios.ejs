@@ -28,7 +28,6 @@
                                 <th>Nombre</th>
                                 <th>Matrícula</th>
                                 <th>Correo electrónico</th>
-                                <th>Beca</th>
                                 <th>Rol</th>
                                 <th>¿Activo?</th>
                                 <th></th>
@@ -42,7 +41,6 @@
                                 <td><%= user.Nombre %></td>
                                 <td><%= user.Matricula %></td>
                                 <td><%= user.Correo_electronico %></td>
-                                <td><%= user.Beca_actual %></td>
                                 <td><%= user.Tipo_Rol %></td> 
                                 <td><% if (user.Alumno_activo == 1 ) {%> Activo <% } else if (user.Alumno_activo == 0) { %> Inactivo <% } %> </td>
                                 <td><a href="/user/admin/usuarios/acceso_modificar/<%= user.Correo_electronico %>" class="modifyuser">Modificar Rol</a> 
@@ -135,7 +133,7 @@
                             <th>Nombre</th>
                             <th>Matrícula</th>
                             <th>Correo electrónico</th>
-                            <th>Beca</th>
+
                             <th>Rol</th>
                             <th>¿Activo?</th>
                             <th></th>
@@ -150,7 +148,7 @@
                                 <td>${user.Nombre}</td>
                                 <td>${user.Matricula}</td>
                                 <td>${user.Correo_electronico}</td>
-                                <td>${user.Beca_actual}</td>
+
                                 <td>${user.Tipo_Rol}</td> 
                                 <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
                                 <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a> 
@@ -212,7 +210,7 @@
                             <th>Nombre</th>
                             <th>Matrícula</th>
                             <th>Correo electrónico</th>
-                            <th>Beca</th>
+
                             <th>Rol</th>
                             <th>¿Activo?</th>
                             <th></th>
@@ -227,7 +225,7 @@
                                 <td>${user.Nombre}</td>
                                 <td>${user.Matricula}</td>
                                 <td>${user.Correo_electronico}</td>
-                                <td>${user.Beca_actual}</td>
+
                                 <td>${user.Tipo_Rol}</td> 
                                 <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
                                 <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser">Modificar Rol</a> 
@@ -288,7 +286,7 @@
                             <th>Nombre</th>
                             <th>Matrícula</th>
                             <th>Correo electrónico</th>
-                            <th>Beca</th>
+
                             <th>Rol</th>
                             <th>¿Activo?</th>
                             <th></th>
@@ -303,7 +301,7 @@
                                 <td>${user.Nombre}</td>
                                 <td>${user.Matricula}</td>
                                 <td>${user.Correo_electronico}</td>
-                                <td>${user.Beca_actual}</td>
+
                                 <td>${user.Tipo_Rol}</td> 
                                 <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
                                 <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser">Modificar Rol</a> 
