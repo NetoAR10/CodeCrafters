@@ -15,7 +15,7 @@
                 </tr>
             </thead>
             <tbody>
-                <% deudas.forEach(function(deuda) { %>
+                <% deuda.forEach(function(deuda) { %>
                     <tr>
                         <td><%= deuda.Nombre %></td>
                         <td><%= deuda.Referencia %></td> 
@@ -24,13 +24,13 @@
                         <td><%= deuda.Mes %></td>
                         <td><%= deuda.Fecha_limite %></td>
                         <td>
-                            <a href="/user/admin/registrarPago/<%= deuda.Matricula %>" class="btn">Registrar Pago</a>
+                            <a href="/user/admin/pagos_de_alumnos/registrarPago/<%= deuda.Matricula %>" class="btn">Registrar Pago</a>
                         </td>
                     </tr>
                 <% }); %>
             </tbody>
         </table>
-
+        <a href="/user/admin/pagos_de_alumnos/crearDeuda/<%= deuda.Matricula %>" class="btn">Crear Deuda</a> 
     </div>
 </body>
 </html>

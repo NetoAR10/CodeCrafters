@@ -56,7 +56,7 @@ exports.getHistorialDeDeudas = (request, response, next) => {
     ListaUsuario.historialDeDeudas(Matricula)
     .then(([data, fieldData]) => {
         response.render('historial_deudas', {
-            deudas: data,
+            deuda: data,
             nombre: request.session.nombre || '',
 	    correo: request.session.correo || '',
 	    matricula: request.session.matricula || '',
@@ -70,4 +70,25 @@ exports.getHistorialDeDeudas = (request, response, next) => {
     });
 };
 
-
+exports.infoDeuda = async (request, response, next) => { 
+    const Matricula = request.params.id; 
+    try {
+        const [deudaDetails] = await ListaUsuario.infoDeuda(Matricula);
+        if (deudaDetails.length > 0) {
+            response.render('crearDeuda', {
+                deuda: deudaDetails[0],
+                titulo: 'Modificar Pago',
+	        correo: request.session.permisos,
+		permisos: request.session.permisos,
+		rol: request.session.roles,
+		nombre: request.session.nombre,
+		csrfToken: request.csrfToken(),
+            });
+        } else {
+            response.status(404).send('Error al crear Deuda');
+        }
+    } catch (error) {
+        console.error('Error al crear deuda:', error);
+        response.status(500).send('Error al crear Deuda');
+    }
+};

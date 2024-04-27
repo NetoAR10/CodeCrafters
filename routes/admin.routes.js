@@ -41,7 +41,6 @@ router.post('/registrarPago', isAuth, isActive, pagoController.postRegistrarPago
 
 //Crear Deuda
 router.post('/crearDeuda', isAuth, isActive, deudaController.postCrearDeuda);
-router.get('/deudas/lista', isAuth, isActive, deudaController.getDeudas);
 router.get('/crearDeuda', isAuth, isActive,  deudaController.getCrearDeuda);
 
 //Pagos de Alumnos
@@ -50,6 +49,8 @@ router.get('/pagos_de_alumnos/buscar/:valor_busqueda', isAuth, isActive, pagosDe
 router.get('/pagos_de_alumnos/buscar', isAuth, isActive, pagosDeAlumnosController.get_buscar);
 router.get('/pagos_de_alumnos/historial/:id', isAuth, isActive, pagosDeAlumnosController.getHistorialDePagos);
 router.get('/pagos_de_alumnos/deudas/:id', isAuth, isActive, pagosDeAlumnosController.getHistorialDeDeudas);
+router.get('/pagos_de_alumnos/crearDeuda/:id', isAuth, isActive, pagosDeAlumnosController.infoDeuda);
+router.post('/pagos_de_alumnos/crearDeuda/:id', isAuth, isActive, deudaController.postCrearDeuda);
 
 // Ruta para Historial de Pagos General
 router.get('/historial-pagos-general', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getHistorialPagosGeneral);
