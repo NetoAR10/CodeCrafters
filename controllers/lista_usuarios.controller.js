@@ -107,80 +107,96 @@ exports.post_actualizar = async (request, response, next) => {
                 second_surname = '',
                 ivd_id = 0,
                 email = '',
+                role = {}
             } = APIUsers;
+
+            const {
+                description = '',
+            } = role;
             
             return {
                 name,
                 first_surname,
                 second_surname,
                 ivd_id,
+                description,
                 email: email.replace(/"/g, "'"),
             };
         })
-        // console.log(datosAPI);
+        console.log(datosAPI);
+
+        //Comparaciones 
         
-        
-        Usuario.fetchAllMails().then(([mails, fieldData]) => {
-            const normalizedMails = mails.map(mail => mail.Correo_electronico.replace(/"/g, "'"));
-            
-            datosAPI.forEach(user => {
-                const {
-                    name, first_surname, second_surname, ivd_id, email,
-                } = user;
-                if(normalizedMails.includes(email)){
-                    console.log(`${email} está en la base de datos`)
-                } else {
+        Usuario.fetchAll().then(([users, fieldData]) => {
+
+            Usuario.fetchAllMails().then(([mails, fieldData]) => {
+                const normalizedMails = mails.map(mail => mail.Correo_electronico.replace(/"/g, "'"));
+                const normalizedUsers = users.map(users => users.Nombre.replace(/"/g, "'"));
+                datosAPI.forEach(user => {
+                    const {
+                        name, first_surname, second_surname, ivd_id, email,
+                    } = user;
                     let fullName = `${name} ${first_surname} ${second_surname}`;
-                    console.log('Nombre completo:', fullName, 'Correo:', email);
-                    
-                    
-                    console.log(`Ingresando ${email} dentro de la base de datos`)
-                    const nuevo_usuario = new Usuario(fullName, ivd_id, email);
-                    nuevo_usuario.save();
-                    
-                }
-                
-            })
+                    // console.log('Nombre completo:', fullName, 'Correo:', email);
+                    if(normalizedMails.includes(email)){
+                        // console.log(`${email} está en la base de datos`)
 
-            //Enviar correos a usuarios sin contraseña
+                        if(normalizedUsers.includes(fullName)){
+                            console.log('En base de datos:', fullName);
+                        } else {
+                            console.log('Debe actualizarse la base:', fullName);
+                        }
+                    
+                    } else {
+                        console.log(`Ingresando ${email} dentro de la base de datos`)
+                        const nuevo_usuario = new Usuario(fullName, ivd_id, email);
+                        nuevo_usuario.save();
+                        
+                    }
 
-            // Usuario.contrasenaIsNull().then(([correosSC, fieldData])=> {
-                
-            //     for (let i = 0; i < correosSC.length; i++){
-            //         console.log('Longitud correo:' , correosSC.length , 'Iteración: ', i);
-            //         setTimeout(() => {
-                        
-            //             const generateResetToken = () => {
+                    
+                })
+    
+                //Enviar correos a usuarios sin contraseña
+    
+                // Usuario.contrasenaIsNull().then(([correosSC, fieldData])=> {
+                    
+                //     for (let i = 0; i < correosSC.length; i++){
+                //         console.log('Longitud correo:' , correosSC.length , 'Iteración: ', i);
+                //         setTimeout(() => {
                             
-            //                 return require('crypto').randomBytes(32).toString('hex');
-                            
-            //             }
-            //             const altaToken = generateResetToken();
-            //             const email = correosSC[i].Correo_electronico;
-            //             const altaURL = `http://localhost:2050/user/dar_alta/${email}/${altaToken}`;
-            //             const mailOptions = {
-            //                 from: 'testing20242304@gmail.com',
-            //                 to: correosSC[i].Correo_electronico,
-            //                 subject: 'Registra tu cuenta',
-            //                 text: `Para darte de alta en el sistema de ViaDiseño, haz clic en el siguiente link.
-                            
-            //                 ${altaURL}`,
-            //             };
-                        
-            //             transporter.sendMail(mailOptions, (error, info) => {
-            //                 if (error) {
-            //                     console.log(error);
+                //             const generateResetToken = () => {
                                 
-            //                 } else {
-            //                     console.log('Email sent: ' + info.response);
-            //                 }
-            //             }); 
-
-            //         }, 1000);
-            //     }
-                
-                
-            // })
+                //                 return require('crypto').randomBytes(32).toString('hex');
+                                
+                //             }
+                //             const altaToken = generateResetToken();
+                //             const email = correosSC[i].Correo_electronico;
+                //             const altaURL = `http://localhost:2050/user/dar_alta/${email}/${altaToken}`;
+                //             const mailOptions = {
+                //                 from: 'testing20242304@gmail.com',
+                //                 to: correosSC[i].Correo_electronico,
+                //                 subject: 'Registra tu cuenta',
+                //                 text: `Para darte de alta en el sistema de ViaDiseño, haz clic en el siguiente link.
+                                
+                //                 ${altaURL}`,
+                //             };
+                            
+                //             transporter.sendMail(mailOptions, (error, info) => {
+                //                 if (error) {
+                //                     console.log(error);
+                                    
+                //                 } else {
+                //                     console.log('Email sent: ' + info.response);
+                //                 }
+                //             }); 
+    
+                //         }, 1000);
+                //     }
+                    
+                    
+                // })
+            })
         }).catch((error) => {
             console.log(error);
         })
