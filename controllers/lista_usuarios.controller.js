@@ -115,7 +115,7 @@ exports.post_actualizar = async (request, response, next) => {
             } = role;
             
             return {
-                name,
+                name: name.replace(/"/g, "'"),
                 first_surname,
                 second_surname,
                 ivd_id,
@@ -128,90 +128,85 @@ exports.post_actualizar = async (request, response, next) => {
         //Comparaciones 
         
         Usuario.fetchAll().then(([users, fieldData]) => {
+            const normalizedMails = users.map(users => users.Correo_electronico);
+            const normalizedNames = users.map(users => users.Nombre);
+            const normalizedIDs = users.map(users => users.Matricula);
 
-            Usuario.fetchAllMails().then(([mails, fieldData]) => {
-                const normalizedMails = mails.map(mails => mails.Correo_electronico.replace(/"/g, "'"));
-                const normalizedNames = users.map(users => users.Nombre.replace(/"/g, "'"));
-                const normalizedIDs = users.map(users => users.Matricula);
+            datosAPI.forEach(user => {
+                const {
+                    name, first_surname, second_surname, ivd_id, description, email
+                } = user;
+                let fullName = `${name} ${first_surname} ${second_surname}`;
+                console.log('Nombre completo:', fullName, 'Correo:', email);
 
-                datosAPI.forEach(user => {
-                    const {
-                        name, first_surname, second_surname, ivd_id, description, email
-                    } = user;
-                    let fullName = `${name} ${first_surname} ${second_surname}`;
-                    // console.log('Nombre completo:', fullName, 'Correo:', email);
+                if(normalizedIDs.includes(ivd_id) && normalizedMails.includes(email) && normalizedNames.includes(fullName)){
+                    console.log('En base de datos:', fullName, email, ivd_id, description);
 
-                    if(normalizedIDs.includes(ivd_id) && normalizedMails.includes(email) && normalizedNames.includes(fullName)){
-                        console.log('En base de datos:', fullName, email, ivd_id, description);
+                } else {
+                    if (description !== 'Profesor'){
+                        console.log('Debe actualizarse la base:', fullName, email, description);
+                        //Si el nombre está mal
+                        if(normalizedIDs.includes(ivd_id) && normalizedMails.includes(email)){
+                            console.log('El nombre debería ser:', fullName, '. Actualizando...');
+                            Usuario.updateName(fullName, email, ivd_id);
+                        //Si el correo está mal
+                        } else if (normalizedIDs.includes(ivd_id) && normalizedNames.includes(fullName)){
+                            console.log('El correo debería ser:', email, '. Actualizando...')
+                            Usuario.updateEmail(email, fullName, ivd_id);
+                        //Si la matrícula está mal
+                        } else if (normalizedMails.includes(email) && normalizedNames.includes(fullName)){
+                            console.log('La matrícula debería ser:', ivd_id, '. Actualizando...');
+                            Usuario.updateID(ivd_id, email, fullName);
+                        } else{
+                            console.log(`Ingresando ${email} dentro de la base de datos`)
+                            const nuevo_usuario = new Usuario(fullName, ivd_id, email);
+                            nuevo_usuario.save();
 
-                    } else {
-                        if (description !== 'Profesor'){
-                            console.log('Debe actualizarse la base:', fullName, email, description);
-                            //Si el nombre está mal
-                            if(normalizedIDs.includes(ivd_id) && normalizedMails.includes(email)){
-                                console.log('El nombre debería ser:', fullName, '. Actualizando...');
-                                Usuario.updateName(fullName, email, ivd_id);
-                            //Si el correo está mal
-                            } else if (normalizedIDs.includes(ivd_id) && normalizedNames.includes(fullName)){
-                                console.log('El correo debería ser:', email, '. Actualizando...')
-                                Usuario.updateEmail(email, fullName, ivd_id);
-                            //Si la matrícula está mal
-                            } else if (normalizedMails.includes(email) && normalizedNames.includes(fullName)){
-                                console.log('La matrícula debería ser:', ivd_id, '. Actualizando...');
-                                Usuario.updateID(ivd_id, email, fullName);
-                            } else{
-                                console.log(`Ingresando ${email} dentro de la base de datos`)
-                                const nuevo_usuario = new Usuario(fullName, ivd_id, email);
-                                nuevo_usuario.save();
-
-                            }
                         }
                     }
-                
-
+                }
                     
-                })
+            })
     
                 // Enviar correos a usuarios sin contraseña
     
-                Usuario.contrasenaIsNull().then(([correosSC, fieldData])=> {
+                // Usuario.contrasenaIsNull().then(([correosSC, fieldData])=> {
                     
-                    for (let i = 0; i < correosSC.length; i++){
-                        console.log('Longitud correo:' , correosSC.length , 'Iteración: ', i);
-                        setTimeout(() => {
+                //     for (let i = 0; i < correosSC.length; i++){
+                //         console.log('Longitud correo:' , correosSC.length , 'Iteración: ', i);
+                //         setTimeout(() => {
                             
-                            const generateResetToken = () => {
+                //             const generateResetToken = () => {
                                 
-                                return require('crypto').randomBytes(32).toString('hex');
+                //                 return require('crypto').randomBytes(32).toString('hex');
                                 
-                            }
-                            const altaToken = generateResetToken();
-                            const email = correosSC[i].Correo_electronico;
-                            const altaURL = `http://localhost:2050/user/dar_alta/${email}/${altaToken}`;
-                            const mailOptions = {
-                                from: 'testing20242304@gmail.com',
-                                to: correosSC[i].Correo_electronico,
-                                subject: 'Registra tu cuenta',
-                                text: `Para darte de alta en el sistema de ViaDiseño, haz clic en el siguiente link.
+                //             }
+                //             const altaToken = generateResetToken();
+                //             const email = correosSC[i].Correo_electronico;
+                //             const altaURL = `http://localhost:2050/user/dar_alta/${email}/${altaToken}`;
+                //             const mailOptions = {
+                //                 from: 'testing20242304@gmail.com',
+                //                 to: correosSC[i].Correo_electronico,
+                //                 subject: 'Registra tu cuenta',
+                //                 text: `Para darte de alta en el sistema de ViaDiseño, haz clic en el siguiente link.
                                 
-                                ${altaURL}`,
-                            };
+                //                 ${altaURL}`,
+                //             };
                             
-                            transporter.sendMail(mailOptions, (error, info) => {
-                                if (error) {
-                                    console.log(error);
+                //             transporter.sendMail(mailOptions, (error, info) => {
+                //                 if (error) {
+                //                     console.log(error);
                                     
-                                } else {
-                                    console.log('Email sent: ' + info.response);
-                                }
-                            }); 
+                //                 } else {
+                //                     console.log('Email sent: ' + info.response);
+                //                 }
+                //             }); 
     
-                        }, 1000);
-                    }
+                //         }, 1000);
+                //     }
                     
                     
-                })
-            })
+                // })
         }).catch((error) => {
             console.log(error);
         })

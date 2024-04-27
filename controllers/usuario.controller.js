@@ -8,6 +8,7 @@ exports.get_login = (request, response, next) => {
     request.session.error = '';
     response.render('login', {
         correo: request.session.correo || '',
+        matricula: request.session.matricula || 0,
         registrar: false,
         error: error,
         csrfToken: request.csrfToken(),
@@ -19,8 +20,9 @@ exports.get_login = (request, response, next) => {
 
 exports.post_login = (request, response, next) => {
     
-    Usuario.fetchOne(request.body.correo)
+    Usuario.fetchOne(request.body.matricula)
     .then(([users, fieldData]) => {
+        console.log(users);
         if(users.length == 1) {
             const user = users[0];
             if (!user.Contrasena) {
@@ -30,11 +32,12 @@ exports.post_login = (request, response, next) => {
             bcrypt.compare(request.body.password, user.Contrasena)
             .then(doMatch => {
                 if (doMatch) {
-                    Usuario.getPermisos(user.Correo_electronico).then(([permisos, fieldData]) => {
+                    Usuario.getPermisos(user.Matricula).then(([permisos, fieldData]) => {
                         const rol = permisos[0];
                         request.session.isLoggedIn = true;
                         request.session.permisos = permisos;
                         request.session.correo = user.Correo_electronico;
+                        request.session.matricula = user.Matricula;
                         request.session.nombre = user.Nombre; 
                         request.session.roles = rol.Tipo_Rol;
                         request.session.active = user.Alumno_activo;
