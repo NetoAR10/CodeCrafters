@@ -130,30 +130,47 @@ exports.post_actualizar = async (request, response, next) => {
         Usuario.fetchAll().then(([users, fieldData]) => {
 
             Usuario.fetchAllMails().then(([mails, fieldData]) => {
-                const normalizedMails = mails.map(mail => mail.Correo_electronico.replace(/"/g, "'"));
-                const normalizedUsers = users.map(users => users.Nombre.replace(/"/g, "'"));
+                const normalizedMails = mails.map(mails => mails.Correo_electronico.replace(/"/g, "'"));
+                const normalizedNames = users.map(users => users.Nombre.replace(/"/g, "'"));
+                const normalizedIDs = users.map(users => users.Matricula);
+
                 datosAPI.forEach(user => {
                     const {
                         name, first_surname, second_surname, ivd_id, description, email
                     } = user;
                     let fullName = `${name} ${first_surname} ${second_surname}`;
                     // console.log('Nombre completo:', fullName, 'Correo:', email);
-                    if(normalizedMails.includes(email)){
-                        // console.log(`${email} está en la base de datos`)
 
-                        if(normalizedUsers.includes(fullName)){
-                            console.log('En base de datos:', fullName, email, description);
-                        } else {
-                            console.log('Debe actualizarse la base:', fullName, email, description);
-                        }
-                    
+                    if(normalizedIDs.includes(ivd_id) && normalizedMails.includes(email) && normalizedNames.includes(fullName)){
+                        // console.log('En base de datos:', fullName, email, ivd_id, description);
+
                     } else {
                         if (description !== 'Profesor'){
-                            console.log(`Ingresando ${email} dentro de la base de datos`)
-                            const nuevo_usuario = new Usuario(fullName, ivd_id, email);
-                            nuevo_usuario.save();
+                            console.log('Debe actualizarse la base:', fullName, email, description);
+                            //Si el nombre está mal
+                            if(normalizedIDs.includes(ivd_id) && normalizedMails.includes(email)){
+                                console.log('Está mal el nombre:', users.Nombre, email, ivd_id, description);
+                                console.log('El nombre debería ser:', fullName);
+                                Usuario.updateName(fullName, email, ivd_id);
+                            //Si el correo está mal
+                            } else if (normalizedIDs.includes(ivd_id) && normalizedNames.includes(fullName)){
+                                console.log('Está mal el correo:', fullName, users.Correo_electronico, ivd_id, description);
+                                console.log('El correo debería ser:', email)
+                                Usuario.updateEmail(email, fullName, ivd_id);
+                            //Si la matrícula está mal
+                            } else if (normalizedMails.includes(email) && normalizedNames.includes(fullName)){
+                                console.log('Está mal la matrícula:', fullName, email, users.Matricula, description);
+                                console.log('La matrícula debería ser:', ivd_id);
+                                Usuario.updateID(ivd_id, email, fullName);
+                            } else{
+                                // console.log(`Ingresando ${email} dentro de la base de datos`)
+                                // const nuevo_usuario = new Usuario(fullName, ivd_id, email);
+                                // nuevo_usuario.save();
+
+                            }
                         }
                     }
+                
 
                     
                 })

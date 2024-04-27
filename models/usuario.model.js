@@ -71,4 +71,27 @@ module.exports = class Usuario {
         )
     }
 
+    static updateID(matricula, correo, nombre){
+        return db.execute(
+            `UPDATE usuario 
+            SET Matricula = ?
+            WHERE Correo_electronico = ? 
+            AND Nombre = ?`,[matricula, correo, nombre]);
+    }
+
+    static updateName(nombre, correo, matricula){
+        return db.execute(
+            `UPDATE usuario
+            SET Nombre = ?
+            WHERE Correo_electronico = ?
+            AND Matricula = ?`, [nombre, correo, matricula]);
+    }
+
+    static updateEmail(correo, nombre, matricula){
+        return db.execute(
+            `UPDATE usuario
+            SET Correo_electronico = ?
+            WHERE Nombre = ?
+            AND Matricula = ?`, [correo, nombre, matricula]);
+    }
 }
