@@ -5,16 +5,20 @@
     nombre: nombre,
     rolUser: rolUser,
 } %>
-    <body>
+<body>
+    
+    <div class="page_content">
+        <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" >
         
-        <div class="page_content">
-            <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" >
-            
-            <div class="text">
-                <div class="title_usuarios">
-                    <h1>Usuarios</h1> 
-                </div>
-                <input id="buscar" class="buscar" type="text" placeholder="Buscar..."/><br><br>
+        <div class="text">
+            <div class="title_usuarios">
+                <h1>Usuarios</h1> 
+            </div>
+            <input id="buscar" class="buscar" type="text" placeholder="Buscar..."/><br>
+            <form action="/user/admin/usuarios/actualizar" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="button" name="refresh" id="refresh" value="Sincronizar" onclick="actualizar()">
+            </form>
                 <div id="respuesta_ajax">
                     <div class="tabla">
                         <% if (usuariosDB.length < 1) { %>
@@ -29,8 +33,9 @@
                                 <th>Matrícula</th>
                                 <th>Correo electrónico</th>
                                 <th>Rol</th>
-                                <th>¿Activo?</th>
                                 <th>Referencia</th>
+                                <th>¿Activo?</th>
+                                <th></th>
                                 <th></th>
                             </tr>
                             <% for (let user of usuariosDB) {%>
@@ -43,14 +48,20 @@
                                 <td><%= user.Matricula %></td>
                                 <td><%= user.Correo_electronico %></td>
                                 <td><%= user.Tipo_Rol %></td> 
+                                <td><%= user.Referencia %> <br>
+                                <form action="/user/admin/usuarios/editar/<%=user.Correo_electronico%> ">
+                                    <input type="hidden" name="_csrf" value="<%=csrfToken%>">
+                                    <input type="hidden" name="correo" value="<%=user.Correo_electronico%>">
+                                    <button onclick="editar()">Editar</button></td>
+                                </form>
                                 <td><% if (user.Alumno_activo == 1 ) {%> Activo <% } else if (user.Alumno_activo == 0) { %> Inactivo <% } %> </td>
-                                <td><input type="text"></td>
                                 <td>
                                     <div class="buttonMR">
                                     <a href="/user/admin/usuarios/acceso_modificar/<%= user.Correo_electronico %>" class="modifyuser">Modificar Rol</a>
                                     </div>
+                                </td>
+                                <td>
                                     <div class="buttonDA">
-
                                         <a class="<% if (user.Alumno_activo == 1) { %> deleteuser <% } else { %> reactivateuser <% } %>" 
                                         <% if (user.Alumno_activo == 1) { %>
                                             onclick="desactivar('<%= user.Correo_electronico %>')"
@@ -72,16 +83,98 @@
                           </table>
                     </div>
                 </div>
-                <form action="/user/admin/usuarios/actualizar" method="POST">
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <input type="button" name="refresh" id="refresh" value="Actualizar Alumnos" onclick="actualizar()">
-                </form>
                 
             </div>
         </div>
         
         
         <script>
+
+            const editar = () => {
+                const csrf = document.getElementById('_csrf').value;
+                fetch('/user/admin/usuarios/editar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'csrf-token': csrf
+                    },
+                    body: JSON.stringify()
+                }).then(result => {
+                    return result.json();
+                }).then(data => {
+                    console.log(data);
+                    let html = '';
+                    
+                    
+                        
+                    html += `
+                        <div class="tabla">
+                    `
+                    
+                    if (data.usuariosDB.length < 1) {
+                        html += `
+                        <div class="notification">
+                            No existe el usuario.            
+                            </div>`
+                    }
+                    
+                    html += `
+                    <table id="USUARIOS">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Matrícula</th>
+                            <th>Correo electrónico</th>
+
+                            <th>Rol</th>
+                            <th>Referencia</th>
+                            <th>¿Activo?</th>
+                            <th></th>
+                            <th></th>
+                            </tr>`
+
+                        
+                        for (let user of data.usuariosDB) {
+                        let columns = 0;
+                        columns++
+                        html += `
+                            <tr class="${user.Alumno_activo == 0 ? 'inactiveStudent' : ''}">
+                                <td>${user.Nombre}</td>
+                                <td>${user.Matricula}</td>
+                                <td>${user.Correo_electronico}</td>
+
+                                <td>${user.Tipo_Rol}</td>
+                                <form action="/user/admin/usuarios/editar/${user.Correo_electronico} ">
+                                    <input type="hidden" name="_csrf" value="${csrfToken}">
+                                    <input type="hidden" name="correo" value="${user.Correo_electronico}">
+                                    <td><input type="text" name="referencia" value=""></input> <br> <button onclick="alert('Cambio Guardado')">Guardar</button></td>
+
+                                </form>
+                                <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
+                                <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a></td> 
+                                <td><a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
+                                        user.Alumno_activo === 1 
+                                        ? `onclick="desactivar('${user.Correo_electronico}')" `
+                                        : `onclick="reactivar('${user.Correo_electronico}')"`
+                                    }>
+                                        ${user.Alumno_activo === 1 ? "Desactivar" : "Reactivar"}
+                                    </a> </td>
+                                </tr></td>`
+                                
+                            }
+                            console.log('HTML2:', html)
+                    html += ` 
+                    </table>
+                    </div>
+                    </div>
+                    </div>
+                    `
+
+                                                            
+                document.getElementById('respuesta_ajax').innerHTML = html;
+                }).catch(err => {
+                    console.log(err)
+                })
+            }
 
             const actualizar = () => {
                 const csrf = document.getElementById('_csrf').value;
@@ -96,6 +189,8 @@
                     return result.json();
                 }).then(data => {
                     console.log(data);
+
+                    
                     
                 }).catch(err => {
                     console.log(err);
@@ -144,6 +239,8 @@
 
                             <th>Rol</th>
                             <th>¿Activo?</th>
+                            <th>Referencia</th>
+                            <th></th>
                             <th></th>
                             </tr>`
 
@@ -158,9 +255,10 @@
                                 <td>${user.Correo_electronico}</td>
 
                                 <td>${user.Tipo_Rol}</td> 
+                                <td>${user.Referencia} <br> <button onclick="editar()">Editar</button></td>
                                 <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
-                                <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a> 
-                                    <a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
+                                <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a></td> 
+                                <td><a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
                                         user.Alumno_activo === 1 
                                         ? `onclick="desactivar('${user.Correo_electronico}')" `
                                         : `onclick="reactivar('${user.Correo_electronico}')"`
@@ -220,7 +318,9 @@
                             <th>Correo electrónico</th>
 
                             <th>Rol</th>
+                            <th>Referencia</th>
                             <th>¿Activo?</th>
+                            <th></th>
                             <th></th>
                             </tr>`
 
@@ -234,10 +334,11 @@
                                 <td>${user.Matricula}</td>
                                 <td>${user.Correo_electronico}</td>
 
-                                <td>${user.Tipo_Rol}</td> 
+                                <td>${user.Tipo_Rol}</td>
+                                <td>${user.Referencia} <br> <button onclick="editar()">Editar</button></td> 
                                 <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
-                                <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser">Modificar Rol</a> 
-                                    <a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
+                                <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a></td> 
+                                <td><a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
                                     user.Alumno_activo === 1 
                                     ? `onclick="desactivar('${user.Correo_electronico}')" `
                                     : `onclick="reactivar('${user.Correo_electronico}')"`
@@ -297,6 +398,8 @@
 
                             <th>Rol</th>
                             <th>¿Activo?</th>
+                            <th>Referencia</th>
+                            <th></th>
                             <th></th>
                             </tr>`
 
@@ -311,9 +414,10 @@
                                 <td>${user.Correo_electronico}</td>
 
                                 <td>${user.Tipo_Rol}</td> 
+                                <td>${user.Referencia} <br> <button onclick="editar()">Editar</button></td>
                                 <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
-                                <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser">Modificar Rol</a> 
-                                    <a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
+                                <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a></td> 
+                                <td><a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
                                     user.Alumno_activo === 1 
                                     ? `onclick="desactivar('${user.Correo_electronico}')" `
                                     : `onclick="reactivar('${user.Correo_electronico}')"`

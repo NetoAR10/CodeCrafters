@@ -65,6 +65,15 @@ module.exports = class ListaUsuario {
             AND u.Correo_electronico = ?`, [correo])
     }
 
+    static editar(referencia, correo){
+        return db.execute(
+            `
+            UPDATE usuario
+            SET Referencia = ?
+            WHERE Correo_electronico = ?
+            `, [referencia, correo]);
+    }
+
 }
 
 

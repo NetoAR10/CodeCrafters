@@ -238,3 +238,12 @@ exports.post_darAlta = (request, response, next) => {
         response.redirect('/user/login')
     }).catch((error)=>{console.log(error)})
 }
+
+exports.post_editar = (request, response, next) => {
+    ListaUsuario.editar(request.body.referencia, request.body.correo).then(() => {
+        response.redirect('/user/admin/usuarios');
+    }).catch((error) => {
+        console.log(error);
+        console.log('Valor correo:', request.body.correo);
+    })
+}
