@@ -65,6 +65,18 @@ function convertirAFormatoCSV(data) {
     return csvRows.join('\n');
 }
 
+exports.deletePago = (request, response, next) => {
+    const IDPago = request.params.id;
+    HistorialPago.delete(IDPago)
+        .then(() => {
+            response.json({ message: 'Pago eliminado correctamente.' });
+        })
+        .catch(err => {
+            console.error('Error al eliminar el pago:', err);
+            response.status(500).json({ message: 'Error al eliminar el pago.' });
+        });
+}
+
 exports.editPago = async (request, response, next) => {
     console.log('hola')
     const IDPago = request.params.id; 
