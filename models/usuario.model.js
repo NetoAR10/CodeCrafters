@@ -76,7 +76,7 @@ module.exports = class Usuario {
             `UPDATE usuario 
             SET Matricula = ?
             WHERE Correo_electronico = ? 
-            AND Nombre = ?`,[matricula, correo, nombre]);
+            OR Nombre = ?`,[matricula, correo, nombre]);
     }
 
     static updateName(nombre, correo, matricula){
@@ -84,7 +84,7 @@ module.exports = class Usuario {
             `UPDATE usuario
             SET Nombre = ?
             WHERE Correo_electronico = ?
-            AND Matricula = ?`, [nombre, correo, matricula]);
+            OR Matricula = ?`, [nombre, correo, matricula]);
     }
 
     static updateEmail(correo, nombre, matricula){
@@ -92,6 +92,6 @@ module.exports = class Usuario {
             `UPDATE usuario
             SET Correo_electronico = ?
             WHERE Nombre = ?
-            AND Matricula = ?`, [correo, nombre, matricula]);
+            OR Matricula = ?`, [correo, nombre, matricula]);
     }
 }

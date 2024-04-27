@@ -142,30 +142,27 @@ exports.post_actualizar = async (request, response, next) => {
                     // console.log('Nombre completo:', fullName, 'Correo:', email);
 
                     if(normalizedIDs.includes(ivd_id) && normalizedMails.includes(email) && normalizedNames.includes(fullName)){
-                        // console.log('En base de datos:', fullName, email, ivd_id, description);
+                        console.log('En base de datos:', fullName, email, ivd_id, description);
 
                     } else {
                         if (description !== 'Profesor'){
                             console.log('Debe actualizarse la base:', fullName, email, description);
                             //Si el nombre está mal
                             if(normalizedIDs.includes(ivd_id) && normalizedMails.includes(email)){
-                                console.log('Está mal el nombre:', users.Nombre, email, ivd_id, description);
-                                console.log('El nombre debería ser:', fullName);
+                                console.log('El nombre debería ser:', fullName, '. Actualizando...');
                                 Usuario.updateName(fullName, email, ivd_id);
                             //Si el correo está mal
                             } else if (normalizedIDs.includes(ivd_id) && normalizedNames.includes(fullName)){
-                                console.log('Está mal el correo:', fullName, users.Correo_electronico, ivd_id, description);
-                                console.log('El correo debería ser:', email)
+                                console.log('El correo debería ser:', email, '. Actualizando...')
                                 Usuario.updateEmail(email, fullName, ivd_id);
                             //Si la matrícula está mal
                             } else if (normalizedMails.includes(email) && normalizedNames.includes(fullName)){
-                                console.log('Está mal la matrícula:', fullName, email, users.Matricula, description);
-                                console.log('La matrícula debería ser:', ivd_id);
+                                console.log('La matrícula debería ser:', ivd_id, '. Actualizando...');
                                 Usuario.updateID(ivd_id, email, fullName);
                             } else{
-                                // console.log(`Ingresando ${email} dentro de la base de datos`)
-                                // const nuevo_usuario = new Usuario(fullName, ivd_id, email);
-                                // nuevo_usuario.save();
+                                console.log(`Ingresando ${email} dentro de la base de datos`)
+                                const nuevo_usuario = new Usuario(fullName, ivd_id, email);
+                                nuevo_usuario.save();
 
                             }
                         }
@@ -175,45 +172,45 @@ exports.post_actualizar = async (request, response, next) => {
                     
                 })
     
-                //Enviar correos a usuarios sin contraseña
+                // Enviar correos a usuarios sin contraseña
     
-                // Usuario.contrasenaIsNull().then(([correosSC, fieldData])=> {
+                Usuario.contrasenaIsNull().then(([correosSC, fieldData])=> {
                     
-                //     for (let i = 0; i < correosSC.length; i++){
-                //         console.log('Longitud correo:' , correosSC.length , 'Iteración: ', i);
-                //         setTimeout(() => {
+                    for (let i = 0; i < correosSC.length; i++){
+                        console.log('Longitud correo:' , correosSC.length , 'Iteración: ', i);
+                        setTimeout(() => {
                             
-                //             const generateResetToken = () => {
+                            const generateResetToken = () => {
                                 
-                //                 return require('crypto').randomBytes(32).toString('hex');
+                                return require('crypto').randomBytes(32).toString('hex');
                                 
-                //             }
-                //             const altaToken = generateResetToken();
-                //             const email = correosSC[i].Correo_electronico;
-                //             const altaURL = `http://localhost:2050/user/dar_alta/${email}/${altaToken}`;
-                //             const mailOptions = {
-                //                 from: 'testing20242304@gmail.com',
-                //                 to: correosSC[i].Correo_electronico,
-                //                 subject: 'Registra tu cuenta',
-                //                 text: `Para darte de alta en el sistema de ViaDiseño, haz clic en el siguiente link.
+                            }
+                            const altaToken = generateResetToken();
+                            const email = correosSC[i].Correo_electronico;
+                            const altaURL = `http://localhost:2050/user/dar_alta/${email}/${altaToken}`;
+                            const mailOptions = {
+                                from: 'testing20242304@gmail.com',
+                                to: correosSC[i].Correo_electronico,
+                                subject: 'Registra tu cuenta',
+                                text: `Para darte de alta en el sistema de ViaDiseño, haz clic en el siguiente link.
                                 
-                //                 ${altaURL}`,
-                //             };
+                                ${altaURL}`,
+                            };
                             
-                //             transporter.sendMail(mailOptions, (error, info) => {
-                //                 if (error) {
-                //                     console.log(error);
+                            transporter.sendMail(mailOptions, (error, info) => {
+                                if (error) {
+                                    console.log(error);
                                     
-                //                 } else {
-                //                     console.log('Email sent: ' + info.response);
-                //                 }
-                //             }); 
+                                } else {
+                                    console.log('Email sent: ' + info.response);
+                                }
+                            }); 
     
-                //         }, 1000);
-                //     }
+                        }, 1000);
+                    }
                     
                     
-                // })
+                })
             })
         }).catch((error) => {
             console.log(error);
