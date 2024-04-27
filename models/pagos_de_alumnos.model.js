@@ -33,7 +33,7 @@ module.exports = class ListaUsuario {
             AND u.Nombre LIKE ?`,['%' + valor_busqueda + '%']);
     }
             
-    static historialDePagos(Correo_electronico) {
+    static historialDePagos(Matricula) {
     	return db.execute(
         `SELECT usuario.Nombre, usuario.Matricula,
         pago.Cant_pagada, pago.Fecha_de_pago, pago.Metodo, pago.Banco, pago.Nota,
@@ -41,21 +41,21 @@ module.exports = class ListaUsuario {
         FROM usuario
         JOIN pago ON usuario.IDUsuario = pago.IDUsuario
 	JOIN deuda ON pago.IDDeuda = deuda.IDDeuda
-        WHERE usuario.Correo_electronico = ?;`,
-        [Correo_electronico]
+        WHERE usuario.Matricula = ?;`,
+        [Matricula]
     );
 
 
     }
    
-    static historialDeDeudas(Correo_electronico){
+    static historialDeDeudas(Matricula){
         return db.execute(
         `SELECT usuario.Nombre, usuario.Matricula,
          deuda.Total_deuda, deuda.Concepto, deuda.Mes,  deuda.Fecha_limite
          From usuario
          JOIN deuda ON usuario.IDUsuario = deuda.IDUsuario
-         WHERE usuario.Correo_electronico = ?;`,
-         [Correo_electronico]
+         WHERE usuario.Matricula = ?;`,
+         [Matricula]
     );	
 
     }
