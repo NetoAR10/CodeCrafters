@@ -35,7 +35,7 @@ module.exports = class ListaUsuario {
             
     static historialDePagos(Matricula) {
     	return db.execute(
-        `SELECT usuario.Nombre, usuario.Referencia|,
+        `SELECT usuario.Nombre, usuario.Referencia,
         pago.Cant_pagada, pago.Fecha_de_pago, pago.Metodo, pago.Banco, pago.Nota,
 	deuda.Concepto, deuda.Fecha_limite
         FROM usuario
@@ -59,5 +59,15 @@ module.exports = class ListaUsuario {
     );	
 
     }
-
+    
+    static buscarID(Matricula){
+    return db.execute(`
+        SELECT 
+	    usuario.Nombre, usuario.Referencia,
+            WHERE usuario.Matricula = ?;`
+            [Matricula]
+    );
+	    
+    }
+   
 }
