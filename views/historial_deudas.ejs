@@ -23,13 +23,14 @@
                         <td><%= deuda.Concepto %></td>
                         <td><%= deuda.Mes %></td>
                         <td><%= deuda.Fecha_limite %></td>
+                        <td>
+                            <a href="/user/admin/registrarPago/<%= deuda.Matricula %>" class="btn">Registrar Pago</a>
+                        </td>
                     </tr>
                 <% }); %>
             </tbody>
         </table>
-        <div class="input-box">
-            <p><strong>Crear Deuda:</strong> <%= pago.Nombre %></p>
-        </div>
+
     </div>
 </body>
 </html>

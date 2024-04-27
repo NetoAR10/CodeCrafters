@@ -50,7 +50,7 @@ module.exports = class ListaUsuario {
    
     static historialDeDeudas(Matricula){
         return db.execute(
-        `SELECT usuario.Nombre, usuario.Referencia,
+        `SELECT usuario.Nombre, usuario.Referencia, usuario.Matricula,
          deuda.Total_deuda, deuda.Concepto, deuda.Mes,  deuda.Fecha_limite
          From usuario
          JOIN deuda ON usuario.IDUsuario = deuda.IDUsuario
