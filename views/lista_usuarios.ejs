@@ -30,6 +30,7 @@
                                 <th>Correo electrónico</th>
                                 <th>Rol</th>
                                 <th>¿Activo?</th>
+                                <th>Referencia</th>
                                 <th></th>
                             </tr>
                             <% for (let user of usuariosDB) {%>
@@ -43,19 +44,26 @@
                                 <td><%= user.Correo_electronico %></td>
                                 <td><%= user.Tipo_Rol %></td> 
                                 <td><% if (user.Alumno_activo == 1 ) {%> Activo <% } else if (user.Alumno_activo == 0) { %> Inactivo <% } %> </td>
-                                <td><a href="/user/admin/usuarios/acceso_modificar/<%= user.Correo_electronico %>" class="modifyuser">Modificar Rol</a> 
-                                <a class="<% if (user.Alumno_activo == 1) { %> deleteuser <% } else { %> reactivateuser <% } %>" 
-                                <% if (user.Alumno_activo == 1) { %>
-                                    onclick="desactivar('<%= user.Correo_electronico %>')"
-                                <% } else if (user.Alumno_activo == 0) { %>
-                                    onclick="reactivar('<%= user.Correo_electronico %>')"
-                                <% } %>>
-                                <% if (user.Alumno_activo === 1) { %>
-                                    Desactivar
-                                <% } else { %>
-                                    Reactivar
-                                <% } %>
-                                </a> </td>
+                                <td><input type="text"></td>
+                                <td>
+                                    <div class="buttonMR">
+                                    <a href="/user/admin/usuarios/acceso_modificar/<%= user.Correo_electronico %>" class="modifyuser">Modificar Rol</a>
+                                    </div>
+                                    <div class="buttonDA">
+
+                                        <a class="<% if (user.Alumno_activo == 1) { %> deleteuser <% } else { %> reactivateuser <% } %>" 
+                                        <% if (user.Alumno_activo == 1) { %>
+                                            onclick="desactivar('<%= user.Correo_electronico %>')"
+                                        <% } else if (user.Alumno_activo == 0) { %>
+                                            onclick="reactivar('<%= user.Correo_electronico %>')"
+                                        <% } %>>
+                                        <% if (user.Alumno_activo === 1) { %>
+                                            Desactivar
+                                        <% } else { %>
+                                            Reactivar
+                                        <% } %>
+                                        </a> </td>
+                                    </div>
                             </tr>
  
                             <%}%>
