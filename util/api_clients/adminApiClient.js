@@ -72,10 +72,7 @@ async function getAllUsers(){
     {
       headers,
       params: {
-        type: ['Users::Student', 'Users::Administrator'],
-      },
-      paramsSerializer: {
-        indexes: null
+
       }
     }
   )

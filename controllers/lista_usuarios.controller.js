@@ -123,7 +123,7 @@ exports.post_actualizar = async (request, response, next) => {
                 email: email.replace(/"/g, "'"),
             };
         })
-        console.log(datosAPI);
+        // console.log(datosAPI);
 
         //Comparaciones 
         
@@ -134,7 +134,7 @@ exports.post_actualizar = async (request, response, next) => {
                 const normalizedUsers = users.map(users => users.Nombre.replace(/"/g, "'"));
                 datosAPI.forEach(user => {
                     const {
-                        name, first_surname, second_surname, ivd_id, email,
+                        name, first_surname, second_surname, ivd_id, description, email
                     } = user;
                     let fullName = `${name} ${first_surname} ${second_surname}`;
                     // console.log('Nombre completo:', fullName, 'Correo:', email);
@@ -142,16 +142,17 @@ exports.post_actualizar = async (request, response, next) => {
                         // console.log(`${email} está en la base de datos`)
 
                         if(normalizedUsers.includes(fullName)){
-                            console.log('En base de datos:', fullName);
+                            console.log('En base de datos:', fullName, email, description);
                         } else {
-                            console.log('Debe actualizarse la base:', fullName);
+                            console.log('Debe actualizarse la base:', fullName, email, description);
                         }
                     
                     } else {
-                        console.log(`Ingresando ${email} dentro de la base de datos`)
-                        const nuevo_usuario = new Usuario(fullName, ivd_id, email);
-                        nuevo_usuario.save();
-                        
+                        if (description !== 'Profesor'){
+                            console.log(`Ingresando ${email} dentro de la base de datos`)
+                            const nuevo_usuario = new Usuario(fullName, ivd_id, email);
+                            nuevo_usuario.save();
+                        }
                     }
 
                     
