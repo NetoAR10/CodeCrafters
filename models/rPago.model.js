@@ -16,7 +16,6 @@ class pago {
             [this.Cant_pagada, this.Fecha_de_pago, this.Metodo, this.Banco, this.Nota]
         );
     }
-
 }
 
 module.exports = pago;

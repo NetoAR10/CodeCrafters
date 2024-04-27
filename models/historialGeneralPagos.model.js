@@ -58,7 +58,6 @@ module.exports = class HistorialPago {
     static buscarID(IDPago) {
     return db.execute(`
         SELECT
-            pago.IDPago,
             usuario.Referencia,
             usuario.Nombre,
             pago.Fecha_de_pago,

@@ -11,11 +11,11 @@ exports.getRegistrarPago = (request, response, next) => {
 };
 
 exports.postRegistrarPago = async (request, response, next) => {
-    console.log('hola');
     const { IDPago, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota } = request.body;
+    console.log(request.body)
     try {
         if (IDPago) { 
-            await pago.save(IDPago, { Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota });
+            await pago.update(IDPago, { Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota });
             response.send('Pago actualizado con éxito'); 
         } else {
             const nuevoPago = new pago({ Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota });
