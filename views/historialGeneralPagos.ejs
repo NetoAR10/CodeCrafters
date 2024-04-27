@@ -17,7 +17,7 @@
            <thead>
                 <tr>
                     <th>Pago</th>
-		            <th>Porcentaje Pagado</th>
+		    <th>Porcentaje Pagado</th>
                     <th>Referencia</th>
                     <th>Nombre</th>
                     <th>Fecha de Pago</th>
@@ -27,7 +27,7 @@
                     <th>Concepto</th>
                     <th>Nota</th>
                     <th>Fecha límite</th>
-                    <th>Modificar pago</th>
+                    <th>Modificar pago</th> 
                     <th>Borrar Pago</th>
 
                 </tr>
@@ -46,7 +46,9 @@
                         <td><%= pago.Concepto %></td>
                         <td><%= pago.Nota %></td>
                         <td><%= pago.Fecha_limite %></td>
-                        <td></td>
+                        <td>
+                            <button onclick="window.location.href='/user/admin/historial-pagos-general/editar-pago/<%= pago.IDPago %>'">Modificar</button>
+                        </td>
                         <td>
                             <button onclick="borrarPago('<%= pago.IDPago %>')">Borrar</button>
                         </td>
@@ -120,7 +122,9 @@ const accion_asincrona = () => {
                 <td>${pago.Concepto}</td>
                 <td>${pago.Nota}</td>
                 <td>${pago.Fecha_limite ? pago.Fecha_limite.toISOString().slice(0, 10) : ''}</td>
-                <td></td>
+                <td>
+                    <button onclick="window.location.href='/user/admin/historial-pagos-general/editar-pago/${pago.IDPago})">Modificar</button>
+                </td>
                 <td>
                     <button onclick="borrarPago(${pago.IDPago})">Borrar</button>
                 </td>
@@ -157,11 +161,9 @@ function borrarPago(IDPago) {
             }
             throw new Error('Error al borrar el pago.');
         })
-        .then(data => {
-            // Eliminar la fila de la tabla del pago borrado
+        .then(data => {  
             document.querySelector('#fila-pago-' + IDPago).remove();
-            // Podrías querer actualizar tu tabla o hacer otra búsqueda aquí para reflejar los cambios
-            accion_asincrona(); // Si quieres refrescar la lista después de borrar un pago
+            accion_asincrona(); 
         })
         .catch(error => console.error('Error:', error));
     }
@@ -171,4 +173,3 @@ document.getElementById('buscar').onkeyup = accion_asincrona;
 </script>
 </body>
 </html>
-

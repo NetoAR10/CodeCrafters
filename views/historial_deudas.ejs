@@ -1,0 +1,36 @@
+<%- include('includes/sidebar.ejs') %>
+<body>
+    <div class="page_content">
+        <h1 class="title">Historial de Deudas</h1>
+        <table id="USUARIOS">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Referencia</th> 
+                    <th>Total deuda</th>
+                    <th>Concepto</th>
+                    <th>Mes</th>
+                    <th>Fecha límite</th>
+                    <th>Registrar pago</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% deudas.forEach(function(deuda) { %>
+                    <tr>
+                        <td><%= deuda.Nombre %></td>
+                        <td><%= deuda.Referencia %></td> 
+                        <td><%= deuda.Total_deuda.toFixed(2)%></td>
+                        <td><%= deuda.Concepto %></td>
+                        <td><%= deuda.Mes %></td>
+                        <td><%= deuda.Fecha_limite %></td>
+                        <td>
+                            <a href="/user/admin/registrarPago/<%= deuda.Matricula %>" class="btn">Registrar Pago</a>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>

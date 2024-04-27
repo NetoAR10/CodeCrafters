@@ -30,14 +30,15 @@ exports.get_buscar = (request, response, next) => {
 
 exports.getHistorialDePagos = (request, response, next) => {
     console.log('Controlador getHistorialDePagos invocado.');
-    const Correo_electronico = request.params.id; 
+    const Matricula = request.params.id; 
 
-    ListaUsuario.historialDePagos(Correo_electronico)
+    ListaUsuario.historialDePagos(Matricula)
     .then(([data, fieldData]) => {
         response.render('historial_pagos', {
             pagos: data,
             nombre: request.session.nombre || '',
             correo: request.session.correo || '',
+	    matricula: request.session.matricula || '',
             permisos: request.session.permisos || [],
             rol: request.session.roles || '',   
         });
@@ -50,14 +51,15 @@ exports.getHistorialDePagos = (request, response, next) => {
 
 exports.getHistorialDeDeudas = (request, response, next) => {
     console.log('Llendo al historial de deudas');
-    const Correo_electronico = request.params.id;
+    const Matricula = request.params.id;
 
-    ListaUsuario.historialDeDeudas(Correo_electronico)
+    ListaUsuario.historialDeDeudas(Matricula)
     .then(([data, fieldData]) => {
         response.render('historial_deudas', {
             deudas: data,
             nombre: request.session.nombre || '',
 	    correo: request.session.correo || '',
+	    matricula: request.session.matricula || '',
 	    permisos: request.session.permisos || [],
 	    rol: request.session.roles || '',
         });

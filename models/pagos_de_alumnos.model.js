@@ -33,31 +33,41 @@ module.exports = class ListaUsuario {
             AND u.Nombre LIKE ?`,['%' + valor_busqueda + '%']);
     }
             
-    static historialDePagos(Correo_electronico) {
+    static historialDePagos(Matricula) {
     	return db.execute(
-        `SELECT usuario.Nombre, usuario.Matricula,
+        `SELECT usuario.Nombre, usuario.Referencia,
         pago.Cant_pagada, pago.Fecha_de_pago, pago.Metodo, pago.Banco, pago.Nota,
 	deuda.Concepto, deuda.Fecha_limite
         FROM usuario
         JOIN pago ON usuario.IDUsuario = pago.IDUsuario
 	JOIN deuda ON pago.IDDeuda = deuda.IDDeuda
-        WHERE usuario.Correo_electronico = ?;`,
-        [Correo_electronico]
+        WHERE usuario.Matricula = ?;`,
+        [Matricula]
     );
 
 
     }
    
-    static historialDeDeudas(Correo_electronico){
+    static historialDeDeudas(Matricula){
         return db.execute(
-        `SELECT usuario.Nombre, usuario.Matricula,
-         deuda.Total_deuda, deuda.Plan_pago, deuda.Concepto, deuda.Mes,  deuda.Fecha_limite
+        `SELECT usuario.Nombre, usuario.Referencia, usuario.Matricula,
+         deuda.Total_deuda, deuda.Concepto, deuda.Mes,  deuda.Fecha_limite
          From usuario
          JOIN deuda ON usuario.IDUsuario = deuda.IDUsuario
-         WHERE usuario.Correo_electronico = ?;`,
-         [Correo_electronico]
+         WHERE usuario.Matricula = ?;`,
+         [Matricula]
     );	
 
     }
-
+    
+    static buscarID(Matricula){
+    return db.execute(`
+        SELECT 
+	    usuario.Nombre, usuario.Referencia,
+            WHERE usuario.Matricula = ?;`
+            [Matricula]
+    );
+	    
+    }
+   
 }
