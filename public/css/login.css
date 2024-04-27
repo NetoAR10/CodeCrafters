@@ -148,3 +148,20 @@ body{
     cursor: pointer;
     margin: 10px 0;
 }
+
+.redirect #redirect {
+    width:100%;
+    background: darkred;
+    color: white;
+    text-decoration: none;
+    padding: 5px;
+    border-radius: 3px;
+    transition-duration: 0.4s;
+}
+
+#redirect:hover{
+    background: white;
+    color: darkred;
+    border: solid 1px darkred;
+    transition-duration: 0.4s;
+}
