@@ -19,13 +19,14 @@
             <% let costosMateria = {}; %>
             <% cursos.forEach(function(curso) { %>
                 <% totalCreditos += parseFloat(curso.creditos); %>
-                <% if (beca === 0) { %>
-                    <% costosMateria[curso.idMateria] = costoCredito * curso.creditos; %>
-                <% } else { %>
-                    <% costosMateria[curso.idMateria] = costoCredito * curso.creditos * (1 - beca/100); %>
-                <% } %>
+                <% costosMateria[curso.idMateria] = costoCredito * curso.creditos; %>
             <% }); %>
-            <% let costoTotal = totalCreditos * costoCredito; %>
+            <% let costoTotal = 0; %>
+            <% if (beca === 0) { %>
+                <% costoTotal  = totalCreditos * costoCredito; %>
+            <% } else { %>
+                <% costoTotal = totalCreditos * costoCredito * (1 - beca / 100); %>
+            <% } %>
     
             <form action="/user/alumno/materias" method="POST">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -46,10 +47,10 @@
                     <% }); %>
     
                     <br><h4>Total de Créditos: <%= totalCreditos %></h4>
-                    <br><h4>Costo Total: $<%= costoTotal.toFixed(2) %></h4>
                     <% if (beca !== 0) { %>
                         <br><h4>Porcentaje de beca: <%= beca %>%</h4>
                     <% } %>
+                    <br><h4>Costo Total: $<%= costoTotal.toFixed(2) %></h4>
                     <br><input type="submit" value="Confirmar materias" class="btn2" id="confirmar">
                 <% } else { %>
                     <p>No hay materias disponibles.</p>
@@ -60,6 +61,21 @@
                 <h5>Si requiere cambios, da click en el botón de pedir cambios.</h5>
                 <input type="submit" value="Pedir cambios" class="btn2" style="margin-top: 20px;">
             </form>
-        </div>         
+        </div>
+        <div class="payment_plan">
+            <h4>Seleccione plan de pago</h4>
+            <form id="payment_form" action="/ruta_a_post_crear_deuda_con_plan_de_pago" method="POST">
+                <label>
+                    <br><input type="radio" name="payment_option" value="contado"> Pagar de contado
+                </label>
+                <label>
+                    <br><input type="radio" name="payment_option" value="plazos"> Pagar en plazos
+                </label>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <br>
+                <br><input type="submit" value="Confirmar pago" class="btn2" id="confirmar_pago">
+            </form>
+            
+        </div>
     </body>
 </html>
