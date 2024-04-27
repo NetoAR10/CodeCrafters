@@ -24,7 +24,6 @@ exports.post_login = (request, response, next) => {
         if(users.length == 1) {
             const user = users[0];
             if (!user.Contrasena) {
-                // Password is NULL, send an error message
                 request.session.error = 'La contraseña no está configurada para este usuario.';
                 return response.redirect('/user/login');
             }
@@ -132,21 +131,15 @@ exports.post_signup = (request, response, next) => {
 };
 
 exports.get_forgot = async (request, response, next) => {
-    try {
-        const allUsers = await adminClient.getAllUsers()
-        // console.log(allUsers);
-    }
-    catch {
-        console.log('Error')
-    }
-
-
 
     Usuario.fetchAll()
     .then(([users, fieldData]) => {
         response.render('restablecer_contrasena', {
             usuariosDB: users,
             csrfToken: request.csrfToken(),
+            sent: request.session.sent,
+            feedback: request.session.feedback,
+            errorValue: request.session.errorValue,            
         });
     })
     .catch((error) => {
@@ -158,6 +151,12 @@ exports.get_forgot = async (request, response, next) => {
 exports.post_forgot = (request, response, next) => {
     const correo = request.body.correo;
     request.session.correo = correo;
+    request.session.feedback = '';
+    request.session.errorValue = false;
+    request.session.sent = false;
+
+    console.log('Start Error:', request.session.errorValue);
+    console.log('Start Sent:', request.session.sent);
     Usuario.fetchOne(correo).then(([users, fieldData]) => {
         if (users.length === 1) {
             const generateResetToken = () => {
@@ -194,12 +193,17 @@ exports.post_forgot = (request, response, next) => {
             });
 
             request.session.token = resetToken;
-
+            request.session.sent = true;
+            request.session.feedback = 'Se ha enviado un correo a la dirección que ingresaste.';
+            console.log('Sent End:', request.session.sent, request.session.feedback);
             response.redirect('/user/forgot_password');
             
         } else {
-            console.log('Error: No se ha encontrado este correo en la base de datos.');
-        } 
+            request.session.errorValue = true;
+            request.session.feedback = 'No se ha encontrado este usuario en nuestro registro.';
+            console.log('Error End:', request.session.errorValue, request.session.feedback);
+            response.redirect('/user/forgot_password');
+        }
     }).catch((error) => {
         console.log('Error', error);
     });

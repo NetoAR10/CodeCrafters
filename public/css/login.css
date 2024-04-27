@@ -165,3 +165,7 @@ body{
     border: solid 1px darkred;
     transition-duration: 0.4s;
 }
+
+.error {
+    color: darkred;
+}

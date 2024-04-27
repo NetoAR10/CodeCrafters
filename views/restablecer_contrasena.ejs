@@ -14,11 +14,19 @@
         </a>
         <div class="header"><h3>Restablecer contraseña</h3></div>
         <div class="texto">Si se te olvidó tu contraseña, puedes restablecerla aquí mismo. Ingresa a continuación tu correo electrónico.</div>
+        <% if (sent) {%>
+            <strong><%= feedback %></strong>
+            <% } %>
+        <% if (errorValue) { %>
+            <div class="error">
+                <strong><%= feedback %></strong>
+            </div>
+        <%}%>
         <form action="/user/forgot_password" method="POST">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <div class="input-box2">
                 <input type="text" name="correo" placeholder="Correo Electrónico" required>
-                <button class="btn3" onclick="alert('Se ha enviado un correo electrónico a la dirección que ingresaste.')">Submit</button>
+                <button class="btn3">Submit</button>
             </div>
 
         </form>
