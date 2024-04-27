@@ -1,4 +1,5 @@
 const express = require('express');
+const { decifrarAES } = require('./generarXML');
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -29,6 +30,18 @@ app.use((request, response, next) => {
     response.locals.csrfToken = request.csrfToken(); // Enviar token CSRF a las vistas
     next();
 });
+
+app.post('/payment-notification', (request, response, next) => {
+  const encryptedData = request.body.strResponse;
+  if (!encryptedData) {
+      return res.status(400).send('No encrypted data received');
+  }
+  const decryptedData = decifrarAES(encryptedData);
+
+    console.log('Decrypted data:', decryptedData);
+
+    res.status(200).send('Received');
+})
 
 // Rutas
 const rutasAlumno = require('./routes/alumno.routes');
