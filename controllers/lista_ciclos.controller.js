@@ -28,6 +28,24 @@ exports.get_buscar = (request, response, next) => {
     .catch((error) => {console.log(error)});
 }
 
-exports.post_ciclo_activo = async (request, response, next) => {
-    const { id, activo } = req.body;
-}
+exports.post_actualizar_activo = async (request, response, next) => {
+    const { id, cicloActivo } = request.body;
+
+    if (cicloActivo == 1) {
+        // Verificar si ya existe un ciclo activo
+        const [rows] = await cicloescolar.fetchAllActive();
+        if (rows.length > 0 && !rows.some(row => row.ID == id)) {
+            return response.json({ error: true, message: 'Ya existe un ciclo activo. Debe desactivar el otro ciclo primero.' });
+        }
+    }
+
+    cicloescolar.updateActivo(id, cicloActivo)
+        .then(() => {
+            response.json({ message: 'Estado actualizado correctamente!' });
+        })
+        .catch(error => {
+            console.error('Error al actualizar estado:', error);
+            response.status(500).json({ error: 'No se pudo actualizar el estado.' });
+        });
+};
+
