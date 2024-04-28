@@ -111,7 +111,32 @@ exports.getInfoPago = async (request, response, next) => {
             response.status(404).send('Deuda no encontrada');
         }
     } catch (error) {
-        console.error('Error al obtener detalles del pago:', error);
+        console.error('Error al obtener detalles del pago', error);
         response.status(500).send('Error al crear el pago');
+    }
+};
+
+exports.getModificarDeuda = async (request, response, next) => {
+    console.log('hola')
+    const IDDeuda = request.params.id;
+    console.log(IDDeuda)
+    try {
+	const [deudaDetails] = await ListaUsuario.infoPago(IDDeuda);
+	if (deudaDetails.length > 0){
+           response.render('modificarDeuda',{
+	       deuda: deudaDetails[0],
+	       titulo: 'Modificar deuda',
+	       correo: request.session.permisos,
+	       permisos: request.session.permisos,
+	       rol: request.session.roles,
+	       nombre: request.session.nombre,
+	       csrfToken: request.csrfToken(),
+	   });
+        } else {
+	    response.status(404).send('Deuda no encontrada');
+        }
+     }catch (error) {
+	console.error('Error al obtener detalles del pago',error);
+	response.status(500).send('Error al modificar la deuda');
     }
 };

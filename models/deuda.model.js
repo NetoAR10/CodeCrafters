@@ -16,11 +16,20 @@ class deuda {
             [IDUsuario, this.Total_deuda, this.Concepto, this.Mes, this.Fecha_limite]
         );
     }
+
+    async update(IDDeuda) {
+        const IDUsuario = await this.getUserIdFromReferencia(this.Referencia);
+        return db.execute(
+            'UPDATE deuda SET Total_deuda = ?, Concepto = ?, Mes = ?, Fecha_limite = ? WHERE IDDeuda = ? AND IDUsuario = ?',
+            [this.Total_deuda, this.Concepto, this.Mes, this.Fecha_limite, IDDeuda, IDUsuario]
+        );
+    }
     
     async getUserIdFromReferencia(Referencia) {
         const [user] = await db.execute('SELECT IDUsuario FROM usuario WHERE Referencia = ?', [Referencia]);
         return user[0].IDUsuario;
     }
+
 
 }
 

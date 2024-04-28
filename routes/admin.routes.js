@@ -56,9 +56,9 @@ router.get('/pagos_de_alumnos/buscar', isAuth, isActive, pagosDeAlumnosControlle
 router.get('/pagos_de_alumnos/historial/:id', isAuth, isActive, pagosDeAlumnosController.getHistorialDePagos);
 router.get('/pagos_de_alumnos/deudas/:id', isAuth, isActive, pagosDeAlumnosController.getHistorialDeDeudas);
 router.get('/pagos_de_alumnos/crearDeuda/:id', isAuth, isActive, pagosDeAlumnosController.infoDeuda);
-router.post('/pagos_de_alumnos/crearDeuda/:id', isAuth, isActive, deudaController.postCrearDeuda);
 router.get('/pagos_de_alumnos/registrarPago/:id', isAuth, isActive, pagosDeAlumnosController.getInfoPago);
 router.post('/pagos_de_alumnos/registrarPago/:id', isAuth, isActive, pagoController.postRegistrarPago);
+router.get('/pagos_de_alumnos/modificarDeuda/:id', isAuth, isActive, pagosDeAlumnosController.getModificarDeuda);
 
 // Ruta para Historial de Pagos General
 router.get('/historial-pagos-general', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getHistorialPagosGeneral);
