@@ -22,7 +22,7 @@
                         <td><%= deuda.Total_deuda.toFixed(2)%></td>
                         <td><%= deuda.Concepto %></td>
                         <td><%= deuda.Mes %></td>
-                        <td><%= deuda.Fecha_limite %></td>
+                        <td><%= deuda.Fecha_limite %></td> 
                         <td>
                             <a href="/user/admin/pagos_de_alumnos/registrarPago/<%= deuda.Matricula %>" class="btn">Registrar Pago</a>
                         </td>
@@ -30,7 +30,9 @@
                 <% }); %>
             </tbody>
         </table>
-        <a href="/user/admin/pagos_de_alumnos/crearDeuda/<%= deuda.Matricula %>" class="btn">Crear Deuda</a> 
+        <% deuda.forEach(function(deuda) { %>
+        <a href="/user/admin/pagos_de_alumnos/crearDeuda/<%= deuda.Matricula %>" class="btn">Crear Deuda</a>
+        <% }); %>
     </div>
 </body>
 </html>
