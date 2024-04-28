@@ -96,10 +96,10 @@ exports.infoDeuda = async (request, response, next) => {
 exports.getInfoPago = async (request, response, next) => {
     const IDDeuda = request.params.id;
     try {
-        const [pagoDetails] = await ListaUsuario.infoDeuda(IDDeuda);
+        const [pagoDetails] = await ListaUsuario.infoPago(IDDeuda);
         if (pagoDetails.length > 0) {
             response.render('registrarPago', {
-                pago: pagoDetails[0],
+                deuda: pagoDetails[0],
                 titulo: 'Crear Pago',
 	        correo: request.session.permisos,
 		permisos: request.session.permisos,

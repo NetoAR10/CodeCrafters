@@ -92,7 +92,7 @@
                     <th>Matrícula</th>
                     <th>Correo electrónico</th>
                     <th>Beca</th>
-                    <th>Crear deuda</th> 
+                    <th>Deuda</th> 
                     <th>Historial de pagos</th>
                     </tr>`
  
@@ -106,13 +106,13 @@
                 <td>${user.Beca_actual}</td> 
                 
                 <td>
-                <a href="/user/admin/pagos_de_alumnos/deudas/${user.Correo_electronico}" class="simple-btn">
-                         Crear Deuda
+                <a href="/user/admin/pagos_de_alumnos/deudas/${user.Matricula}" class="simple-btn">
+                          Deudas
                 </a>
                 </td>
 
                 <td>
-		<a href="/user/admin/pagos_de_alumnos/historial/${user.Correo_electronico}" class="simple-btn">
+		<a href="/user/admin/pagos_de_alumnos/historial/${user.Matricula}" class="simple-btn">
                          Historial de pagos
                 </a>
                 </td>
