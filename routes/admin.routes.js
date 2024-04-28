@@ -13,11 +13,17 @@ const isActive = require('../util/is-active');
 const canViewHistorialTodos = require('../util/can-view-historial-todos');
 const reporteController = require('../controllers/reports.controller'); 
 const canViewReporte = require('../util/can-view-reporte');
+const listaCiclos = require('../controllers/lista_ciclos.controller');
 
 
 //Ciclo Escolar
 router.get('/ciclo_escolar', isAuth, canResgisterCiclo, isActive, cicloEscolarController.get_nuevo_ciclo);
 router.post('/ciclo_escolar', isAuth, isActive, cicloEscolarController.post_nuevo_ciclo);
+
+//Lista Ciclo Escolar
+router.get('/lista_ciclos', isAuth, isActive, canResgisterCiclo, listaCiclos.get_listciclos);
+router.get('/lista_ciclos/buscar/:valor_busqueda', isAuth, isActive, canResgisterCiclo, listaCiclos.get_buscar);
+router.get('/lista_ciclos/buscar', isAuth, isActive, canResgisterCiclo, listaCiclos.get_buscar);
 
 //Lista de Usuarios
 router.get('/usuarios', isAuth, isActive, listaUsuariosController.get_listUsers);
