@@ -7,7 +7,7 @@ exports.get_listUsers = (request, response, next) => {
     ListaUsuario.getVariosRol()
     .then(([rolesUser, fieldData]) => {
         const lista = rolesUser[0];
-        console.log(lista.Tipo_Rol);
+        // console.log(lista.Tipo_Rol);
         response.render('lista_usuarios', {
             usuariosDB: rolesUser,
             nombre: request.session.nombre || '',
@@ -235,9 +235,20 @@ exports.post_darAlta = (request, response, next) => {
     }).catch((error)=>{console.log(error)})
 }
 
+
 exports.post_editar = (request, response, next) => {
-    ListaUsuario.editar(request.body.referencia, request.body.correo).then(() => {
-        response.redirect('/user/admin/usuarios');
+    const referencia = request.body.referencia;
+    const correo = request.body.correo;
+    ListaUsuario.getVariosRol().then(([usuariosDB, fieldData]) => {
+        ListaUsuario.editar(referencia, correo)
+        .then(() => {
+            console.log('Exito');
+            return response.status(200).json({usuariosDB: usuariosDB})
+        })
+        .catch((error) => {
+            console.log(error)
+        });
+
     }).catch((error) => {
         console.log(error);
         console.log('Valor correo:', request.body.correo);

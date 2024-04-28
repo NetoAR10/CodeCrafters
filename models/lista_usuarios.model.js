@@ -4,7 +4,7 @@ module.exports = class ListaUsuario {
     
     static getVariosRol() {
         return db.execute(
-            `SELECT u.Nombre, u.Matricula, u.Correo_electronico, u.Beca_actual, Tipo_Rol, Alumno_activo 
+            `SELECT u.Nombre, u.Matricula, u.Correo_electronico, u.Beca_actual, Tipo_Rol, Alumno_activo, Referencia
             FROM usuario u, tiene t, rol r
             WHERE u.IDUsuario = t.IDUsuario
             AND t.IDRol = r.IDRol
