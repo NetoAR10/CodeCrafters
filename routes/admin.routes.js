@@ -70,4 +70,9 @@ router.get('/reportes', isAuth, isActive, reporteController.getReport);
 //Ruta para descargar historial en CSV
 router.get('/descargar-historial', isAuth, isActive, historialPagosGeneralController.descargarHistorialCSV);
 
+//Guardar referencia
+
+router.get('/usuarios/editar', isAuth, isActive, listaUsuariosController.post_editar);
+router.get('/usuarios/editar/:correo', isAuth, isActive, listaUsuariosController.post_editar);
+
 module.exports = router;

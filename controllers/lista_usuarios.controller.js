@@ -237,16 +237,20 @@ exports.post_darAlta = (request, response, next) => {
 
 
 exports.post_editar = (request, response, next) => {
-    const referencia = request.body.referencia;
+    const referencia = request.body.content;
     const correo = request.body.correo;
     ListaUsuario.getVariosRol().then(([usuariosDB, fieldData]) => {
         ListaUsuario.editar(referencia, correo)
         .then(() => {
             console.log('Exito');
+            console.log('Valor correo:', request.body.correo);
+            console.log('Valor Referencia:', request.body.content);
             return response.status(200).json({usuariosDB: usuariosDB})
         })
         .catch((error) => {
             console.log(error)
+            console.log('Valor correo:', request.body.correo);
+            console.log('Valor Referencia:', request.body.content);
         });
 
     }).catch((error) => {

@@ -43,15 +43,14 @@
 
                             <% for (let user of usuariosDB) {%>
                                 <% let columns = 0; %>
-                                <% columns++ %>
-                                    
+                                <% columns++ %>       
                             <tr class="<%= user.Alumno_activo == 0 ? 'inactiveStudent' : '' %>">
                                 
                                 <td><%= user.Nombre %></td>
                                 <td><%= user.Matricula %></td>
-                                <td><%= user.Correo_electronico %></td>
+                                <td id="correo"><%= user.Correo_electronico %></td>
                                 <td><%= user.Tipo_Rol %></td> 
-                                <td contenteditable>
+                                <td contenteditable="true" id="editable" onkeydown="handleEnter(event)">
                                     <%= user.Referencia %> 
                                 </td>
                                 <td><% if (user.Alumno_activo == 1 ) {%> Activo <% } else if (user.Alumno_activo == 0) { %> Inactivo <% } %> </td>
@@ -89,6 +88,32 @@
         
         
         <script>
+
+            const handleEnter = (event) => {
+                if (event.key === 'Enter'){
+                    event.preventDefault();
+                    const editableCell = event.target;
+                    submitData(editableCell);
+                }
+            }
+
+            const submitData = (editableCell) => {
+                const content = document.getElementById('editable').innerText;
+                const correo = document.getElementById('correo').innerText;
+                const csrf = document.getElementById('_csrf').value;
+
+                fetch('/user/admin/usuarios/editar/${usuariosDB.Correo_electronico}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'csrf-token': csrf,
+                    },
+                    body: JSON.stringify({content: content, correo: correo})
+                })
+                .then(response => response.json())
+                .then(data => console.log('Success:', data))
+                .catch((error) => console.error('Error:', error));
+            }
 
 
             const actualizar = () => {
@@ -170,7 +195,7 @@
                                 <td>${user.Correo_electronico}</td>
 
                                 <td>${user.Tipo_Rol}</td> 
-                                <td contenteditable>${user.Referencia} </td>
+                                <td contenteditable="true" id="editable" onkeydown="handleEnter(event)">${user.Referencia} </td>
                                 <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
                                 <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a></td> 
                                 <td><a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
@@ -329,7 +354,7 @@
                                 <td>${user.Correo_electronico}</td>
 
                                 <td>${user.Tipo_Rol}</td> 
-                                <td>${user.Referencia} <br> <button onclick="editar()">Editar</button></td>
+                                <td contenteditable="true" id="editable" onkeydown="handleEnter(event)">${user.Referencia} <br> <button onclick="editar()">Editar</button></td>
                                 <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
                                 <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a></td> 
                                 <td><a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
