@@ -95,17 +95,6 @@ body{
     right: 1000px;
 }
 
-.rectangulo-superior {
-    position: relative;
-    width: 100%; /* Hace que el rectángulo tenga el ancho completo de la página */
-    height: 100px; /* Altura del rectángulo */
-    background: linear-gradient(to right, #56070c,#350a06,#170000); /* Gradiente de colores vino */
-    position: fixed; /* Hace que el rectángulo se mantenga en la parte superior */
-    top: 0;
-    left: 0;
-    z-index: -1; /* Asegura que el rectángulo se muestre por encima de otros elementos */
-}
-
 /* The switch - the box around the slider */
 .switch {
     position: relative;

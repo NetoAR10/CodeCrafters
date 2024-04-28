@@ -39,6 +39,9 @@
                                             <span class="slider round"></span>
                                         </label>
                                     </td>
+                                    <td>
+                                        <button class="modifyuser" onclick="location.href='/user/admin/ciclo_escolar?IDCiclo=<%= cicloescolar.IDCiclo %>'">Modificar</button>
+                                    </td>
                                 </tr>
                             <% }) %>
                         </tbody>
@@ -105,6 +108,10 @@
                                     <span class="slider round"></span>
                                 </label>
                             </td>
+                            <td>
+                                <button class="modifyuser" onclick="location.href='/user/admin/ciclo_escolar?IDCiclo=${cicloescolar.IDCiclo}'">Modificar</button>
+                            </td>
+
                         </tr>`;
                         }
                      html += ` 
