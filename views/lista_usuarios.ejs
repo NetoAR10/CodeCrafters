@@ -48,7 +48,7 @@
                                 
                                 <td><%= user.Nombre %></td>
                                 <td><%= user.Matricula %></td>
-                                <td id="correo"><%= user.Correo_electronico %></td>
+                                <td class="correo"><%= user.Correo_electronico %></td>
                                 <td><%= user.Tipo_Rol %></td> 
                                 <td contenteditable="true" id="editable" onkeydown="handleEnter(event)">
                                     <%= user.Referencia %> 
@@ -98,8 +98,9 @@
             }
 
             const submitData = (editableCell) => {
-                const content = document.getElementById('editable').innerText;
-                const correo = document.getElementById('correo').innerText;
+                const content = editableCell.innerText;
+                const row = editableCell.closest('tr');
+                const correo = row.querySelector('.correo').innerText;
                 const csrf = document.getElementById('_csrf').value;
 
                 fetch('/user/admin/usuarios/editar/${usuariosDB.Correo_electronico}', {
