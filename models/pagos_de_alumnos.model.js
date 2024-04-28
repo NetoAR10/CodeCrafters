@@ -50,8 +50,8 @@ module.exports = class ListaUsuario {
    
     static historialDeDeudas(Matricula){
         return db.execute(
-        `SELECT usuario.Nombre, usuario.Referencia, usuario.Matricula, usuario.IDUsuario,
-         deuda.Total_deuda, deuda.Concepto, deuda.Mes,  deuda.Fecha_limite
+        `SELECT usuario.Nombre, usuario.Referencia, usuario.Matricula, 
+         deuda.IDDeuda, deuda.Total_deuda, deuda.Concepto, deuda.Mes,  deuda.Fecha_limite
          From usuario
          JOIN deuda ON usuario.IDUsuario = deuda.IDUsuario
          WHERE usuario.Matricula = ?;`,
@@ -70,5 +70,18 @@ module.exports = class ListaUsuario {
     );
 	    
     }
+
+   static infoPago(IDDeuda){
+   return db.execute(`
+       SELECT 
+           usuario.Nombre, usuario.Referencia,
+	   deuda.IDDeuda, deuda.Total_deuda, deuda.Concepto, deuda.Mes, deuda.Fecha_limite
+	   From usuario
+	   Join deuda ON usuario.IDUsuario = deuda.IDUsuario
+	   WHERE deuda.IDDeuda = ?;`,
+	   [IDDeuda]
+
+   );
+   }
    
-}
+};

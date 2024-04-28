@@ -84,7 +84,7 @@ exports.editPago = async (request, response, next) => {
     try {
         const [pagoDetails] = await HistorialPago.buscarID(IDPago);
         if (pagoDetails.length > 0) {
-            response.render('registrarPago', {
+            response.render('modificarPago', {
                 pago: pagoDetails[0],
                 titulo: 'Modificar Pago',
 	        correo: request.session.permisos,

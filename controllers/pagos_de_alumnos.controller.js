@@ -29,7 +29,7 @@ exports.get_buscar = (request, response, next) => {
 }
 
 exports.getHistorialDePagos = (request, response, next) => {
-    console.log('Controlador getHistorialDePagos invocado.');
+   
     const Matricula = request.params.id; 
 
     ListaUsuario.historialDePagos(Matricula)
@@ -49,8 +49,7 @@ exports.getHistorialDePagos = (request, response, next) => {
     });
 }
 
-exports.getHistorialDeDeudas = (request, response, next) => {
-    console.log('Llendo al historial de deudas');
+exports.getHistorialDeDeudas = (request, response, next) => {  
     const Matricula = request.params.id;
 
     ListaUsuario.historialDeDeudas(Matricula)
@@ -91,5 +90,28 @@ exports.infoDeuda = async (request, response, next) => {
     } catch (error) {
         console.error('Error al crear deuda:', error);
         response.status(500).send('Error al crear Deuda');
+    }
+};
+
+exports.getInfoPago = async (request, response, next) => {
+    const IDDeuda = request.params.id;
+    try {
+        const [pagoDetails] = await ListaUsuario.infoDeuda(IDDeuda);
+        if (pagoDetails.length > 0) {
+            response.render('registrarPago', {
+                pago: pagoDetails[0],
+                titulo: 'Crear Pago',
+	        correo: request.session.permisos,
+		permisos: request.session.permisos,
+		rol: request.session.roles,
+		nombre: request.session.nombre,	
+		csrfToken: request.csrfToken(),
+            });
+        } else {
+            response.status(404).send('Deuda no encontrada');
+        }
+    } catch (error) {
+        console.error('Error al obtener detalles del pago:', error);
+        response.status(500).send('Error al crear el pago');
     }
 };

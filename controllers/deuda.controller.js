@@ -16,7 +16,7 @@ exports.postCrearDeuda = async (req, res, next) => {
 	const { Referencia, Total_deuda, Plan_pago, Concepto, Mes } = req.body;
 	const nuevaDeuda = new deuda(Referencia, Total_deuda, Plan_pago, Concepto, Mes);
 	nuevaDeuda.save()
-        res.redirect('/pagos_de_alumnos/historial_deudas');
+        res.send('deuda creado con éxito');
      }catch (err){
 	console.log(err);
 	res.status(500).send('Error al registrar el pago.');

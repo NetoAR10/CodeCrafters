@@ -10,21 +10,17 @@ exports.getRegistrarPago = (request, response, next) => {
     });
 };
 
-exports.postRegistrarPago = async (request, response, next) => {
-    const { IDPago, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota } = request.body;
-    console.log(request.body)
+exports.postRegistrarPago = async (req, res, next) => {
+    console.log(req.body);
     try {
-        if (IDPago) { 
-            await pago.update(IDPago, { Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota });
-            response.send('Pago actualizado con éxito'); 
-        } else {
-            const nuevoPago = new pago({ Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota });
-            await nuevoPago.save();
-            response.send('Pago creado con éxito');
-        }
-    } catch (err) {
-        console.log(err);
-        response.status(500).send('Error en la operación del pago.');
-	csrfToken: request.csrfToken()
-    }
+	const { Referencia, IDDeuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota } = req.body;
+	const nuevoPago = new pago(Referencia, IDDeuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota);
+	nuevoPago.save()
+        res.send('pago creado con éxito');
+     }catch (err){
+	console.log(err);
+	res.status(500).send('Error al registrar el pago.');
+	csrfToken: request.csrfToken();
+     }
+        
 };
