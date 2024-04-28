@@ -33,7 +33,12 @@
                                     <td><%= cicloescolar.Fecha_Fin.toISOString().slice(0, 10) %></td>
                                     <td><%= cicloescolar.Precio_credito %></td>
                                     <td><%= cicloescolar.IDCicloEXT %></td>
-                                    <td><%= cicloescolar.Ciclo_activo %></td>
+                                    <td>
+                                        <label class="switch">
+                                            <input type="checkbox" id="activo_<%= cicloescolar.IDCiclo %>" <%= cicloescolar.Ciclo_activo ? "checked" : "" %> onchange="toggleCicloActivo(<%= cicloescolar.IDCiclo %>)">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </td>
                                 </tr>
                             <% }) %>
                         </tbody>
@@ -94,9 +99,14 @@
                             <td>${new Date(cicloescolar.Fecha_Fin).toISOString().slice(0, 10)}</td>
                             <td>${cicloescolar.Precio_credito}</td>
                             <td>${cicloescolar.IDCicloEXT}</td>
-                            <td>${cicloescolar.Ciclo_activo}</td>
+                            <td>
+                                <label class="switch">
+                                    <input type="checkbox" id="activo_${cicloescolar.IDCiclo}" ${(cicloescolar.Ciclo_activo == 1) ? "checked" : ""} onchange="toggleCicloActivo(${cicloescolar.IDCiclo})">
+                                    <span class="slider round"></span>
+                                </label>
+                            </td>
                         </tr>`;
-                    }
+                        }
                      html += ` 
                     </table>
                     </div>
@@ -109,6 +119,42 @@
                 });
             };
             document.getElementById('buscar').onkeyup = accion_asincrona;
+        </script>
+
+        <script>
+            function toggleCicloActivo(cicloId) {
+                const checkbox = document.getElementById('activo_' + cicloId);
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+
+                if (checkbox.checked && checkboxes.length > 1) {
+                    alert('Solo puede haber un ciclo activo a la vez.');
+                    checkbox.checked = false; // Revierte el cambio si hay más de un checkbox activo
+                    return;
+                }
+
+                const isActive = checkbox.checked ? 1 : 0;
+
+                fetch('/user/admin/lista_ciclos/actualizar_activo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'CSRF-Token': document.getElementById('_csrf').value
+                    },
+                    body: JSON.stringify({ id: cicloId, cicloActivo: isActive })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Actualización exitosa:', data);
+                    if (data.error) {
+                        alert(data.message);
+                        checkbox.checked = !isActive; // Revierte el cambio si el servidor responde con error
+                    }
+                })
+                .catch(error => {
+                    console.error('Error en la actualización:', error);
+                });
+            }
+
         </script>
         
     </body>

@@ -44,8 +44,16 @@ module.exports = class cicloescolar {
 
     static search(valor_busqueda) {
         return db.execute (
-            `SELECT Ciclo, Fecha_Inicio, Fecha_Fin, Precio_credito, IDCicloEXT, Ciclo_activo
+            `SELECT IDCiclo, Ciclo, Fecha_Inicio, Fecha_Fin, Precio_credito, IDCicloEXT, Ciclo_activo
             FROM cicloescolar
             WHERE Ciclo LIKE ?`, ['%' + valor_busqueda + '%']);
+    }
+
+    static updateActivo(id, cicloActivo) {
+        return db.execute('UPDATE cicloescolar SET Ciclo_activo = ? WHERE IDCiclo = ?', [cicloActivo, id]);
+    }
+
+    static fetchAllActive() {
+        return db.execute('SELECT * FROM cicloescolar WHERE Ciclo_activo = 1');
     }
 }

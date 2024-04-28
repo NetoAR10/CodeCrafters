@@ -24,6 +24,7 @@ router.post('/ciclo_escolar', isAuth, isActive, cicloEscolarController.post_nuev
 router.get('/lista_ciclos', isAuth, isActive, canResgisterCiclo, listaCiclos.get_listciclos);
 router.get('/lista_ciclos/buscar/:valor_busqueda', isAuth, isActive, canResgisterCiclo, listaCiclos.get_buscar);
 router.get('/lista_ciclos/buscar', isAuth, isActive, canResgisterCiclo, listaCiclos.get_buscar);
+router.post('/lista_ciclos/actualizar_activo', isAuth, isActive, canResgisterCiclo, listaCiclos.post_actualizar_activo);
 
 //Lista de Usuarios
 router.get('/usuarios', isAuth, isActive, listaUsuariosController.get_listUsers);
