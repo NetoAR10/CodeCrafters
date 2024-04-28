@@ -41,4 +41,11 @@ module.exports = class cicloescolar {
             return this.fetchAll();
         }
     }
+
+    static search(valor_busqueda) {
+        return db.execute (
+            `SELECT Ciclo, Fecha_Inicio, Fecha_Fin, Precio_credito, IDCicloEXT, Ciclo_activo
+            FROM cicloescolar
+            WHERE Ciclo LIKE ?`, ['%' + valor_busqueda + '%']);
+    }
 }
