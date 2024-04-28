@@ -7,6 +7,7 @@ exports.get_listUsers = (request, response, next) => {
     ListaUsuario.getVariosRol()
     .then(([rolesUser, fieldData]) => {
         const lista = rolesUser[0];
+        console.log(lista.Tipo_Rol);
         response.render('lista_usuarios', {
             usuariosDB: rolesUser,
             nombre: request.session.nombre || '',
@@ -17,9 +18,9 @@ exports.get_listUsers = (request, response, next) => {
             permisos: request.session.permisos || [] ,
             rol: request.session.roles || '',
             csrfToken: request.csrfToken(),
-
+    
         })
-        console.log(lista.Tipo_Rol);
+
     })
 }
 
@@ -109,7 +110,7 @@ exports.post_actualizar = async (request, response, next) => {
                 email = '',
                 role = {}
             } = APIUsers;
-
+            
             const {
                 description = '',
             } = role;
@@ -124,14 +125,14 @@ exports.post_actualizar = async (request, response, next) => {
             };
         })
         // console.log(datosAPI);
-
+        
         //Comparaciones 
         
         Usuario.fetchAll().then(([users, fieldData]) => {
             const normalizedMails = users.map(users => users.Correo_electronico);
             const normalizedNames = users.map(users => users.Nombre);
             const normalizedIDs = users.map(users => users.Matricula);
-
+            
             datosAPI.forEach(user => {
                 const {
                     name, first_surname, second_surname, ivd_id, description, email

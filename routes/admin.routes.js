@@ -58,6 +58,7 @@ router.get('/pagos_de_alumnos/deudas/:id', isAuth, isActive, pagosDeAlumnosContr
 router.get('/historial-pagos-general', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getHistorialPagosGeneral);
 router.get('/historial-pagos-general/buscar/:valor_busqueda', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getBuscarHistorial);
 router.get('/historial-pagos-general/buscar', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getBuscarHistorial);
+
 //Actualizar base de datos
 router.post('/usuarios/actualizar', isAuth, isActive, listaUsuariosController.post_actualizar);
 
