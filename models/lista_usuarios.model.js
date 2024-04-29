@@ -8,7 +8,7 @@ module.exports = class ListaUsuario {
             FROM usuario u, tiene t, rol r
             WHERE u.IDUsuario = t.IDUsuario
             AND t.IDRol = r.IDRol
-            ORDER BY Alumno_activo DESC;`
+            ORDER BY Matricula DESC;`
 
         )
 
@@ -26,7 +26,7 @@ module.exports = class ListaUsuario {
 
     static search(valor_busqueda) {
         return db.execute(
-            `SELECT u.Nombre, u.Matricula, u.Correo_electronico, u.Beca_actual, Tipo_Rol, Alumno_activo 
+            `SELECT u.Nombre, u.Matricula, u.Correo_electronico, u.Beca_actual, Tipo_Rol, Alumno_activo, Referencia 
             FROM usuario u, tiene t, rol r
             WHERE u.IDUsuario = t.IDUsuario
             AND t.IDRol = r.IDRol
@@ -65,11 +65,20 @@ module.exports = class ListaUsuario {
             AND u.Correo_electronico = ?`, [correo])
     }
 
-    static editar(referencia, correo){
+    static editarReferencia(referencia, correo){
         return db.execute(
             `
             UPDATE usuario
             SET Referencia = ?
+            WHERE Correo_electronico = ?
+            `, [referencia, correo]);
+    }
+
+    static editarBeca(referencia, correo){
+        return db.execute(
+            `
+            UPDATE usuario
+            SET Beca_actual = ?
             WHERE Correo_electronico = ?
             `, [referencia, correo]);
     }

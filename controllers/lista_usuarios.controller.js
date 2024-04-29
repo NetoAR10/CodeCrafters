@@ -236,21 +236,44 @@ exports.post_darAlta = (request, response, next) => {
 }
 
 
-exports.post_editar = (request, response, next) => {
-    const referencia = request.body.content;
+exports.post_editarRef = (request, response, next) => {
+    const referencia = request.body.reference;
     const correo = request.body.correo;
     ListaUsuario.getVariosRol().then(([usuariosDB, fieldData]) => {
-        ListaUsuario.editar(referencia, correo)
+        ListaUsuario.editarReferencia(referencia, correo)
         .then(() => {
             console.log('Exito');
             console.log('Valor correo:', request.body.correo);
-            console.log('Valor Referencia:', request.body.content);
+            console.log('Valor Referencia:', request.body.reference);
             return response.status(200).json({usuariosDB: usuariosDB})
         })
         .catch((error) => {
             console.log(error)
             console.log('Valor correo:', request.body.correo);
             console.log('Valor Referencia:', request.body.content);
+        });
+
+    }).catch((error) => {
+        console.log(error);
+        console.log('Valor correo:', request.body.correo);
+    })
+}
+
+exports.post_editarBeca = (request, response, next) => {
+    const beca = request.body.beca;
+    const correo = request.body.correo;
+    ListaUsuario.getVariosRol().then(([usuariosDB, fieldData]) => {
+        ListaUsuario.editarBeca(beca, correo)
+        .then(() => {
+            console.log('Exito');
+            console.log('Valor correo:', request.body.correo);
+            console.log('Valor Beca:', request.body.beca);
+            return response.status(200).json({usuariosDB: usuariosDB})
+        })
+        .catch((error) => {
+            console.log(error)
+            console.log('Valor correo:', request.body.correo);
+            console.log('Valor Beca:', request.body.beca);
         });
 
     }).catch((error) => {

@@ -24,8 +24,6 @@ router.get('/usuarios', isAuth, isActive, listaUsuariosController.get_listUsers)
 router.get('/usuarios/buscar/:valor_busqueda', isAuth, isActive, listaUsuariosController.get_buscar);
 router.get('/usuarios/buscar', isAuth, isActive, listaUsuariosController.get_buscar);
 router.post('/usuarios', isAuth, isActive, listaUsuariosController.post_actualizar);
-router.post('/usuarios/editar', isAuth, isActive, listaUsuariosController.post_editar);
-router.post('/usuarios/editar/:correo', isAuth, isActive, listaUsuariosController.post_editar);
 
 //Desactivar o Reactivas
 router.post('/usuarios/desactivar', isAuth, isActive, listaUsuariosController.post_desactivar);
@@ -72,7 +70,9 @@ router.get('/descargar-historial', isAuth, isActive, historialPagosGeneralContro
 
 //Guardar referencia
 
-router.get('/usuarios/editar', isAuth, isActive, listaUsuariosController.post_editar);
-router.get('/usuarios/editar/:correo', isAuth, isActive, listaUsuariosController.post_editar);
+router.post('/usuarios/editarReferencia', isAuth, isActive, listaUsuariosController.post_editarRef);
+router.post('/usuarios/editarReferencia/:correo', isAuth, isActive, listaUsuariosController.post_editarRef);
+router.post('/usuarios/editarBeca', isAuth, isActive, listaUsuariosController.post_editarBeca);
+router.post('/usuarios/editarBeca/:correo', isAuth, isActive, listaUsuariosController.post_editarBeca);
 
 module.exports = router;

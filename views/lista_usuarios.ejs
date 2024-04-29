@@ -35,6 +35,7 @@
                                 <th>Correo electrónico</th>
                                 <th>Rol</th>
                                 <th>Referencia</th>
+                                <th>Beca</th>
                                 <th>¿Activo?</th>
                                 <th></th>
                                 <th></th>
@@ -50,8 +51,11 @@
                                 <td><%= user.Matricula %></td>
                                 <td class="correo"><%= user.Correo_electronico %></td>
                                 <td><%= user.Tipo_Rol %></td> 
-                                <td contenteditable="true" id="editable" onkeydown="handleEnter(event)">
+                                <td contenteditable="true" onkeydown="handleEnterRef(event)">
                                     <%= user.Referencia %> 
+                                </td>
+                                <td contenteditable="true" onkeydown="handleEnterBeca(event)">
+                                    <%= user.Beca_actual %> 
                                 </td>
                                 <td><% if (user.Alumno_activo == 1 ) {%> Activo <% } else if (user.Alumno_activo == 0) { %> Inactivo <% } %> </td>
                                 <td>
@@ -89,27 +93,57 @@
         
         <script>
 
-            const handleEnter = (event) => {
+            const handleEnterBeca = (event) => {
+                if (!event || !event.key) return;
+
                 if (event.key === 'Enter'){
                     event.preventDefault();
-                    const editableCell = event.target;
-                    submitData(editableCell);
+                    const editableCellBeca = event.target;
+                    submitDataBeca(editableCellBeca);
                 }
             }
 
-            const submitData = (editableCell) => {
-                const content = editableCell.innerText;
-                const row = editableCell.closest('tr');
+            const submitDataBeca = (editableCellBeca) => {
+                const beca = editableCellBeca.innerText;
+                const row = editableCellBeca.closest('tr');
                 const correo = row.querySelector('.correo').innerText;
                 const csrf = document.getElementById('_csrf').value;
 
-                fetch('/user/admin/usuarios/editar/${usuariosDB.Correo_electronico}', {
+                fetch('/user/admin/usuarios/editarBeca/${usuariosDB.Correo_electronico}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'csrf-token': csrf,
                     },
-                    body: JSON.stringify({content: content, correo: correo})
+                    body: JSON.stringify({beca: beca, correo: correo})
+                })
+                .then(response => response.json())
+                .then(data => console.log('Success:', data))
+                .catch((error) => console.error('Error:', error));
+            }
+
+            const handleEnterRef = (event) => {
+                if (!event || !event.key) return;
+                if (event.key === 'Enter'){
+                    event.preventDefault();
+                    const editableCellRef = event.target;
+                    submitDataRef(editableCellRef);
+                }
+            }
+
+            const submitDataRef = (editableCellRef) => {
+                const reference = editableCellRef.innerText;
+                const row = editableCellRef.closest('tr');
+                const correo = row.querySelector('.correo').innerText;
+                const csrf = document.getElementById('_csrf').value;
+
+                fetch('/user/admin/usuarios/editarReferencia/${usuariosDB.Correo_electronico}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'csrf-token': csrf,
+                    },
+                    body: JSON.stringify({reference: reference, correo: correo})
                 })
                 .then(response => response.json())
                 .then(data => console.log('Success:', data))
@@ -177,7 +211,6 @@
                             <th>Nombre</th>
                             <th>Matrícula</th>
                             <th>Correo electrónico</th>
-
                             <th>Rol</th>
                             <th>Referencia</th>
                             <th>¿Activo?</th>
@@ -196,7 +229,8 @@
                                 <td>${user.Correo_electronico}</td>
 
                                 <td>${user.Tipo_Rol}</td> 
-                                <td contenteditable="true" id="editable" onkeydown="handleEnter(event)">${user.Referencia} </td>
+                                <td contenteditable="true" onkeydown="${handleEnterRef(event)}">${user.Referencia} </td>
+                                <td contenteditable="true" onkeydown="${handleEnterBeca(event)}">${user.Beca_actual}</td>
                                 <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
                                 <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a></td> 
                                 <td><a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
@@ -208,15 +242,13 @@
                                     </a> </td>
                                 </tr></td>`
                                 
-                            }
-                            console.log('HTML2:', html)
+                            } 
                     html += ` 
                     </table>
                     </div>
                     </div>
                     </div>
                     `
-
                                                             
                 document.getElementById('respuesta_ajax').innerHTML = html;
                 }).catch(err => {
@@ -241,25 +273,14 @@
                     let html = '';
 
                     html += `
-                        <div class="tabla">
-                    `
-                    
-                    if (data.usuariosDB.length < 1) {
-                        html += `
-                        <div class="notification">
-                            No existe el usuario.            
-                            </div>`
-                    }
-                    
-                    html += `
                     <table id="USUARIOS">
                         <tr>
                             <th>Nombre</th>
                             <th>Matrícula</th>
                             <th>Correo electrónico</th>
-
                             <th>Rol</th>
                             <th>Referencia</th>
+                            <th>Beca</th>
                             <th>¿Activo?</th>
                             <th></th>
                             <th></th>
@@ -275,27 +296,29 @@
                                 <td>${user.Matricula}</td>
                                 <td>${user.Correo_electronico}</td>
 
-                                <td>${user.Tipo_Rol}</td>
-                                 
+                                <td>${user.Tipo_Rol}</td> 
+                                <td contenteditable="true" onkeydown="${handleEnterRef(event)}">${user.Referencia} </td>
+                                <td contenteditable="true" onkeydown="${handleEnterBeca(event)}">${user.Beca_actual}</td>
                                 <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
                                 <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a></td> 
                                 <td><a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
-                                    user.Alumno_activo === 1 
-                                    ? `onclick="desactivar('${user.Correo_electronico}')" `
-                                    : `onclick="reactivar('${user.Correo_electronico}')"`
-                                }>
-                                    ${user.Alumno_activo === 1 ? "Desactivar" : "Reactivar"}
-                                </a> </td>
+                                        user.Alumno_activo === 1 
+                                        ? `onclick="desactivar('${user.Correo_electronico}')" `
+                                        : `onclick="reactivar('${user.Correo_electronico}')"`
+                                    }>
+                                        ${user.Alumno_activo === 1 ? "Desactivar" : "Reactivar"}
+                                    </a> </td>
                                 </tr></td>`
                                 
-                            }
+                            } 
                     html += ` 
                     </table>
                     </div>
                     </div>
                     </div>
                     `
-                    document.getElementById('respuesta_ajax').innerHTML = html;
+                                                            
+                document.getElementById('respuesta_ajax').innerHTML = html;
                 }).catch(err => {
                     console.log(err);
                 })
@@ -320,26 +343,15 @@
                     let html = '';
 
                     html += `
-                        <div class="tabla">
-                    `
-                    
-                    if (data.usuariosDB.length < 1) {
-                        html += `
-                        <div class="notification">
-                            No existe el usuario.            
-                            </div>`
-                    }
-                    
-                    html += `
                     <table id="USUARIOS">
                         <tr>
                             <th>Nombre</th>
                             <th>Matrícula</th>
                             <th>Correo electrónico</th>
-
                             <th>Rol</th>
-                            <th>¿Activo?</th>
                             <th>Referencia</th>
+                            <th>Beca</th>
+                            <th>¿Activo?</th>
                             <th></th>
                             <th></th>
                             </tr>`
@@ -355,26 +367,28 @@
                                 <td>${user.Correo_electronico}</td>
 
                                 <td>${user.Tipo_Rol}</td> 
-                                <td contenteditable="true" id="editable" onkeydown="handleEnter(event)">${user.Referencia} <br> <button onclick="editar()">Editar</button></td>
+                                <td contenteditable="true" onkeydown="${handleEnterRef(event)}">${user.Referencia} </td>
+                                <td contenteditable="true" onkeydown="${handleEnterBeca(event)}">${user.Beca_actual}</td>
                                 <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
                                 <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a></td> 
                                 <td><a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
-                                    user.Alumno_activo === 1 
-                                    ? `onclick="desactivar('${user.Correo_electronico}')" `
-                                    : `onclick="reactivar('${user.Correo_electronico}')"`
-                                }>
-                                    ${user.Alumno_activo === 1 ? "Desactivar" : "Reactivar"}
-                                </a> </td>
+                                        user.Alumno_activo === 1 
+                                        ? `onclick="desactivar('${user.Correo_electronico}')" `
+                                        : `onclick="reactivar('${user.Correo_electronico}')"`
+                                    }>
+                                        ${user.Alumno_activo === 1 ? "Desactivar" : "Reactivar"}
+                                    </a> </td>
                                 </tr></td>`
                                 
-                            }
+                            } 
                     html += ` 
                     </table>
                     </div>
                     </div>
                     </div>
                     `
-                    document.getElementById('respuesta_ajax').innerHTML = html;
+                                                            
+                document.getElementById('respuesta_ajax').innerHTML = html;
                 }).catch(err => {
                     console.log(err);
                 })
