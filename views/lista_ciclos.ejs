@@ -11,7 +11,8 @@
         <div class="page_content">
         <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" >
             <h1>Lista de Ciclos Escolares</h1>
-            <input id="buscar" class="buscar" type="text" placeholder="Buscar"/><br><br>
+            <br><button class="modifyuser" onclick="location.href='/user/admin/ciclo_escolar'">Agregar nuevo ciclo escolar</button><br>
+            <br><input id="buscar" class="buscar" type="text" placeholder="Buscar"/><br><br>
 
             <div id="respuesta_ajax">
                 <div class="tabla">
@@ -47,6 +48,11 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <br><h4>Evolución del costo del crédito</h4>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <div class="chart-container" style="position: relative; height:40vh; width:80vw;">
+                <canvas id="creditCostChart"></canvas>
             </div>
         </div>
 
@@ -164,5 +170,36 @@
 
         </script>
         
+        <script>
+            var cicloLabels = <%- JSON.stringify(ciclosDB.map(ciclo => ciclo.Fecha_Inicio.getFullYear())) %>;
+            var cicloData = <%- JSON.stringify(ciclosDB.map(ciclo => parseFloat(ciclo.Precio_credito))) %>;
+        </script>
+        
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const ctx = document.getElementById('creditCostChart').getContext('2d');
+                const creditCostChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: cicloLabels,
+                        datasets: [{
+                            label: 'Costo del Crédito por Año',
+                            data: cicloData,
+                            fill: false,
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+        </script>            
     </body>
 </html>
