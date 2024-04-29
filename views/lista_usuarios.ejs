@@ -229,8 +229,8 @@
                                 <td>${user.Correo_electronico}</td>
 
                                 <td>${user.Tipo_Rol}</td> 
-                                <td contenteditable="true" onkeydown="${handleEnterRef(event)}">${user.Referencia} </td>
-                                <td contenteditable="true" onkeydown="${handleEnterBeca(event)}">${user.Beca_actual}</td>
+                                <td contenteditable="true" onkeydown="${handleEnterRef(event)}">${user.Referencia == null ? '' : user.Referencia} </td>
+                                <td contenteditable="true" onkeydown="${handleEnterBeca(event)}">${user.Beca_actual == null ? '' : user.Beca_actual}</td>
                                 <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
                                 <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a></td> 
                                 <td><a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
@@ -297,8 +297,8 @@
                                 <td>${user.Correo_electronico}</td>
 
                                 <td>${user.Tipo_Rol}</td> 
-                                <td contenteditable="true" onkeydown="${handleEnterRef(event)}">${user.Referencia} </td>
-                                <td contenteditable="true" onkeydown="${handleEnterBeca(event)}">${user.Beca_actual}</td>
+                                <td contenteditable="true" onkeydown="${handleEnterRef(event)}">${user.Referencia == null ? '' : user.Referencia} </td>
+                                <td contenteditable="true" onkeydown="${handleEnterBeca(event)}">${user.Beca_actual == null ? '' : user.Beca_actual}</td>
                                 <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
                                 <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a></td> 
                                 <td><a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
@@ -367,8 +367,8 @@
                                 <td>${user.Correo_electronico}</td>
 
                                 <td>${user.Tipo_Rol}</td> 
-                                <td contenteditable="true" onkeydown="${handleEnterRef(event)}">${user.Referencia} </td>
-                                <td contenteditable="true" onkeydown="${handleEnterBeca(event)}">${user.Beca_actual}</td>
+                                <td contenteditable="true" onkeydown="${handleEnterRef(event)}">${user.Referencia == null ? '' : user.Referencia} </td>
+                                <td contenteditable="true" onkeydown="${handleEnterBeca(event)}">${user.Beca_actual == null ? '' : user.Beca_actual}</td>
                                 <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
                                 <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a></td> 
                                 <td><a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
