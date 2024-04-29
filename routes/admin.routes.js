@@ -42,12 +42,10 @@ router.post('/usuarios/acceso_modificar/', isAuth, isActive, listaUsuariosContro
 router.post('/usuarios/acceso_modificar/:correo', isAuth, isActive, listaUsuariosController.post_modificarRol);
 
 //Registrar Pago
-router.get('/registrarPago', isAuth, isActive, pagoController.getRegistrarPago);
 router.post('/registrarPago', isAuth, isActive, pagoController.postRegistrarPago);
 
 //Crear Deuda
 router.post('/crearDeuda', isAuth, isActive, deudaController.postCrearDeuda);
-router.get('/crearDeuda', isAuth, isActive,  deudaController.getCrearDeuda);
 
 //Pagos de Alumnos
 router.get('/pagos_de_alumnos', isAuth, isActive, pagosDeAlumnosController.get_listUsers);
@@ -57,7 +55,6 @@ router.get('/pagos_de_alumnos/historial/:id', isAuth, isActive, pagosDeAlumnosCo
 router.get('/pagos_de_alumnos/deudas/:id', isAuth, isActive, pagosDeAlumnosController.getHistorialDeDeudas);
 router.get('/pagos_de_alumnos/crearDeuda/:id', isAuth, isActive, pagosDeAlumnosController.infoDeuda);
 router.get('/pagos_de_alumnos/registrarPago/:id', isAuth, isActive, pagosDeAlumnosController.getInfoPago);
-router.post('/pagos_de_alumnos/registrarPago/:id', isAuth, isActive, pagoController.postRegistrarPago);
 router.get('/pagos_de_alumnos/modificarDeuda/:id', isAuth, isActive, pagosDeAlumnosController.getModificarDeuda);
 
 // Ruta para Historial de Pagos General
@@ -66,7 +63,6 @@ router.get('/historial-pagos-general/buscar/:valor_busqueda', isAuth, isActive, 
 router.get('/historial-pagos-general/buscar', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.getBuscarHistorial);
 router.delete('/historial-pagos-general/borrar/:id', isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.deletePago);
 router.get('/historial-pagos-general/editar-pago/:id',isAuth, isActive, canViewHistorialTodos, historialPagosGeneralController.editPago);
-router.post('/historial-pagos-general/editar-pago/:id', isAuth, isActive, canViewHistorialTodos, pagoController.postRegistrarPago);
 
 //Actualizar base de datos
 router.post('/usuarios/actualizar', isAuth, isActive, listaUsuariosController.post_actualizar);
