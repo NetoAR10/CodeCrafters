@@ -12,18 +12,18 @@ exports.getCrearDeuda = (request, response, next) => {
 
 exports.postCrearDeuda = async (req, res, next) => {
     console.log(req.body);
-    const { IDDeuda, Referencia, Total_deuda, Plan_pago, Concepto, Mes } = req.body;
+    const { IDDeuda, Referencia, Total_deuda, Concepto, Mes, Fecha_limite } = req.body;
     try {
-        const nuevaDeuda = new deuda(Referencia, Total_deuda, Plan_pago, Concepto, Mes);
+        const nuevaDeuda = new deuda(Referencia, Total_deuda, Concepto, Mes, Fecha_limite);
         
         if (IDDeuda) {
             // Actualizar la deuda existente
             await nuevaDeuda.update(IDDeuda);
-            res.send('Deuda actualizada con éxito');
+            res.redirect('pagos_de_alumnos');
         } else {
             // Crear una nueva deuda
             await nuevaDeuda.save();
-            res.send('Deuda creada con éxito');
+            res.redirect('pagos_de_alumnos');
         }
     } catch (err) {
         console.log(err);
