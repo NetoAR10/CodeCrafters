@@ -244,7 +244,7 @@ body {
 
 .page_content{
     position: absolute;
-    margin: 50px;
+    margin: 38px;
     height: 100%;
     width: calc(100% - 150px);
     left: 78px;
@@ -293,7 +293,7 @@ body {
 
 #USUARIOS {
     position: relative;
-    width: 90%;
+    width: 97%;
     border-collapse: collapse;
 }
 
@@ -343,7 +343,7 @@ body {
 
 .buscar {
     position: relative;
-    width: 90%;
+    width: 97%;
     padding: 4px 4px;
 }
 
@@ -487,4 +487,9 @@ form {
     border: 1px solid #6c0404;
     transition-duration: 0.4s;
     cursor: pointer;
+}
+
+.text-content {
+    width: 90%;
+    font-size: 13px;
 }

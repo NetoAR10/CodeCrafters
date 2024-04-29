@@ -15,6 +15,11 @@
             <div class="title_usuarios">
                 <h1>Usuarios</h1> 
             </div>
+            <div class="text-content">
+                - Tras sincronizar, a las personas que no tengan contraseña se les enviará un correo para que la registren. <br>
+                - Modifica la beca o referencia haciendo clic en la celda, ingresando el valor nuevo y pulsando ENTER<br>
+                <br>
+            </div>
             <input id="buscar" class="buscar" type="text" placeholder="Buscar..."/><br>
             <form action="/user/admin/usuarios/actualizar" method="POST">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
