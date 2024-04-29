@@ -62,10 +62,6 @@ exports.get_materias = async (request, response, next) => {
         });
     } catch (err) {
         console.error('Error al obtener materias:', err);
-        response.status(500).render('materias', {
-            csrfToken: request.csrfToken(),
-            error: 'No se pudo cargar la información de las materias.'
-        });
     }
 };
 
