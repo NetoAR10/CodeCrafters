@@ -40,11 +40,11 @@ router.post('/usuarios/acceso_modificar/:correo', isAuth, isActive, listaUsuario
  
 //Registrar Pago
 router.post('/registrarPago', isAuth, isActive, pagoController.postRegistrarPago);
-router.get('/pagos/lista', isAuth, isActive, pagoController.getPagos);
+// router.get('/pagos/lista', isAuth, isActive, pagoController.getPagos);
  
 //Crear Deuda
 router.post('/crearDeuda', isAuth, isActive, deudaController.postCrearDeuda);
-router.get('/deudas/lista', isAuth, isActive, deudaController.getDeudas);
+// router.get('/deudas/lista', isAuth, isActive, deudaController.getDeudas);
  
 //Pagos de Alumnos
 router.get('/pagos_de_alumnos', isAuth, isActive, pagosDeAlumnosController.get_listUsers);
@@ -66,7 +66,7 @@ router.get('/historial-pagos-general/editar-pago/:id',isAuth, isActive, canViewH
 router.post('/usuarios/actualizar', isAuth, isActive, listaUsuariosController.post_actualizar);
 
 // Ruta para obtener datos de reportes de deudas
-router.get('/reportes', isAuth, isActive, reporteController.getReport);
+// router.get('/reportes', isAuth, isActive, reporteController.getReport);
 
 //Ruta para descargar historial en CSV
 router.get('/descargar-historial', isAuth, isActive, historialPagosGeneralController.descargarHistorialCSV);
