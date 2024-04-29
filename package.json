@@ -14,6 +14,7 @@
   "author": "Code Crafters",
   "license": "MIT",
   "devDependencies": {
+    "ejs-lint": "^2.0.0",
     "nodemon": "^3.1.0"
   },
   "dependencies": {
@@ -28,6 +29,7 @@
     "express": "^4.19.2",
     "express-fileupload": "^1.5.0",
     "express-session": "^1.18.0",
+    "jquery": "^3.7.1",
     "mongoose": "^8.3.2",
     "mysql2": "^3.9.4",
     "node-cache": "^5.1.2",

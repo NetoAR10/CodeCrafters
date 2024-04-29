@@ -72,9 +72,8 @@ async function getAllUsers(){
     {
       headers,
       params: {
-        type: ['Users::Student', 'Users::Admin']
 
-      },
+      }
     }
   )
   return response.data

@@ -72,6 +72,14 @@ app.use((request, response, next) => {
   );
 });
 
+app.use((request, response, next) => {
+  response.status(500);
+  response.sendFile(
+    path.join(__dirname, 'views', '500.html')
+  );
+});
+
+
 // Iniciar el servidor
 const PORT = process.env.PORT || 2050; 
 app.listen(PORT, () => {

@@ -31,10 +31,17 @@ module.exports = class Usuario {
         return db.execute('SELECT Correo_electronico FROM Usuario');
     }
 
-    static fetchOne(correo) {
+    static fetchOne(matricula) {
+        return db.execute(
+            'SELECT * FROM Usuario WHERE Matricula=?',
+            [matricula]
+        );
+    }
+
+    static fetchOneMail(matricula) {
         return db.execute(
             'SELECT * FROM Usuario WHERE Correo_electronico=?',
-            [correo]
+            [matricula]
         );
     }
 
@@ -46,14 +53,14 @@ module.exports = class Usuario {
         }
     }
 
-    static getPermisos(correo) {
+    static getPermisos(matricula) {
         return db.execute(
             `SELECT Actividades, Tipo_Rol 
             FROM usuario u, tiene t, rol r, contiene c, privilegios p
-            WHERE u.Correo_electronico = ? AND u.IDUsuario = t.IDUsuario
+            WHERE u.Matricula = ? AND u.IDUsuario = t.IDUsuario
             AND t.IDRol = r.IDRol AND r.IDRol = c.IDRol 
             AND p.IDPrivilegio = c.IDPrivilegio `,
-            [correo]);
+            [matricula]);
     }
 
     static cambiar(new_password, correo) {
@@ -71,4 +78,27 @@ module.exports = class Usuario {
         )
     }
 
+    static updateID(matricula, correo, nombre){
+        return db.execute(
+            `UPDATE usuario 
+            SET Matricula = ?
+            WHERE Correo_electronico = ? 
+            OR Nombre = ?`,[matricula, correo, nombre]);
+    }
+
+    static updateName(nombre, correo, matricula){
+        return db.execute(
+            `UPDATE usuario
+            SET Nombre = ?
+            WHERE Correo_electronico = ?
+            OR Matricula = ?`, [nombre, correo, matricula]);
+    }
+
+    static updateEmail(correo, nombre, matricula){
+        return db.execute(
+            `UPDATE usuario
+            SET Correo_electronico = ?
+            WHERE Nombre = ?
+            OR Matricula = ?`, [correo, nombre, matricula]);
+    }
 }
