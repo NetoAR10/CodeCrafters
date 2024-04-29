@@ -2,9 +2,7 @@
 <body>
     <div class="page_content">
         <h1 class="title">Historial de Deudas</h1>
-        <% if (deuda && deuda.length > 0) { %>
-            <a href="/user/admin/pagos_de_alumnos/crearDeuda/<%= deuda[0].Matricula %>" class="btn">Crear Deuda</a>
-        <% } %>
+        <a href="/user/admin/pagos_de_alumnos/crearDeuda/<%= deuda[0].Matricula %>" class="btn">Crear Deuda</a>
         <table id="USUARIOS">
             <thead>
                 <tr>
@@ -26,7 +24,14 @@
                         <td><%= deuda.Total_deuda.toFixed(2)%></td>
                         <td><%= deuda.Concepto %></td>
                         <td><%= deuda.Mes %></td>
-                        <td><%= deuda.Fecha_limite %></td> 
+                        <td>
+                        <% if (deuda.Fecha_limite) { %>
+                                <% var fechaNormal = new Date(deuda.Fecha_limite); %>
+                                <%= fechaNormal.toDateString() %>
+                            <% } else { %>
+                                N/A
+                            <% } %> 
+                        </td>
                         <td>
                             <a href="/user/admin/pagos_de_alumnos/registrarPago/<%= deuda.IDDeuda %>" class="btn">Registrar Pago</a>
                         </td>

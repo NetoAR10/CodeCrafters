@@ -3,7 +3,7 @@
 <body>
     <div class="container">
 	<div class="page_content">
-        <div class="info-box">
+        <div class="wrapper2">
             <p><strong>Nombre:</strong> <%= deuda.Nombre %></p>
             <p><strong>Referencia:</strong> <%= deuda.Referencia %></p>
             <p><strong>Total deuda:</strong> <%= deuda.Total_deuda.toFixed(2) %></p>
@@ -11,35 +11,35 @@
             <p><strong>Mes:</strong> <%= deuda.Mes %></p>
             <p><strong>Fecha límite:</strong> <%= deuda.Fecha_limite %></p>
         </div>
-        <div class="wrapper">
-            <form action="/user/admin/pagos_de_alumnos/registrarPago/<%= deuda.IDDeuda %>" method="POST"> 
+        <div class="wrapper2">
+            <form action="/user/admin/registrarPago" method="POST"> 
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
                 <input type="hidden" name="IDDeuda" value="<%= deuda ? deuda.IDDeuda: '' %>" required>
                 <input type="hidden" name="Referencia" value="<%= deuda ? deuda.Referencia: '' %>" required>
      
                 <div class="input-box">
-                    <label for="Cantidad pagada">Cantidad pagada:</label>
+                    <label for="Cantidad pagada">Cantidad pagada:</label><br>
                     <input type="number" name="Cant_pagada" step="0.01" placeholder="1545" step="0.01" required>
                 </div>
                 <div class="input-box">
-                    <label for="Fecha de pago">Fecha de pago:</label>
+                    <label for="Fecha de pago">Fecha de pago:</label><br>
                     <input type="date" name="Fecha_de_pago" required>
                 </div>
                 <div class="input-box">
-                    <label for="Metodo">Método:</label>
+                    <label for="Metodo">Método:</label><br>
                     <input type="text" name="Metodo" placeholder="Efectivo" required>
                 </div>
                 <div class="input-box">
-                    <label for="Banco">Banco:</label>
+                    <label for="Banco">Banco:</label><br>
                     <input type="text" name="Banco" placeholder="Santander" required>
                 </div>
                 <div class="input-box">
-                    <label for="Nota">Nota:</label>
+                    <label for="Nota">Nota:</label><br>
                     <input type="text" name="Nota" placeholder="Nota" required>
                 </div>
-                <div class="space"></div>
+                <div class="space"></div><br>
                 <button type="submit" class="btn">Registrar</button>
-                <button type="button" onclick="window.location.href='http://localhost:2050/'" class="btn">Cancelar</button>
+                <button type="button" onclick="window.location.href='http://localhost:2050/user/admin/pagos_de_alumnos'" class="btn">Regresar</button>
             </form>
         </div> 
 	</div>

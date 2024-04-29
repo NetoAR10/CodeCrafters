@@ -1,7 +1,7 @@
 const db = require('../util/database');
 
 class deuda {
-    constructor(Referencia, Total_deuda, Plan_pago, Concepto, Mes, Fecha_limite) {
+    constructor(Referencia, Total_deuda, Concepto, Mes, Fecha_limite) {
         this.Referencia = Referencia;
         this.Total_deuda = Total_deuda; 
         this.Concepto = Concepto;
