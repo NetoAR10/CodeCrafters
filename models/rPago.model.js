@@ -19,11 +19,11 @@ class pago {
         );
     }
 
-    async update() {
+    async update(IDPago) {
         const IDUsuario = await this.getUserIdFromReferencia(this.Referencia);
         return db.execute(
-            'UPDATE pago SET Cant_pagada = ?, Fecha_de_pago = ?, Metodo = ?, Banco = ?, Nota = ? WHERE IDDeuda = ? AND IDUsuario = ?',
-            [this.Cant_pagada, this.Fecha_de_pago, this.Metodo, this.Banco, this.Nota, this.IDDeuda, IDUsuario]
+            'UPDATE pago SET IDDeuda = ?, Cant_pagada = ?, Fecha_de_pago = ?, Metodo = ?, Banco = ?, Nota = ? WHERE IDPago = ? AND IDUsuario = ?',
+            [this.IDDeuda,this.Cant_pagada, this.Fecha_de_pago, this.Metodo, this.Banco, this.Nota, IDPago, IDUsuario]
         );
     }
 
