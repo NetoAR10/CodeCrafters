@@ -158,18 +158,18 @@ exports.post_forgot = (request, response, next) => {
     request.session.errorValue = false;
     request.session.sent = false;
 
-    console.log('Start Error:', request.session.errorValue);
-    console.log('Start Sent:', request.session.sent);
-    Usuario.fetchOne(correo).then(([users, fieldData]) => {
+    // console.log('Start Error:', request.session.errorValue);
+    // console.log('Start Sent:', request.session.sent);
+    Usuario.fetchOneMail(correo).then(([users, fieldData]) => {
         if (users.length === 1) {
             const generateResetToken = () => {
                 return require('crypto').randomBytes(32).toString('hex');
                 
             }
             const resetToken = generateResetToken();
-            const encodedEmail = encodeURIComponent(correo);
-            const encodedToken = encodeURIComponent(resetToken);
-            const resetURL = `http://localhost:2050/user/change_password/${encodedEmail}/${encodedToken}`;
+            const email = correo;
+            const token = resetToken;
+            const resetURL = `http://localhost:2050/user/change_password/${email}/${token}`;
             const transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
@@ -198,13 +198,13 @@ exports.post_forgot = (request, response, next) => {
             request.session.token = resetToken;
             request.session.sent = true;
             request.session.feedback = 'Se ha enviado un correo a la dirección que ingresaste.';
-            console.log('Sent End:', request.session.sent, request.session.feedback);
+            // console.log('Sent End:', request.session.sent, request.session.feedback);
             response.redirect('/user/forgot_password');
             
         } else {
             request.session.errorValue = true;
             request.session.feedback = 'No se ha encontrado este usuario en nuestro registro.';
-            console.log('Error End:', request.session.errorValue, request.session.feedback);
+            // console.log('Error End:', request.session.errorValue, request.session.feedback);
             response.redirect('/user/forgot_password');
         }
     }).catch((error) => {
@@ -216,21 +216,48 @@ exports.get_cambiar = (request, response, next) => {
     let passwordReset = false;
     request.session.passwordReset = passwordReset;
     response.render('cambiar_contrasena', {
-        resetToken: request.params.token,
+        resetToken: request.params.resetToken,
         correo: request.params.correo,
-        csrfToken: request.csrfToken(),
         passwordReset: request.session.passwordReset,
+        feedback: request.session.feedback,
+        errorConfirm: request.session.errorValueConfirm,
+        errorRegex: request.session.errorValueRegex,
+        csrfToken: request.csrfToken(),
     })
+    console.log('Token:', request.params.resetToken);
 }
 
 exports.post_cambiar = (request, response, next) => {
-    const correo = decodeURIComponent(request.body.correo);
+    const correo = request.body.correo;
     const new_password = request.body.new_password;
+    const resetToken = request.body.resetToken;
+    request.session.errorValueConfirm = false;
+    request.session.passwordReset = false;
     // console.log('new password:', new_password);
     // console.log('session email:', correo);
-    Usuario.cambiar(new_password, correo).then(()=> {
-        passwordReset = true;
-        response.redirect('/user/change_password')
-    }).catch((error)=>{console.log(error)})
+    const confirmar = request.body.confirmpassword;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+    console.log('Token:' , resetToken);
+
+    if (confirmar !== request.body.new_password) {
+        request.session.feedback = 'No has confirmado tu contraseña correctamente. Intenta de nuevo.';
+        request.session.errorValueConfirm = true;
+        return response.redirect(`/user/change_password/${correo}/${resetToken}`);
+    } else if (!passwordRegex.test(request.body.new_password)) {
+        request.session.feedback = 'Tu contraseña debe contener al menos 8 caracteres, un número y una mayúscula.';
+        request.session.errorValueRegex = true;
+        console.log(new_password);
+        return response.redirect(`/user/change_password/${correo}/${resetToken}`);
+
+    } else {
+        
+        Usuario.cambiar(new_password, correo).then(()=> {
+            request.session.passwordReset = true;
+            request.session.feedback = 'Has cambiado tu contraseña exitosamente.';
+            response.redirect(`/user/change_password/${correo}/${resetToken}`);
+            
+        }).catch((error)=>{console.log(error)})
+    }
 }
 

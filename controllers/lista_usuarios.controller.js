@@ -221,19 +221,41 @@ exports.post_actualizar = async (request, response, next) => {
 exports.get_darAlta = (request, response, next) => {
     response.render('dar_alta.ejs', {
         correo: request.params.correo,
+        feedback: request.session.feedback,
         resetToken: request.params.resetToken,
     });
 }
 
 exports.post_darAlta = (request, response, next) => {
-    const correo = decodeURIComponent(request.body.correo);
+    const correo = request.body.correo;
     const new_password = request.body.new_password;
+    const resetToken = request.body.resetToken;
+    request.session.errorValueConfirm = false;
+    request.session.passwordReset = false;
     // console.log('new password:', new_password);
     // console.log('session email:', correo);
-    Usuario.cambiar(new_password, correo).then(()=> {
-        response.redirect('/user/login')
-    }).catch((error)=>{console.log(error)})
-}
+    const confirmar = request.body.confirmpassword;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+    // console.log('Token:' , resetToken);
+
+    if (confirmar !== request.body.new_password) {
+        request.session.feedback = 'No has confirmado tu contraseña correctamente. Intenta de nuevo.';
+        request.session.errorValueConfirm = true;
+        return response.redirect(`/user/dar_alta/${correo}/${resetToken}`);
+    } else if (!passwordRegex.test(request.body.new_password)) {
+        request.session.feedback = 'Tu contraseña debe contener al menos 8 caracteres, un número y una mayúscula.';
+        request.session.errorValueRegex = true;
+        console.log(new_password);
+        return response.redirect(`/user/dar_alta/${correo}/${resetToken}`);
+
+    } else {
+        Usuario.cambiar(new_password, correo).then(()=> {
+            request.session.feedback = 'Has dado de alta tu contraseña con éxito.';
+            response.redirect(`/user/dar_alta/${correo}/${resetToken}`)
+        }).catch((error)=>{console.log(error)})
+    }
+}   
 
 
 exports.post_editarRef = (request, response, next) => {

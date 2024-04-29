@@ -38,6 +38,13 @@ module.exports = class Usuario {
         );
     }
 
+    static fetchOneMail(matricula) {
+        return db.execute(
+            'SELECT * FROM Usuario WHERE Correo_electronico=?',
+            [matricula]
+        );
+    }
+
     static fetch(correo) {
         if (correo) {
             return this.fetchOne(correo);
