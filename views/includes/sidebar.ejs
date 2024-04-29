@@ -45,14 +45,25 @@
                             </li>
 
                         <% } %>
+                        <% if (permiso.Actividades == 'registrar pago') { %>
+
+                            <li>
+                                <a href="/user/admin/registrarPago">
+                                    <i class='bx bx-money-withdraw'></i>
+                                    <span class="links_name">Registrar Pago</span>
+                                </a>
+                                <span class="tooltip">R. Pago</span>
+                            </li>
+
+                        <% } %>
                         <% if (permiso.Actividades == 'ver historial todos') { %>
 
                             <li>
                                 <a href="/user/admin/pagos_de_alumnos"">
                                     <i class='bx bx-objects-horizontal-left'></i>
-                                    <span class="links_name">Deudas y Pagos</span>
+                                    <span class="links_name">Historial Alumnos</span>
                                 </a>
-                                <span class="tooltip">Deudas/Pagos</span>
+                                <span class="tooltip">H. Alumnos</span>
                             </li>
 
                         <% } %>
@@ -68,11 +79,27 @@
                     <% } %>
 
                     <li>
-                        <a href="/user/admin/historial-pagos-general"">
-                            <i class='bx bxs-bank'></i>
+                        <a href="/user/alumno/historial-pagos">
+                            <i class='bx bx-history'></i>
                             <span class="links_name">Historial de Pagos</span>
                         </a>
-                        <span class="tooltip">Historial Pagos</span>
+                        <span class="tooltip">H. Personal</span>
+                    </li>
+
+                    <li>
+                        <a href="/user/admin/crearDeuda">
+                            <i class='bx bxs-edit-alt'></i>
+                            <span class="links_name">Crear Deuda</span>
+                        </a>
+                        <span class="tooltip">Deuda</span>
+                    </li>
+
+                    <li>
+                        <a href="/user/admin/historial-pagos-general"">
+                            <i class='bx bxs-bank'></i>
+                            <span class="links_name">Historial General</span>
+                        </a>
+                        <span class="tooltip">H. General</span>
                     </li>
                             
                     <li>

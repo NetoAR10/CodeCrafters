@@ -44,7 +44,6 @@ router.post('/registrarPago', isAuth, isActive, pagoController.postRegistrarPago
  
 //Crear Deuda
 router.post('/crearDeuda', isAuth, isActive, deudaController.postCrearDeuda);
-// router.get('/deudas/lista', isAuth, isActive, deudaController.getDeudas);
  
 //Pagos de Alumnos
 router.get('/pagos_de_alumnos', isAuth, isActive, pagosDeAlumnosController.get_listUsers);
