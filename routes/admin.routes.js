@@ -12,6 +12,7 @@ const isActive = require('../util/is-active');
 const canViewHistorialTodos = require('../util/can-view-historial-todos');
 const historialPersonalController = require('../controllers/historialPersonal.controller');const listaCiclos = require('../controllers/lista_ciclos.controller');
 const reporteController = require('../controllers/reports.controller')
+
  
 //Ciclo Escolar
 router.get('/ciclo_escolar', isAuth, canResgisterCiclo, isActive, cicloEscolarController.get_nuevo_ciclo);
