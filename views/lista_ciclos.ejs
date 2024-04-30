@@ -1,0 +1,205 @@
+<%- include('includes/sidebar.ejs') %>
+
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Lista de Ciclos Escolares</title>
+        <link rel="stylesheet" href="/css/sidebar.css">
+    </head>
+    <body>
+        <div class="page_content">
+        <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" >
+            <h1>Lista de Ciclos Escolares</h1>
+            <br><button class="modifyuser" onclick="location.href='/user/admin/ciclo_escolar'">Agregar nuevo ciclo escolar</button><br>
+            <br><input id="buscar" class="buscar" type="text" placeholder="Buscar"/><br><br>
+
+            <div id="respuesta_ajax">
+                <div class="tabla">
+                    <table id="USUARIOS"> 
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Fecha de Inicio</th>
+                            <th>Fecha de Fin</th>
+                            <th>Precio del Crédito</th>
+                            <th>ID Ciclo IVD</th>
+                            <th>¿Activo?</th>
+                            <th></th>
+                        </tr>
+                        <tbody>
+                            <% ciclosDB.forEach(function(cicloescolar) { %>
+                                <tr>
+                                    <td><%= cicloescolar.Ciclo %></td>
+                                    <td><%= cicloescolar.Fecha_Inicio.toISOString().slice(0, 10) %></td>
+                                    <td><%= cicloescolar.Fecha_Fin.toISOString().slice(0, 10) %></td>
+                                    <td><%= cicloescolar.Precio_credito %></td>
+                                    <td><%= cicloescolar.IDCicloEXT %></td>
+                                    <td>
+                                        <label class="switch">
+                                            <input type="checkbox" id="activo_<%= cicloescolar.IDCiclo %>" <%= cicloescolar.Ciclo_activo ? "checked" : "" %> onchange="toggleCicloActivo(<%= cicloescolar.IDCiclo %>)">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <button class="modifyuser" onclick="location.href='/user/admin/ciclo_escolar?IDCiclo=<%= cicloescolar.IDCiclo %>'">Modificar</button>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br><h4>Evolución del costo del crédito</h4>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <div class="chart-container" style="position: relative; height:40vh; width:80vw;">
+                <canvas id="creditCostChart"></canvas>
+            </div>
+        </div>
+
+        <script>
+            const accion_asincrona = () => {
+                console.log('Buscando...');
+                const valor_busqueda = document.getElementById('buscar').value;
+                //función que manda la petición asíncrona
+                fetch('/user/admin/lista_ciclos/buscar/' + valor_busqueda, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'CSRF-Token': document.getElementById('_csrf').value  // Asegúrate de que el nombre del encabezado coincida con lo que espera tu servidor
+                    }
+                }).then((result) => {
+                    if (result.ok) {
+                        return result.json(); // Procesa la respuesta como JSON
+                    } else {
+                        throw new Error('Respuesta no válida del servidor');
+                    }
+                }).then((data) => {
+                    console.log(data);
+                    let html = ' ';
+        
+                    html += `
+                        <div class="tabla">
+                    `;
+        
+                    if (data.length < 1) {
+                        html += `
+                        <div class="notification">
+                            No existe el ciclo.            
+                            </div>`;
+                    }
+        
+                    html += `
+                    <table id="USUARIOS">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Fecha de Inicio</th>
+                            <th>Fecha de Fin</th>
+                            <th>Precio del Crédito</th>
+                            <th>ID Ciclo IVD</th>
+                            <th>¿Activo?</th>
+                            <th></th>
+                        </tr>`;
+        
+                        for (let cicloescolar of data.rows) {
+                        html += `
+                        <tr>
+                            <td>${cicloescolar.Ciclo}</td>
+                            <td>${new Date(cicloescolar.Fecha_Inicio).toISOString().slice(0, 10)}</td>
+                            <td>${new Date(cicloescolar.Fecha_Fin).toISOString().slice(0, 10)}</td>
+                            <td>${cicloescolar.Precio_credito}</td>
+                            <td>${cicloescolar.IDCicloEXT}</td>
+                            <td>
+                                <label class="switch">
+                                    <input type="checkbox" id="activo_${cicloescolar.IDCiclo}" ${(cicloescolar.Ciclo_activo == 1) ? "checked" : ""} onchange="toggleCicloActivo(${cicloescolar.IDCiclo})">
+                                    <span class="slider round"></span>
+                                </label>
+                            </td>
+                            <td>
+                                <button class="modifyuser" onclick="location.href='/user/admin/ciclo_escolar?IDCiclo=${cicloescolar.IDCiclo}'">Modificar</button>
+                            </td>
+
+                        </tr>`;
+                        }
+                     html += ` 
+                    </table>
+                    </div>
+                    `;
+                                                                
+                    document.getElementById('respuesta_ajax').innerHTML = html;
+                }).catch(err => {
+                    console.log(err);
+                    document.getElementById('respuesta_ajax').innerHTML = '<div class="notification">Error en la busqueda: ' + err.message + '</div>';
+                });
+            };
+            document.getElementById('buscar').onkeyup = accion_asincrona;
+        </script>
+
+        <script>
+            function toggleCicloActivo(cicloId) {
+                const checkbox = document.getElementById('activo_' + cicloId);
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+
+                if (checkbox.checked && checkboxes.length > 1) {
+                    alert('Solo puede haber un ciclo activo a la vez.');
+                    checkbox.checked = false; // Revierte el cambio si hay más de un checkbox activo
+                    return;
+                }
+
+                const isActive = checkbox.checked ? 1 : 0;
+
+                fetch('/user/admin/lista_ciclos/actualizar_activo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'CSRF-Token': document.getElementById('_csrf').value
+                    },
+                    body: JSON.stringify({ id: cicloId, cicloActivo: isActive })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Actualización exitosa:', data);
+                    if (data.error) {
+                        alert(data.message);
+                        checkbox.checked = !isActive; // Revierte el cambio si el servidor responde con error
+                    }
+                })
+                .catch(error => {
+                    console.error('Error en la actualización:', error);
+                });
+            }
+
+        </script>
+        
+        <script>
+            var cicloLabels = <%- JSON.stringify(ciclosDB.map(ciclo => ciclo.Fecha_Inicio.getFullYear())) %>;
+            var cicloData = <%- JSON.stringify(ciclosDB.map(ciclo => parseFloat(ciclo.Precio_credito))) %>;
+        </script>
+        
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const ctx = document.getElementById('creditCostChart').getContext('2d');
+                const creditCostChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: cicloLabels,
+                        datasets: [{
+                            label: 'Costo del Crédito por Año',
+                            data: cicloData,
+                            fill: false,
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+        </script>            
+    </body>
+</html>

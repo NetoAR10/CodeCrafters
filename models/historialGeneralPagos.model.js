@@ -3,7 +3,8 @@ const db = require('../util/database');
 module.exports = class HistorialPago {
     static fetchAll() {
         return db.execute(`
-            SELECT 
+            SELECT
+	        pago.IDPago,
                 deuda.Mes, 
                 usuario.Referencia,
                 usuario.Nombre, 
@@ -49,4 +50,25 @@ module.exports = class HistorialPago {
             ['%' + valor_busqueda + '%', '%' + valor_busqueda + '%']
         );
     }
+
+    static delete(IDPago) {
+        return db.execute('DELETE FROM pago WHERE IDPago = ?', [IDPago]);
+    }
+
+    static buscarID(IDPago) {
+    return db.execute(`
+        SELECT
+	    usuario.Referencia, usuario.Nombre,
+            pago.Fecha_de_pago, pago.Cant_pagada, deuda.Total_deuda,pago.Metodo, pago.Banco, pago.Nota,
+            deuda.IDDeuda, deuda.Total_deuda, deuda.Concepto, deuda.Mes, deuda.Fecha_limite
+	    FROM usuario
+        JOIN pago ON usuario.IDUsuario = pago.IDUsuario
+        JOIN deuda ON pago.IDDeuda = deuda.IDDeuda
+        WHERE pago.IDPago = ?`,
+	[IDPago]);
+    }
+
+
+    
 };
+

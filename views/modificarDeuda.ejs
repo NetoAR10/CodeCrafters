@@ -6,36 +6,37 @@
 	<div class="page_content">
         <div class="wrapper2">
             <p><strong>Nombre:</strong> <%= deuda.Nombre %></p>
-            <p><strong>Referencia:</strong> <%= deuda.Referencia %></p>
+            <p><strong>Referencia:</strong> <%= deuda.Referencia %></p> 
         </div>
 
     <div class="wrapper2">
         <form action="/user/admin/crearDeuda" method="POST">
 	<input type="hidden" name="_csrf" value="<%= csrfToken %>" >
         <input type="hidden" name="Referencia" value="<%= deuda ? deuda.Referencia: '' %>" required>
+        <input type="hidden" name="IDDeuda" value="<%= deuda ? deuda.IDDeuda: '' %>" required>
 
             <div class="input-box">
                 <label for="Total_deuda">Total deuda:</label>
-                <input type="number" name="Total_deuda" placeholder="Ejemplo: 2500" step=0.01 required>
+                <input type="number" name="Total_deuda" value="<%= deuda ? deuda.Total_deuda.toFixed(2) :'' %>" placeholder="Ejemplo: 2500" step=0.01 required>
             </div>
      
             <div class="input-box">
                 <label for="Concepto">Concepto:</label>
-                <input type="text" name="Concepto" placeholder="Ejmplo: Inscripción"  required>
+                <input type="text" name="Concepto" value="<%= deuda ? deuda.Concepto :'' %>" placeholder="Ejmplo: Inscripción"  required>
             </div>
 
             <div class="input-box">
                 <label for="Mes">Mes:</label>
-                <input type="text" name="Mes" placeholder="Ejemplo: Enero" required>
+                <input type="text" name="Mes" value="<%= deuda ? deuda.Mes :'' %>" placeholder="Ejemplo: Enero" required>
             </div>
 
             <div class="input-box">
                 <label for="Fecha limite">Fecha límite:</label>
-                <input type="date" name="Fecha_limite">
+                <input type="date" name="Fecha_limite" value="<%= deuda ? deuda.Fecha_limite :'' %>">
             </div>
 
             <div class="space"></div>
-            <button type="submit" class="btn">Crear Deuda</button>
+            <button type="submit" class="btn">Modificar</button>
 	    
 	    <button type="button" onclick="window.location.href='http://localhost:2050/user/admin/pagos_de_alumnos'" class="btn">Regresar</button>
 	</form>

@@ -5,16 +5,26 @@
     nombre: nombre,
     rolUser: rolUser,
 } %>
-    <body>
+<body>
+    
+    <div class="page_content">
+
+        <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" >
         
-        <div class="page_content">
-            <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" >
-            
-            <div class="text">
-                <div class="title_usuarios">
-                    <h1>Usuarios</h1> 
-                </div>
-                <input id="buscar" class="buscar" type="text" placeholder="Buscar..."/><br><br>
+        <div class="text">
+            <div class="title_usuarios">
+                <h1>Usuarios</h1> 
+            </div>
+            <div class="text-content">
+                - Tras sincronizar, a las personas que no tengan contraseña se les enviará un correo para que la registren. <br>
+                - Modifica la beca o referencia haciendo clic en la celda, ingresando el valor nuevo y pulsando ENTER<br>
+                <br>
+            </div>
+            <input id="buscar" class="buscar" type="text" placeholder="Buscar..."/><br>
+            <form action="/user/admin/usuarios/actualizar" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="button" name="refresh" id="refresh" value="Sincronizar" onclick="actualizar()">
+            </form>
                 <div id="respuesta_ajax">
                     <div class="tabla">
                         <% if (usuariosDB.length < 1) { %>
@@ -28,36 +38,69 @@
                                 <th>Nombre</th>
                                 <th>Matrícula</th>
                                 <th>Correo electrónico</th>
-                                <th>Beca</th>
                                 <th>Rol</th>
+                                <th>Referencia</th>
+                                <th>Beca</th>
                                 <th>¿Activo?</th>
                                 <th></th>
+                                <th></th>
                             </tr>
+                            
+
                             <% for (let user of usuariosDB) {%>
                                 <% let columns = 0; %>
-                                <% columns++ %>
-                                    
+                                <% columns++ %>       
                             <tr class="<%= user.Alumno_activo == 0 ? 'inactiveStudent' : '' %>">
+                                <% if (correo == user.Correo_electronico) {%>
+                                    <td><%= user.Nombre %></td>
+                                    <td><%= user.Matricula %></td>
+                                    <td class="correo"><%= user.Correo_electronico %></td>
+                                    <td><%= user.Tipo_Rol %></td> 
+                                    <td contenteditable="true" onkeydown="handleEnterRef(event)">
+                                        <%= user.Referencia %> 
+                                    </td>
+                                    <td contenteditable="true" onkeydown="handleEnterBeca(event)">
+                                        <%= user.Beca_actual %> 
+                                    </td>
+                                    <td><% if (user.Alumno_activo == 1 ) {%> Activo <% } else if (user.Alumno_activo == 0) { %> Inactivo <% } %> </td>
+                                    <td></td>
+                                    <td></td>
+                                        </div>
+                                <% } else { %>
                                 
-                                <td><%= user.Nombre %></td>
-                                <td><%= user.Matricula %></td>
-                                <td><%= user.Correo_electronico %></td>
-                                <td><%= user.Beca_actual %></td>
-                                <td><%= user.Tipo_Rol %></td> 
-                                <td><% if (user.Alumno_activo == 1 ) {%> Activo <% } else if (user.Alumno_activo == 0) { %> Inactivo <% } %> </td>
-                                <td><a href="/user/admin/usuarios/acceso_modificar/<%= user.Correo_electronico %>" class="modifyuser">Modificar Rol</a> 
-                                <a class="<% if (user.Alumno_activo == 1) { %> deleteuser <% } else { %> reactivateuser <% } %>" 
-                                <% if (user.Alumno_activo == 1) { %>
-                                    onclick="desactivar('<%= user.Correo_electronico %>')"
-                                <% } else if (user.Alumno_activo == 0) { %>
-                                    onclick="reactivar('<%= user.Correo_electronico %>')"
-                                <% } %>>
-                                <% if (user.Alumno_activo == 1) { %>
-                                    Desactivar
-                                <% } else if (user.Alumno_activo == 0) { %>
-                                    Reactivar
+                                    <td><%= user.Nombre %></td>
+                                    <td><%= user.Matricula %></td>
+                                    <td class="correo"><%= user.Correo_electronico %></td>
+                                    <td><%= user.Tipo_Rol %></td> 
+                                    <td contenteditable="true" onkeydown="handleEnterRef(event)">
+                                        <%= user.Referencia %> 
+                                    </td>
+                                    <td contenteditable="true" onkeydown="handleEnterBeca(event)">
+                                        <%= user.Beca_actual %> 
+                                    </td>
+                                    <td><% if (user.Alumno_activo == 1 ) {%> Activo <% } else if (user.Alumno_activo == 0) { %> Inactivo <% } %> </td>
+                                    
+                                    <td>
+                                        <div class="buttonMR">
+                                        <a href="/user/admin/usuarios/acceso_modificar/<%= user.Correo_electronico %>" class="modifyuser">Modificar Rol</a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="buttonDA">
+                                            <a class="<% if (user.Alumno_activo == 1) { %> deleteuser <% } else { %> reactivateuser <% } %>" 
+                                            <% if (user.Alumno_activo == 1) { %>
+                                                onclick="desactivar('<%= user.Correo_electronico %>')"
+                                            <% } else if (user.Alumno_activo == 0) { %>
+                                                onclick="reactivar('<%= user.Correo_electronico %>')"
+                                            <% } %>>
+                                            <% if (user.Alumno_activo === 1) { %>
+                                                Desactivar
+                                            <% } else { %>
+                                                Reactivar
+                                            <% } %>
+                                            </a> </td>
+                                        </div>
                                 <% } %>
-                                </a> </td>
                             </tr>
  
                             <%}%>
@@ -66,11 +109,97 @@
                           </table>
                     </div>
                 </div>
+                
             </div>
         </div>
         
         
         <script>
+
+            const sessionCorreo = "<%= correo %>";
+
+            const handleEnterBeca = (event) => {
+                if (!event || !event.key) return;
+
+                if (event.key === 'Enter'){
+                    event.preventDefault();
+                    const editableCellBeca = event.target;
+                    submitDataBeca(editableCellBeca);
+                }
+            }
+
+            const submitDataBeca = (editableCellBeca) => {
+                const beca = editableCellBeca.innerText;
+                const row = editableCellBeca.closest('tr');
+                const correo = row.querySelector('.correo').innerText;
+                const csrf = document.getElementById('_csrf').value;
+
+                fetch('/user/admin/usuarios/editarBeca/${usuariosDB.Correo_electronico}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'csrf-token': csrf,
+                    },
+                    body: JSON.stringify({beca: beca, correo: correo})
+                })
+                .then(response => response.json())
+                .then(data => console.log('Success:', data))
+                .catch((error) => console.error('Error:', error));
+            }
+
+            const handleEnterRef = (event) => {
+                if (!event || !event.key) return;
+                if (event.key === 'Enter'){
+                    event.preventDefault();
+                    const editableCellRef = event.target;
+                    submitDataRef(editableCellRef);
+                }
+            }
+
+            const submitDataRef = (editableCellRef) => {
+                const reference = editableCellRef.innerText;
+                const row = editableCellRef.closest('tr');
+                const correo = row.querySelector('.correo').innerText;
+                const csrf = document.getElementById('_csrf').value;
+
+                fetch('/user/admin/usuarios/editarReferencia/${usuariosDB.Correo_electronico}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'csrf-token': csrf,
+                    },
+                    body: JSON.stringify({reference: reference, correo: correo})
+                })
+                .then(response => response.json())
+                .then(data => console.log('Success:', data))
+                .catch((error) => console.error('Error:', error));
+            }
+
+
+            const actualizar = () => {
+                const csrf = document.getElementById('_csrf').value;
+                fetch('/user/admin/usuarios/actualizar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'csrf-token': csrf
+                    },
+                    body: JSON.stringify()
+                }).then(result => {
+                    return result.json();
+                }).then(data => {
+                    console.log(data);
+
+                    
+                    
+                }).catch(err => {
+                    console.log(err);
+                })
+
+                
+
+            }
+
 
             const accion_asincrona = () => {
                 console.log('Buscando...');
@@ -107,9 +236,10 @@
                             <th>Nombre</th>
                             <th>Matrícula</th>
                             <th>Correo electrónico</th>
-                            <th>Beca</th>
                             <th>Rol</th>
+                            <th>Referencia</th>
                             <th>¿Activo?</th>
+                            <th></th>
                             <th></th>
                             </tr>`
 
@@ -118,33 +248,51 @@
                         let columns = 0;
                         columns++
                         html += `
-                            <tr class="${user.Alumno_activo == 0 ? 'inactiveStudent' : ''}">
+                            <tr class="${user.Alumno_activo == 0 ? 'inactiveStudent' : ''}">`
+
+                                if (sessionCorreo == user.Correo_electronico) {
+                                html += `
                                 <td>${user.Nombre}</td>
                                 <td>${user.Matricula}</td>
-                                <td>${user.Correo_electronico}</td>
-                                <td>${user.Beca_actual}</td>
+                                <td class="correo">${user.Correo_electronico}</td>
                                 <td>${user.Tipo_Rol}</td> 
-                                <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
-                                <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a> 
-                                    <a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
+                                    <td contenteditable="true" onkeydown="${handleEnterRef(event)}">${user.Referencia == null ? '' : user.Referencia} </td>
+                                    <td contenteditable="true" onkeydown="${handleEnterBeca(event)}">${user.Beca_actual == null ? '' : user.Beca_actual}</td>
+                                    <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
+                                    <td></td>
+                                    <td></td>
+                                        </div>
+                                        `
+                                } else {
+                                    html += `
+                                
+
+                                    <td>${user.Nombre}</td>
+                                    <td>${user.Matricula}</td>
+                                    <td class="correo">${user.Correo_electronico}</td>
+
+                                    <td>${user.Tipo_Rol}</td> 
+                                    <td contenteditable="true" onkeydown="${handleEnterRef(event)}">${user.Referencia == null ? '' : user.Referencia} </td>
+                                    <td contenteditable="true" onkeydown="${handleEnterBeca(event)}">${user.Beca_actual == null ? '' : user.Beca_actual}</td>
+                                    <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
+                                    <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a></td> 
+                                    <td><a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
                                         user.Alumno_activo === 1 
                                         ? `onclick="desactivar('${user.Correo_electronico}')" `
                                         : `onclick="reactivar('${user.Correo_electronico}')"`
                                     }>
                                         ${user.Alumno_activo === 1 ? "Desactivar" : "Reactivar"}
                                     </a> </td>
-                                </tr></td>`
+                                    </tr></td> `
                                 
-                            }
-                            console.log('HTML2:', html)
+                                    }
+                                }                                 
                     html += ` 
                     </table>
                     </div>
                     </div>
                     </div>
                     `
-
-                                                            
                 document.getElementById('respuesta_ajax').innerHTML = html;
                 }).catch(err => {
                     console.log(err);
@@ -166,7 +314,9 @@
                 }).then(data => {
                     console.log(data);
                     let html = '';
-
+                    
+                    
+                        
                     html += `
                         <div class="tabla">
                     `
@@ -184,9 +334,10 @@
                             <th>Nombre</th>
                             <th>Matrícula</th>
                             <th>Correo electrónico</th>
-                            <th>Beca</th>
                             <th>Rol</th>
+                            <th>Referencia</th>
                             <th>¿Activo?</th>
+                            <th></th>
                             <th></th>
                             </tr>`
 
@@ -195,31 +346,53 @@
                         let columns = 0;
                         columns++
                         html += `
-                            <tr class="${user.Alumno_activo == 0 ? 'inactiveStudent' : ''}">
+                            <tr class="${user.Alumno_activo == 0 ? 'inactiveStudent' : ''}">`
+
+                                if (sessionCorreo == user.Correo_electronico) {
+                                html += `
                                 <td>${user.Nombre}</td>
                                 <td>${user.Matricula}</td>
-                                <td>${user.Correo_electronico}</td>
-                                <td>${user.Beca_actual}</td>
+                                <td class="correo">${user.Correo_electronico}</td>
                                 <td>${user.Tipo_Rol}</td> 
-                                <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
-                                <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser">Modificar Rol</a> 
-                                    <a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
-                                    user.Alumno_activo === 1 
-                                    ? `onclick="desactivar('${user.Correo_electronico}')" `
-                                    : `onclick="reactivar('${user.Correo_electronico}')"`
-                                }>
-                                    ${user.Alumno_activo === 1 ? "Desactivar" : "Reactivar"}
-                                </a> </td>
-                                </tr></td>`
+                                    <td contenteditable="true" onkeydown="${handleEnterRef(event)}">${user.Referencia == null ? '' : user.Referencia} </td>
+                                    <td contenteditable="true" onkeydown="${handleEnterBeca(event)}">${user.Beca_actual == null ? '' : user.Beca_actual}</td>
+                                    <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
+                                    <td></td>
+                                    <td></td>
+                                        </div>
+                                        `
+                                } else {
+                                    html += `
                                 
-                            }
+
+                                    <td>${user.Nombre}</td>
+                                    <td>${user.Matricula}</td>
+                                    <td class="correo">${user.Correo_electronico}</td>
+
+                                    <td>${user.Tipo_Rol}</td> 
+                                    <td contenteditable="true" onkeydown="${handleEnterRef(event)}">${user.Referencia == null ? '' : user.Referencia} </td>
+                                    <td contenteditable="true" onkeydown="${handleEnterBeca(event)}">${user.Beca_actual == null ? '' : user.Beca_actual}</td>
+                                    <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
+                                    <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a></td> 
+                                    <td><a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
+                                        user.Alumno_activo === 1 
+                                        ? `onclick="desactivar('${user.Correo_electronico}')" `
+                                        : `onclick="reactivar('${user.Correo_electronico}')"`
+                                    }>
+                                        ${user.Alumno_activo === 1 ? "Desactivar" : "Reactivar"}
+                                    </a> </td>
+                                    </tr></td> `
+                                
+                                    }
+                                }                                 
                     html += ` 
                     </table>
                     </div>
                     </div>
                     </div>
                     `
-                    document.getElementById('respuesta_ajax').innerHTML = html;
+                                                            
+                document.getElementById('respuesta_ajax').innerHTML = html;
                 }).catch(err => {
                     console.log(err);
                 })
@@ -242,7 +415,9 @@
                 }).then(data => {
                     console.log(data);
                     let html = '';
-
+                    
+                    
+                        
                     html += `
                         <div class="tabla">
                     `
@@ -260,9 +435,10 @@
                             <th>Nombre</th>
                             <th>Matrícula</th>
                             <th>Correo electrónico</th>
-                            <th>Beca</th>
                             <th>Rol</th>
+                            <th>Referencia</th>
                             <th>¿Activo?</th>
+                            <th></th>
                             <th></th>
                             </tr>`
 
@@ -271,31 +447,53 @@
                         let columns = 0;
                         columns++
                         html += `
-                            <tr class="${user.Alumno_activo == 0 ? 'inactiveStudent' : ''}">
+                            <tr class="${user.Alumno_activo == 0 ? 'inactiveStudent' : ''}">`
+
+                                if (sessionCorreo == user.Correo_electronico) {
+                                html += `
                                 <td>${user.Nombre}</td>
                                 <td>${user.Matricula}</td>
-                                <td>${user.Correo_electronico}</td>
-                                <td>${user.Beca_actual}</td>
+                                <td class="correo">${user.Correo_electronico}</td>
                                 <td>${user.Tipo_Rol}</td> 
-                                <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
-                                <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser">Modificar Rol</a> 
-                                    <a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
-                                    user.Alumno_activo === 1 
-                                    ? `onclick="desactivar('${user.Correo_electronico}')" `
-                                    : `onclick="reactivar('${user.Correo_electronico}')"`
-                                }>
-                                    ${user.Alumno_activo === 1 ? "Desactivar" : "Reactivar"}
-                                </a> </td>
-                                </tr></td>`
+                                    <td contenteditable="true" onkeydown="${handleEnterRef(event)}">${user.Referencia == null ? '' : user.Referencia} </td>
+                                    <td contenteditable="true" onkeydown="${handleEnterBeca(event)}">${user.Beca_actual == null ? '' : user.Beca_actual}</td>
+                                    <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
+                                    <td></td>
+                                    <td></td>
+                                        </div>
+                                        `
+                                } else {
+                                    html += `
                                 
-                            }
+
+                                    <td>${user.Nombre}</td>
+                                    <td>${user.Matricula}</td>
+                                    <td class="correo">${user.Correo_electronico}</td>
+
+                                    <td>${user.Tipo_Rol}</td> 
+                                    <td contenteditable="true" onkeydown="${handleEnterRef(event)}">${user.Referencia == null ? '' : user.Referencia} </td>
+                                    <td contenteditable="true" onkeydown="${handleEnterBeca(event)}">${user.Beca_actual == null ? '' : user.Beca_actual}</td>
+                                    <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
+                                    <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a></td> 
+                                    <td><a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
+                                        user.Alumno_activo === 1 
+                                        ? `onclick="desactivar('${user.Correo_electronico}')" `
+                                        : `onclick="reactivar('${user.Correo_electronico}')"`
+                                    }>
+                                        ${user.Alumno_activo === 1 ? "Desactivar" : "Reactivar"}
+                                    </a> </td>
+                                    </tr></td> `
+                                
+                                    }
+                                }                                 
                     html += ` 
                     </table>
                     </div>
                     </div>
                     </div>
                     `
-                    document.getElementById('respuesta_ajax').innerHTML = html;
+                                                            
+                document.getElementById('respuesta_ajax').innerHTML = html;
                 }).catch(err => {
                     console.log(err);
                 })

@@ -67,7 +67,7 @@
                             </li>
 
                         <% } %>
-                        <% if (permiso.Actividades == 'ver reporte') { %>
+                        <% if (permiso.Actividades == 'ver historial todos') { %>
                             <li>
                                 <a href="/user/admin/reportes"> 
                                     <i class='bx bxs-report'></i> 
@@ -100,6 +100,14 @@
                             <span class="links_name">Historial General</span>
                         </a>
                         <span class="tooltip">H. General</span>
+                    </li>
+
+                    <li>
+                        <a href="/user/admin/lista_ciclos">
+                            <i class='bx bx-history'></i>
+                            <span class="links_name">Ciclos Escolares</span>
+                        </a>
+                        <span class="tooltip">Ciclos</span>
                     </li>
                             
                     <li>

@@ -12,6 +12,7 @@ exports.getHistorialPagosGeneral = async (request, response,next) => {
             permisos: request.session.permisos,
             rol: request.session.roles,
             nombre: request.session.nombre,
+
         });
     } catch (error) {
         console.error('Error fetching payment history:', error);
@@ -28,7 +29,7 @@ exports.getBuscarHistorial = (request, response, next) => {
             console.error('Error en la búsqueda:', error);
             response.status(500).send('Error al realizar la búsqueda');
         });
-};
+}
 
 exports.descargarHistorialCSV = async (req, res) => {
     try {
@@ -63,3 +64,40 @@ function convertirAFormatoCSV(data) {
 
     return csvRows.join('\n');
 }
+
+exports.deletePago = (request, response, next) => {
+    const IDPago = request.params.id;
+    HistorialPago.delete(IDPago)
+        .then(() => {
+            response.json({ message: 'Pago eliminado correctamente.' });
+        })
+        .catch(err => {
+            console.error('Error al eliminar el pago:', err);
+            response.status(500).json({ message: 'Error al eliminar el pago.' });
+        });
+}
+
+exports.editPago = async (request, response, next) => {
+    console.log('hola')
+    const IDPago = request.params.id; 
+    console.log(IDPago)
+    try {
+        const [pagoDetails] = await HistorialPago.buscarID(IDPago);
+        if (pagoDetails.length > 0) {
+            response.render('modificarPago', {
+                pago: pagoDetails[0],
+                titulo: 'Modificar Pago',
+	        correo: request.session.permisos,
+		permisos: request.session.permisos,
+		rol: request.session.roles,
+		nombre: request.session.nombre,
+		csrfToken: request.csrfToken(),
+            });
+        } else {
+            response.status(404).send('Pago no encontrado');
+        }
+    } catch (error) {
+        console.error('Error al obtener detalles del pago:', error);
+        response.status(500).send('Error al editar el pago');
+    }
+};

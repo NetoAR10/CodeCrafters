@@ -1,0 +1,49 @@
+<%- include('includes/sidebar.ejs') %>
+
+<body>
+    <div class="container">
+	<div class="page_content">
+        <div class="wrapper2">
+            <p><strong>Nombre:</strong> <%= pago.Nombre %></p>
+            <p><strong>Referencia:</strong> <%= pago.Referencia %></p>
+            <p><strong>Total deuda:</strong> <%= pago.Total_deuda.toFixed(2) %></p>
+            <p><strong>Concepto:</strong> <%= pago.Concepto %></p>
+            <p><strong>Mes:</strong> <%= pago.Mes %></p>
+            <p><strong>Fecha límite:</strong> <%= pago.Fecha_limite %></p>
+        </div>
+        <div class="wrapper2">
+            <form action="/user/admin/registrarPago" method="POST"> 
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                <input type="hidden" name="IDPago" value="<%= pago ? pago.IDPago: '' %>" required>
+                <input type="hidden" name="IDDeuda" value="<%= pago ? pago.IDDeuda: '' %>" required>
+                <input type="hidden" name="Referencia" value="<%= pago ? pago.Referencia: '' %>" required>
+                
+     
+                <div class="input-box">
+                    <label for="Cantidad pagada">Cantidad pagada:</label><br>
+                    <input type="number" name="Cant_pagada" value="<%= pago ? pago.Cant_pagada.toFixed(2) : '' %>" step="0.01" placeholder="1545" step="0.01" required>
+                </div>
+                <div class="input-box">
+                    <label for="Fecha de pago">Fecha de pago:</label><br>
+                    <input type="date" name="Fecha_de_pago" value="<%= pago ? pago.Fecha_de_pago.toISOString().slice(0, 10) : '' %>" required>
+                </div>
+                <div class="input-box">
+                    <label for="Metodo">Método:</label><br>
+                    <input type="text" name="Metodo" value="<%= pago ? pago.Metodo : '' %>" placeholder="Efectivo" required>
+                </div>
+                <div class="input-box">
+                    <label for="Banco">Banco:</label><br>
+                    <input type="text" name="Banco" value="<%= pago ? pago.Banco : '' %>" placeholder="Santander" required>
+                </div>
+                <div class="input-box">
+                    <label for="Nota">Nota:</label><br>
+                    <input type="text" name="Nota" value="<%= pago ? pago.Nota : '' %>" placeholder="Nota" required>
+                </div>
+                <div class="space"></div>
+                <button type="submit" class="btn">Modificar</button>
+                <button type="button" onclick="window.location.href='http://localhost:2050/user/admin/historialGeneralPagos'" class="btn">Regresar</button>
+            </form>
+        </div> 
+	</div>
+    </body>
+</html>

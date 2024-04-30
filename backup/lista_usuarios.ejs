@@ -1,0 +1,361 @@
+<%- include('includes/sidebar.ejs'), {
+    correo: correo,
+    permisos: permisos,
+    rol: rol,
+    nombre: nombre,
+    rolUser: rolUser,
+} %>
+<body>
+    
+    <div class="page_content">
+
+        <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" >
+        
+        <div class="text">
+            <div class="title_usuarios">
+                <h1>Usuarios</h1> 
+            </div>
+            <input id="buscar" class="buscar" type="text" placeholder="Buscar..."/><br>
+            <form action="/user/admin/usuarios/actualizar" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="button" name="refresh" id="refresh" value="Sincronizar" onclick="actualizar()">
+            </form>
+                <div id="respuesta_ajax">
+                    <div class="tabla">
+                        <% if (usuariosDB.length < 1) { %>
+                            <div class="notification">
+                                No existe el usuario.            
+                            </div>
+                        <% } %>
+
+                        <table id="USUARIOS">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Matrícula</th>
+                                <th>Correo electrónico</th>
+                                <th>Rol</th>
+                                <th>Referencia</th>
+                                <th>¿Activo?</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            
+
+                            <% for (let user of usuariosDB) {%>
+                                <% let columns = 0; %>
+                                <% columns++ %>
+                                    
+                            <tr class="<%= user.Alumno_activo == 0 ? 'inactiveStudent' : '' %>">
+                                
+                                <td><%= user.Nombre %></td>
+                                <td><%= user.Matricula %></td>
+                                <td><%= user.Correo_electronico %></td>
+                                <td><%= user.Tipo_Rol %></td> 
+                                <td contenteditable>
+                                    <%= user.Referencia %> 
+                                </td>
+                                <td><% if (user.Alumno_activo == 1 ) {%> Activo <% } else if (user.Alumno_activo == 0) { %> Inactivo <% } %> </td>
+                                <td>
+                                    <div class="buttonMR">
+                                    <a href="/user/admin/usuarios/acceso_modificar/<%= user.Correo_electronico %>" class="modifyuser">Modificar Rol</a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="buttonDA">
+                                        <a class="<% if (user.Alumno_activo == 1) { %> deleteuser <% } else { %> reactivateuser <% } %>" 
+                                        <% if (user.Alumno_activo == 1) { %>
+                                            onclick="desactivar('<%= user.Correo_electronico %>')"
+                                        <% } else if (user.Alumno_activo == 0) { %>
+                                            onclick="reactivar('<%= user.Correo_electronico %>')"
+                                        <% } %>>
+                                        <% if (user.Alumno_activo === 1) { %>
+                                            Desactivar
+                                        <% } else { %>
+                                            Reactivar
+                                        <% } %>
+                                        </a> </td>
+                                    </div>
+                            </tr>
+ 
+                            <%}%>
+                            
+                            
+                          </table>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <script>
+
+
+            const actualizar = () => {
+                const csrf = document.getElementById('_csrf').value;
+                fetch('/user/admin/usuarios/actualizar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'csrf-token': csrf
+                    },
+                    body: JSON.stringify()
+                }).then(result => {
+                    return result.json();
+                }).then(data => {
+                    console.log(data);
+
+                    
+                    
+                }).catch(err => {
+                    console.log(err);
+                })
+
+                
+
+            }
+
+
+            const accion_asincrona = () => {
+                console.log('Buscando...');
+                const valor_busqueda = document.getElementById('buscar').value;
+                //función que manda la petición asíncrona
+                fetch('/user/admin/usuarios/buscar/' + valor_busqueda, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }).then((result) => {
+                    console.log(result);
+                    return result.json(); //Regresa otra promesa
+                }).then((data) => {
+                    console.log(data);
+                    let html = '';
+                    
+                    
+                        
+                    html += `
+                        <div class="tabla">
+                    `
+                    
+                    if (data.usuariosDB.length < 1) {
+                        html += `
+                        <div class="notification">
+                            No existe el usuario.            
+                            </div>`
+                    }
+                    
+                    html += `
+                    <table id="USUARIOS">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Matrícula</th>
+                            <th>Correo electrónico</th>
+
+                            <th>Rol</th>
+                            <th>Referencia</th>
+                            <th>¿Activo?</th>
+                            <th></th>
+                            <th></th>
+                            </tr>`
+
+                        
+                        for (let user of data.usuariosDB) {
+                        let columns = 0;
+                        columns++
+                        html += `
+                            <tr class="${user.Alumno_activo == 0 ? 'inactiveStudent' : ''}">
+                                <td>${user.Nombre}</td>
+                                <td>${user.Matricula}</td>
+                                <td>${user.Correo_electronico}</td>
+
+                                <td>${user.Tipo_Rol}</td> 
+                                <td contenteditable>${user.Referencia} </td>
+                                <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
+                                <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a></td> 
+                                <td><a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
+                                        user.Alumno_activo === 1 
+                                        ? `onclick="desactivar('${user.Correo_electronico}')" `
+                                        : `onclick="reactivar('${user.Correo_electronico}')"`
+                                    }>
+                                        ${user.Alumno_activo === 1 ? "Desactivar" : "Reactivar"}
+                                    </a> </td>
+                                </tr></td>`
+                                
+                            }
+                            console.log('HTML2:', html)
+                    html += ` 
+                    </table>
+                    </div>
+                    </div>
+                    </div>
+                    `
+
+                                                            
+                document.getElementById('respuesta_ajax').innerHTML = html;
+                }).catch(err => {
+                    console.log(err);
+                });
+            };
+            document.getElementById('buscar').onkeyup = accion_asincrona;
+
+            const desactivar = (correo) => {
+                const csrf = document.getElementById('_csrf').value;
+                fetch('/user/admin/usuarios/desactivar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'csrf-token': csrf
+                    },
+                    body: JSON.stringify({correo:correo})
+                }).then(result => {
+                    return result.json();
+                }).then(data => {
+                    console.log(data);
+                    let html = '';
+
+                    html += `
+                        <div class="tabla">
+                    `
+                    
+                    if (data.usuariosDB.length < 1) {
+                        html += `
+                        <div class="notification">
+                            No existe el usuario.            
+                            </div>`
+                    }
+                    
+                    html += `
+                    <table id="USUARIOS">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Matrícula</th>
+                            <th>Correo electrónico</th>
+
+                            <th>Rol</th>
+                            <th>Referencia</th>
+                            <th>¿Activo?</th>
+                            <th></th>
+                            <th></th>
+                            </tr>`
+
+                        
+                        for (let user of data.usuariosDB) {
+                        let columns = 0;
+                        columns++
+                        html += `
+                            <tr class="${user.Alumno_activo == 0 ? 'inactiveStudent' : ''}">
+                                <td>${user.Nombre}</td>
+                                <td>${user.Matricula}</td>
+                                <td>${user.Correo_electronico}</td>
+
+                                <td>${user.Tipo_Rol}</td>
+                                 
+                                <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
+                                <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a></td> 
+                                <td><a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
+                                    user.Alumno_activo === 1 
+                                    ? `onclick="desactivar('${user.Correo_electronico}')" `
+                                    : `onclick="reactivar('${user.Correo_electronico}')"`
+                                }>
+                                    ${user.Alumno_activo === 1 ? "Desactivar" : "Reactivar"}
+                                </a> </td>
+                                </tr></td>`
+                                
+                            }
+                    html += ` 
+                    </table>
+                    </div>
+                    </div>
+                    </div>
+                    `
+                    document.getElementById('respuesta_ajax').innerHTML = html;
+                }).catch(err => {
+                    console.log(err);
+                })
+
+                
+
+            }
+
+            const reactivar = (correo) => {
+                const csrf = document.getElementById('_csrf').value;
+                fetch('/user/admin/usuarios/reactivar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'csrf-token': csrf
+                    },
+                    body: JSON.stringify({correo:correo})
+                }).then(result => {
+                    return result.json();
+                }).then(data => {
+                    console.log(data);
+                    let html = '';
+
+                    html += `
+                        <div class="tabla">
+                    `
+                    
+                    if (data.usuariosDB.length < 1) {
+                        html += `
+                        <div class="notification">
+                            No existe el usuario.            
+                            </div>`
+                    }
+                    
+                    html += `
+                    <table id="USUARIOS">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Matrícula</th>
+                            <th>Correo electrónico</th>
+
+                            <th>Rol</th>
+                            <th>¿Activo?</th>
+                            <th>Referencia</th>
+                            <th></th>
+                            <th></th>
+                            </tr>`
+
+                        
+                        for (let user of data.usuariosDB) {
+                        let columns = 0;
+                        columns++
+                        html += `
+                            <tr class="${user.Alumno_activo == 0 ? 'inactiveStudent' : ''}">
+                                <td>${user.Nombre}</td>
+                                <td>${user.Matricula}</td>
+                                <td>${user.Correo_electronico}</td>
+
+                                <td>${user.Tipo_Rol}</td> 
+                                <td>${user.Referencia} <br> <button onclick="editar()">Editar</button></td>
+                                <td>${user.Alumno_activo == 1 ? 'Activo' : 'Inactivo'}</td>
+                                <td><a href="/user/admin/usuarios/acceso_modificar/${user.Correo_electronico} %>" class="modifyuser" onclick="modificarRol()">Modificar Rol</a></td> 
+                                <td><a class="${user.Alumno_activo == 1 ? 'deleteuser' : 'reactivateuser'}" ${
+                                    user.Alumno_activo === 1 
+                                    ? `onclick="desactivar('${user.Correo_electronico}')" `
+                                    : `onclick="reactivar('${user.Correo_electronico}')"`
+                                }>
+                                    ${user.Alumno_activo === 1 ? "Desactivar" : "Reactivar"}
+                                </a> </td>
+                                </tr></td>`
+                                
+                            }
+                    html += ` 
+                    </table>
+                    </div>
+                    </div>
+                    </div>
+                    `
+                    document.getElementById('respuesta_ajax').innerHTML = html;
+                }).catch(err => {
+                    console.log(err);
+                })
+
+            }
+
+        </script>
+
+    </body>
+</html>

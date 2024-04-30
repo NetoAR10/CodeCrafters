@@ -3,28 +3,20 @@ const bcrypt = require('bcryptjs');
 
 module.exports = class Usuario {
 
-    constructor(mi_correo, mi_nombre, mi_matricula, mi_beca, mi_ref, mi_password){
-        this.correo = mi_correo;
-        this.password = mi_password;
+    constructor(mi_nombre, mi_matricula, mi_correo){
         this.nombre = mi_nombre;
         this.matricula = mi_matricula;
-        this.beca = mi_beca;
-        this.ref = mi_ref;
+        this.correo = mi_correo;
     }
 
     save() {
-        console.log(this.nombre);
-        console.log(this.matricula)
-        console.log(this.correo);
-        console.log(this.password);
-        console.log(this.beca);
-        console.log(this.ref);
-        return bcrypt.hash(this.password, 12).then((password_cifrado) => {
-            return db.execute(
-                'INSERT INTO Usuario (Nombre, Matricula, Correo_electronico, Contrasena, Beca_actual, Referencia) VALUES (?, ?, ?, ?, ? , ?)',
-                [this.nombre, this.matricula, this.correo, password_cifrado, this.beca, this.ref]
-            );
-        })
+        console.log('Nombre:', this.nombre);
+        console.log('Matricula:', this.matricula)
+        console.log('Correo:', this.correo);
+        return db.execute(
+            'INSERT INTO Usuario (Nombre, Matricula, Correo_electronico) VALUES (?, ? , ?)',
+            [this.nombre, this.matricula, this.correo]
+        )
         .catch((error) => {
             console.log(error);
             throw Error('Error. Corrige.')
@@ -35,10 +27,21 @@ module.exports = class Usuario {
         return db.execute('SELECT * FROM Usuario');
     }
 
-    static fetchOne(correo) {
+    static fetchAllMails() {
+        return db.execute('SELECT Correo_electronico FROM Usuario');
+    }
+
+    static fetchOne(matricula) {
+        return db.execute(
+            'SELECT * FROM Usuario WHERE Matricula=?',
+            [matricula]
+        );
+    }
+
+    static fetchOneMail(matricula) {
         return db.execute(
             'SELECT * FROM Usuario WHERE Correo_electronico=?',
-            [correo]
+            [matricula]
         );
     }
 
@@ -50,17 +53,52 @@ module.exports = class Usuario {
         }
     }
 
-    static getPermisos(correo) {
+    static getPermisos(matricula) {
         return db.execute(
             `SELECT Actividades, Tipo_Rol 
             FROM usuario u, tiene t, rol r, contiene c, privilegios p
-            WHERE u.Correo_electronico = ? AND u.IDUsuario = t.IDUsuario
+            WHERE u.Matricula = ? AND u.IDUsuario = t.IDUsuario
             AND t.IDRol = r.IDRol AND r.IDRol = c.IDRol 
             AND p.IDPrivilegio = c.IDPrivilegio `,
-            [correo]);
+            [matricula]);
     }
-    
-    
-    
 
+    static cambiar(new_password, correo) {
+        return bcrypt.hash(new_password, 12).then((password_cifrado) => {
+            return db.execute(
+                `UPDATE usuario 
+                SET Contrasena = ? 
+                WHERE Correo_electronico = ?`,[password_cifrado, correo]);
+        })
+    }    
+    
+    static contrasenaIsNull(){
+        return db.execute(
+            `SELECT Correo_electronico FROM usuario WHERE Contrasena IS NULL`
+        )
+    }
+
+    static updateID(matricula, correo, nombre){
+        return db.execute(
+            `UPDATE usuario 
+            SET Matricula = ?
+            WHERE Correo_electronico = ? 
+            OR Nombre = ?`,[matricula, correo, nombre]);
+    }
+
+    static updateName(nombre, correo, matricula){
+        return db.execute(
+            `UPDATE usuario
+            SET Nombre = ?
+            WHERE Correo_electronico = ?
+            OR Matricula = ?`, [nombre, correo, matricula]);
+    }
+
+    static updateEmail(correo, nombre, matricula){
+        return db.execute(
+            `UPDATE usuario
+            SET Correo_electronico = ?
+            WHERE Nombre = ?
+            OR Matricula = ?`, [correo, nombre, matricula]);
+    }
 }
