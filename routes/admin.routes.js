@@ -12,6 +12,9 @@ const isActive = require('../util/is-active');
 const canViewHistorialTodos = require('../util/can-view-historial-todos');
 const historialPersonalController = require('../controllers/historialPersonal.controller');const listaCiclos = require('../controllers/lista_ciclos.controller');
 const reporteController = require('../controllers/reports.controller')
+const csvController = require('../controllers/csv.controller');
+const canUpload = require('../util/can-upload-transferenicas');
+
 
  
 //Ciclo Escolar
@@ -77,5 +80,9 @@ router.post('/usuarios/editarReferencia', isAuth, isActive, listaUsuariosControl
 router.post('/usuarios/editarReferencia/:correo', isAuth, isActive, listaUsuariosController.post_editarRef);
 router.post('/usuarios/editarBeca', isAuth, isActive, listaUsuariosController.post_editarBeca);
 router.post('/usuarios/editarBeca/:correo', isAuth, isActive, listaUsuariosController.post_editarBeca);
+
+//Ruta para Cargar CSV
+router.get('/upload',  csvController.getUpload);
+router.post('/upload', csvController.postUpload);
 
 module.exports = router;

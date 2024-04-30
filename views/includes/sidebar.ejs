@@ -76,6 +76,16 @@
                                 <span class="tooltip">Reportes</span> 
                             </li>
                             <% } %>
+
+                            <% if (permiso.Actividades == 'subir transferencias') { %>
+                                <li>
+                                    <a href="/user/admin/upload">
+                                        <i class='bx bx-upload'></i>
+                                        <span class="links_name">Cargar CSV</span>
+                                    </a>
+                                    <span class="tooltip">Cargar CSV</span>
+                                </li>
+                            <% } %>
                     <% } %>
 
                     <li>
