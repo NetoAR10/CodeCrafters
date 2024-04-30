@@ -10,6 +10,7 @@ module.exports = (request, response, next) => {
     }
 
     else {
+        request.session.error = 'Error al intentar ingresar a cuenta. Contactar administrador.'
         return response.redirect('/user/login');
     }
 }
