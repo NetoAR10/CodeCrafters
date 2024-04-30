@@ -11,7 +11,7 @@ const historialPagosGeneralController = require('../controllers/historialGeneral
 const isActive = require('../util/is-active');
 const canViewHistorialTodos = require('../util/can-view-historial-todos');
 const historialPersonalController = require('../controllers/historialPersonal.controller');const listaCiclos = require('../controllers/lista_ciclos.controller');
-
+const reporteController = require('../controllers/reports.controller')
  
 //Ciclo Escolar
 router.get('/ciclo_escolar', isAuth, canResgisterCiclo, isActive, cicloEscolarController.get_nuevo_ciclo);
@@ -65,7 +65,7 @@ router.get('/historial-pagos-general/editar-pago/:id',isAuth, isActive, canViewH
 router.post('/usuarios/actualizar', isAuth, isActive, listaUsuariosController.post_actualizar);
 
 // Ruta para obtener datos de reportes de deudas
-// router.get('/reportes', isAuth, isActive, reporteController.getReport);
+router.get('/reportes', isAuth, isActive, reporteController.getReport);
 
 //Ruta para descargar historial en CSV
 router.get('/descargar-historial', isAuth, isActive, historialPagosGeneralController.descargarHistorialCSV);
