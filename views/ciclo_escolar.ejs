@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width-device-width, initial-scale=1.0">
-    <title>Ciclo Escolar</title>
+    <title><%= ciclo.IDCiclo ? 'Modificar' : 'Introducir Nuevo' %> Ciclo Escolar</title>
     <link rel="stylesheet" href="/css/stylesb.css">
     <link rel="stylesheet" href="/css/style3.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -18,39 +18,26 @@
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <input type="hidden" name="IDCiclo" value="<%= ciclo.IDCiclo || '' %>">
             <div class="input-box">
-                <input type="text" name="Ciclo" placeholder="Ciclo escolar" required>
+                <input type="text" name="Ciclo" placeholder="Ciclo escolar" required value="<%= ciclo.Ciclo || '' %>">
             </div>
             <div class="input-box">
-                <input type="date" name="Fecha_Inicio" placeholder="Fecha de inicio" required>
+                <label for="Fecha_Inicio">Fecha de inicio</label>
+                <input type="date" id="Fecha_Inicio" name="Fecha_Inicio" required value="<%= ciclo.Fecha_Inicio ? ciclo.Fecha_Inicio.toISOString().slice(0, 10) : '' %>">
             </div>
             <div class="input-box">
-                <input type="date" name="Fecha_Fin" placeholder="Fecha de fin" required>
+                <label for="Fecha_Fin">Fecha de fin</label>
+                <input type="date" id="Fecha_Fin" name="Fecha_Fin" required value="<%= ciclo.Fecha_Fin ? ciclo.Fecha_Fin.toISOString().slice(0, 10) : '' %>"><br>
             </div>
             <div class="input-box">
-                <input type="number" name="Precio_credito" placeholder="Costo de crédito" required>
+                <br><input type="number" name="Precio_credito" placeholder="Costo de crédito" required value="<%= ciclo.Precio_credito || '' %>">
             </div>
             <div class="input-box">
-                <input type="number" name="IDCicloEXT" placeholder="ID ciclo IVD" required>
+                <br><input type="number" name="IDCicloEXT" placeholder="ID ciclo IVD" required value="<%= ciclo.IDCicloEXT || '' %>">
             </div>
-            <input type="hidden" name="Ciclo_activo">
-            <button class="btn" type="submit">Actualizar Valor</button>
-            <button type="button" class="btn" onclick="history.back()">Regresar</button>
+            <input type="hidden" name="Ciclo_activo" value="<%= ciclo.Ciclo_activo ? '1' : '0' %>">
+            <br><br><button class="btn" type="submit"><%= ciclo.IDCiclo ? 'Actualizar Valor' : 'Crear Ciclo' %></button><br>
+            <br><button type="button" class="btn" onclick="history.back()">Regresar</button>
         </form>
     </div>
-
-    <script>
-        document.getElementById('cicloForm').onsubmit = function(event) {
-            const form = this;
-            // Check if all required inputs are filled
-            const requiredInputs = form.querySelectorAll("[required]");
-            for (let input of requiredInputs) {
-                if (!input.value.trim()) {
-                    alert("Por favor, rellene todos los campos necesarios.");
-                    event.preventDefault(); // Prevent form from submitting
-                    return false;
-                }
-            }
-        };
-    </script>
 </body>
 </html>
