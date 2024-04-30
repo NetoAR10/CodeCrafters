@@ -1,37 +1,36 @@
 const db = require('../util/database');
 
 class deuda {
-    constructor(Matricula, Total_deuda, Plan_pago, Concepto, Mes) {
-        this.Matricula = Matricula || null;
-        this.Total_deuda = Total_deuda || null;
-        this.Plan_pago = Plan_pago || null;
-        this.Concepto = Concepto || null;
-        this.Mes = Mes || null;
+    constructor(Referencia, Total_deuda, Concepto, Mes, Fecha_limite) {
+        this.Referencia = Referencia;
+        this.Total_deuda = Total_deuda; 
+        this.Concepto = Concepto;
+        this.Mes = Mes;
+	this.Fecha_limite = Fecha_limite || null;
     }
 
      async save() {
-        const IDUsuario = await this.getUserIdFromMatricula(this.Matricula);       
+        const IDUsuario = await this.getUserIdFromReferencia(this.Referencia);       
 	return db.execute(
-            'INSERT INTO deuda (IDUsuario, Total_deuda, Plan_pago, Concepto, Mes) VALUES (?, ?, ?, ?, ?)',
-            [IDUsuario, this.Total_deuda, this.Plan_pago, this.Concepto, this.Mes]
+            'INSERT INTO deuda (IDUsuario, Total_deuda, Concepto, Mes, Fecha_limite) VALUES (?, ?, ?, ?, ?)',
+            [IDUsuario, this.Total_deuda, this.Concepto, this.Mes, this.Fecha_limite]
+        );
+    }
+
+    async update(IDDeuda) {
+        const IDUsuario = await this.getUserIdFromReferencia(this.Referencia);
+        return db.execute(
+            'UPDATE deuda SET Total_deuda = ?, Concepto = ?, Mes = ?, Fecha_limite = ? WHERE IDDeuda = ? AND IDUsuario = ?',
+            [this.Total_deuda, this.Concepto, this.Mes, this.Fecha_limite, IDDeuda, IDUsuario]
         );
     }
     
-    async getUserIdFromMatricula(Matricula) {
-        const [user] = await db.execute('SELECT IDUsuario FROM usuario WHERE Matricula = ?', [Matricula]);
+    async getUserIdFromReferencia(Referencia) {
+        const [user] = await db.execute('SELECT IDUsuario FROM usuario WHERE Referencia = ?', [Referencia]);
         return user[0].IDUsuario;
     }
-    static fetchAll(){
-	return db.execute(
-	    `SELECT usuario.IDUsuario, usuario.Nombre, usuario.Matricula, 
-             deuda.IDDeuda, deuda.Total_deuda, deuda.Plan_pago, deuda.Concepto, deuda.Mes, deuda.IDCiclo
-             FROM usuario
-             JOIN deuda ON usuario.IDUsuario = deuda.IDUsuario
-	     ORDER BY deuda.IDDeuda DESC
-             LIMIT 10;`
-	);
 
-    }
+
 }
 
 module.exports = deuda;

@@ -1,4 +1,5 @@
 const express = require('express');
+//const { decifrarAES } = require('./generarXML');
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -6,6 +7,8 @@ app.set('views', 'views');
 
 const session = require('express-session');
 const csrf = require('csurf');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 const bodyParser = require('body-parser');
 const path = require('path');
 
@@ -15,6 +18,9 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
 }));
+
+
+
 
 // Middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -29,6 +35,18 @@ app.use((request, response, next) => {
     response.locals.csrfToken = request.csrfToken(); 
     next();
 });
+
+// app.post('/payment-notification', (request, response, next) => {
+//   const encryptedData = request.body.strResponse;
+//   if (!encryptedData) {
+//       return res.status(400).send('No encrypted data received');
+//   }
+//   const decryptedData = decifrarAES(encryptedData);
+
+//     console.log('Decrypted data:', decryptedData);
+
+//     res.status(200).send('Received');
+// })
 
 // Rutas
 const rutasAlumno = require('./routes/alumno.routes');
@@ -53,6 +71,14 @@ app.use((request, response, next) => {
     path.join(__dirname, 'views', '404.html')
   );
 });
+
+app.use((request, response, next) => {
+  response.status(500);
+  response.sendFile(
+    path.join(__dirname, 'views', '500.html')
+  );
+});
+
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 2050; 

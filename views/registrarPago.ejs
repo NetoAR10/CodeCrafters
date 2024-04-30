@@ -1,65 +1,47 @@
 <%- include('includes/sidebar.ejs') %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width-device-width, initial-scale=1.0">
-    <title>Registrar Pago</title>
-    <link rel="stylesheet" href="/css/login.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-</head>
 <body>
     <div class="container">
-        <div class="wrapper">
-              <form action="/user/admin/registrarPago" method="POST"> 
-              <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-    
-            <label for="Matricula">Matrícula:</label>
+	<div class="page_content">
+        <div class="wrapper2">
+            <p><strong>Nombre:</strong> <%= deuda.Nombre %></p>
+            <p><strong>Referencia:</strong> <%= deuda.Referencia %></p>
+            <p><strong>Total deuda:</strong> <%= deuda.Total_deuda.toFixed(2) %></p>
+            <p><strong>Concepto:</strong> <%= deuda.Concepto %></p>
+            <p><strong>Mes:</strong> <%= deuda.Mes %></p>
+            <p><strong>Fecha límite:</strong> <%= deuda.Fecha_limite %></p>
+        </div>
+        <div class="wrapper2">
+            <form action="/user/admin/registrarPago" method="POST"> 
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                <input type="hidden" name="IDDeuda" value="<%= deuda ? deuda.IDDeuda: '' %>" required>
+                <input type="hidden" name="Referencia" value="<%= deuda ? deuda.Referencia: '' %>" required>
+     
                 <div class="input-box">
-                    <input type="number" name="Matricula" placeholder="Ejemplo: 123456" required>
+                    <label for="Cantidad pagada">Cantidad pagada:</label><br>
+                    <input type="number" name="Cant_pagada" step="0.01" placeholder="1545" step="0.01" required>
                 </div>
-    
-            <label for="IDDueda ">Total deuda:</label>
                 <div class="input-box">
-                    <input type="number" name="Total_deuda" placeholder="1500" step="0.01" required>
+                    <label for="Fecha de pago">Fecha de pago:</label><br>
+                    <input type="date" name="Fecha_de_pago" required>
                 </div>
-    
-            <label for="Cantidad pagada">Cantidad pagada:</label>
                 <div class="input-box">
-                    <input type="number" name="Cant_pagada" placeholder="1545" step="0.01" required>
-                </div>
-    
-            <label for="Fecha de pago">Fecha de pago:</label> 
-                <div class="input-box">
-                    <input type="date" name="Fecha_de_pago" placeholder="2024-04-04" required>
-                </div>
-    
-            <label for="Método">Método de pago:</label>
-                <div class="input-box">
+                    <label for="Metodo">Método:</label><br>
                     <input type="text" name="Metodo" placeholder="Efectivo" required>
                 </div>
-    
-            <label for="Banco">Banco:</label>
                 <div class="input-box">
+                    <label for="Banco">Banco:</label><br>
                     <input type="text" name="Banco" placeholder="Santander" required>
                 </div>
-    
-            <label for="Nota">Nota:</label>
                 <div class="input-box">
+                    <label for="Nota">Nota:</label><br>
                     <input type="text" name="Nota" placeholder="Nota" required>
                 </div>
-    
-            <label for="Prórroga">Prórroga:</label>
-                <div class="input-box">
-                    <input type="date"
-             name="Prorroga" placeholder="Prórroga">
-                </div>
-    
-                <div class="space"></div>
+                <div class="space"></div><br>
                 <button type="submit" class="btn">Registrar</button>
-            <button type="button" onclick="window.location.href='http://localhost:2050/'" class="btn">Cancelar</button>
+                <button type="button" onclick="window.location.href='http://localhost:2050/user/admin/pagos_de_alumnos'" class="btn">Regresar</button>
             </form>
-        </div>
+        </div> 
+	</div>
     </body>
-    </div> 
 </html>
-

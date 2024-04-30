@@ -3,6 +3,8 @@ const fs = require('fs');
 const CryptoJS = require("crypto-js");
 const axios = require('axios');
 const crypto = require('crypto');
+const { v4: uuidv4 } = require('uuid');
+const { uid } = require('chart.js/helpers');
 
 /////////////////////////////////////////////////////////////////////////////////////////
 function _arrayBufferToBase64(buffer) {
@@ -81,9 +83,9 @@ const xml = fs.readFileSync('template.xml', 'utf8');
 xml2js.parseString(xml, function(err, result) {
     if (err) throw err;
 
-    result.P.business[0].user[0] = 'SNBXUSR0123';
-    result.P.business[0].pwd[0] = 'SECRETO';
-    result.P.url[0].reference[0] = 'FACTURA999';
+    const uniqueReference = uuidv4();
+    console.log(uniqueReference);
+    result.P.url[0].reference[0] = uniqueReference;
     result.P.url[0].amount[0] = '1000.00';
 
     const builder = new xml2js.Builder();
@@ -136,3 +138,7 @@ axios.post('https://sandboxpo.mit.com.mx/gen', data, {
 .catch(function (error) {
     console.error("Error during HTTP request:", error);
 });
+
+module.exports = {
+    decifrarAES
+};

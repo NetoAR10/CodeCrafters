@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dar Cuenta de Alta</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="wrapper2">
+        <a href="https://ivd.edu.mx/">
+            <img src="/viadisenologo.png" alt="logo" class="logo">
+        </a>
+        <div class="header"><h3>Ingresa una contraseña para tu cuenta.</h3></div>
+        <div class="texto">Tu contraseña debe contener al menos 8 caracteres, un número y una mayúscula.</div>
+        <strong><%= feedback %></strong>
+        <form action="/user/dar_alta/" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="correo" value="<%= correo %>">
+            <input type="hidden" name="resetToken" value="<%= resetToken %>">
+            <div class="input-box2">
+                <input type="password" name="new_password" placeholder="Contraseña nueva" required>
+                <input type="password" name="confirmpassword" placeholder="Confirmar contraseña" required>
+                <button class="btn3">Submit</button>
+            </div>
+        </form>
+
+        <br><br><br><br><a href="/user/login" class="modifyuser">Página Login</a>
+    </div>
+</body>
+</html>

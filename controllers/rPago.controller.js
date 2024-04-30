@@ -2,32 +2,31 @@ const pago = require('../models/rPago.model');
 
 exports.getRegistrarPago = (request, response, next) => {
     response.render('registrarPago', { 
-        csrfToken: request.csrfToken(),
-        correo: request.session.correo,
+        correo: request.session.correo || '',
         permisos: request.session.permisos,
         rol: request.session.roles,
         nombre: request.session.nombre,
+        csrfToken: request.csrfToken(),
     });
 };
 
-exports.postRegistrarPago = async (request, response, next) => {
+exports.postRegistrarPago = async (req, res, next) => {
+    console.log(req.body);
+    const { IDPago,Referencia, IDDeuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota } = req.body;
     try {
-        const { Matricula, Total_deuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota, Prorroga } = request.body;
-        const nuevoPago = new pago(Matricula, Total_deuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota, Prorroga);
-        await nuevoPago.save();
-        response.redirect('pagos/lista');
+        const nuevoPago = new pago(Referencia, IDDeuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota);
+        
+        if (IDPago) {
+            // Si IDPago, actualizar
+            await nuevoPago.update(IDPago);
+            res.redirect('pagos_de_alumnos');
+        } else {
+            // Si no, creamos un nuevo pago
+            await nuevoPago.save();
+            res.redirect('pagos_de_alumnos');
+        }
     } catch (err) {
         console.log(err);
-        response.status(500).send('Error al registrar el pago.');
-    }
-};
-
-exports.getPagos = async (request, response, next) => {
-    try {
-        const [rows] = await pago.fetchAll();
-        response.render('listaPagos', { pagos: rows });
-    } catch (err) {
-        console.log(err);
-        response.status(500).send('Error al obtener la lista de pagos.');
+        res.status(500).send('Error al procesar el pago.');
     }
 };

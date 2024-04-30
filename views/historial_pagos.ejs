@@ -6,7 +6,7 @@
             <thead>
                 <tr>
                     <th>Nombre</th>
-                    <th>Matrícula</th>
+                    <th>Referencia</th>
                     <th>Cantidad Pagada</th>
                     <th>Fecha de Pago</th>
                     <th>Método</th>
@@ -20,11 +20,11 @@
                 <% pagos.forEach(function(pago) { %>
                     <tr>
                         <td><%= pago.Nombre %></td>
-                        <td><%= pago.Matricula %></td>
+                        <td><%= pago.Referencia %></td>
                         <td><%= pago.Cant_pagada %></td>
                         <td><%= new Date(pago.Fecha_de_pago).toLocaleDateString() %></td>
                         <td><%= pago.Metodo %></td>
-                        <td><%= pago.Banco %></td>i
+                        <td><%= pago.Banco %></td>
                         <td><%= pago.Concepto %></td>
                         <td><%= pago.Nota %></td>
                         <td><%= pago.Fecha_limite %></td>
@@ -36,4 +36,3 @@
     </div>
 </body>
 </html>
-
