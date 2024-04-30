@@ -17,19 +17,20 @@
         <% if (sent) {%>
             <strong><%= feedback %></strong>
             <% } %>
-        <% if (errorValue) { %>
-            <div class="error">
-                <strong><%= feedback %></strong>
-            </div>
-        <%}%>
-        <form action="/user/forgot_password" method="POST">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <div class="input-box2">
-                <input type="text" name="correo" placeholder="Correo Electrónico" required>
-                <button class="btn3">Submit</button>
-            </div>
-
-        </form>
+            <% if (errorValue) { %>
+                <div class="error">
+                    <strong><%= feedback %></strong>
+                </div>
+                <%}%>
+                <form action="/user/forgot_password" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <div class="input-box2">
+                        <input type="text" name="correo" placeholder="Correo Electrónico" required>
+                        <button class="btn3">Submit</button>
+                    </div>
+                </form>
+                
+                <br><br><a href="/user/login" class="modifyuser">Regresar</a>
     </div>
 </body>
 </html>
