@@ -12,7 +12,6 @@
         <div class="page_content">
             <div class="title_materias">
                 <h1>Materias para el ciclo de <%= cicloActual %></h1>
-
             </div>
             <% const costoCredito = costoCred %>
             <% let totalCreditos = 0; %>
@@ -27,8 +26,8 @@
             <% } else { %>
                 <% costoTotal = totalCreditos * costoCredito * (1 - beca / 100); %>
             <% } %>
-    
-            <form action="/user/alumno/materias" method="POST">
+
+            <form action="/user/alumno/materias" method="POST" id="materias_form">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <% if (cursos.length > 0) { %>
                     <% cursos.forEach(function(curso, index) { %>
@@ -45,37 +44,75 @@
                             </div>
                         </div>
                     <% }); %>
-    
+
                     <br><h4>Total de Créditos: <%= totalCreditos %></h4>
                     <% if (beca !== 0) { %>
                         <br><h4>Porcentaje de beca: <%= beca %>%</h4>
                     <% } %>
                     <br><h4>Costo Total: $<%= costoTotal.toFixed(2) %></h4>
+
+                    <!-- Detalles del pago en plazos dentro del mismo formulario -->
+                    <div class="payment_details">
+                        <h3>Detalles del pago en plazos</h3>
+                        <table>
+                            <tr>
+                                <th>Pago #</th>
+                                <th>Porcentaje</th>
+                                <th>Monto</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>23%</td>
+                                <td>$<%= (costoTotal * 0.23).toFixed(2) %></td>
+                            </tr>
+                            <% for (let i = 2; i <= 6; i++) { %>
+                            <tr>
+                                <td><%= i %></td>
+                                <td>15.4%</td>
+                                <td>$<%= (costoTotal * 0.154).toFixed(2) %></td>
+                            </tr>
+                            <% } %>
+                        </table>
+                    </div>
+
+                    <!-- Opciones de pago -->
+                    <div class="payment_plan">
+                        <h4>Seleccione plan de pago</h4>
+                        <label>
+                            <br><input type="radio" name="payment_option" value="contado"> Pagar de contado
+                        </label>
+                        <label>
+                            <br><input type="radio" name="payment_option" value="plazos"> Pagar en plazos
+                        </label>
+                        <span id="payment_error" style="color:red; display:none;">Por favor seleccione una opción de pago.</span>
+                    </div>
                     <br><input type="submit" value="Confirmar materias" class="btn2" id="confirmar">
                 <% } else { %>
                     <p>No hay materias disponibles.</p>
                 <% } %>
             </form>
-            <form action="/user/alumno/contactar_admin" method="POST" style="margin-top: 40px;">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <h5>Si requiere cambios, da click en el botón de pedir cambios.</h5>
-                <input type="submit" value="Pedir cambios" class="btn2" style="margin-top: 20px;">
-            </form>
         </div>
-        <div class="payment_plan">
-            <h4>Seleccione plan de pago</h4>
-            <form id="payment_form" action="/ruta_a_post_crear_deuda_con_plan_de_pago" method="POST">
-                <label>
-                    <br><input type="radio" name="payment_option" value="contado"> Pagar de contado
-                </label>
-                <label>
-                    <br><input type="radio" name="payment_option" value="plazos"> Pagar en plazos
-                </label>
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <br>
-                <br><input type="submit" value="Confirmar pago" class="btn2" id="confirmar_pago">
-            </form>
-            
-        </div>
+        <script>
+            document.getElementById('materias_form').onsubmit = function() {
+                var paymentOptions = document.getElementsByName('payment_option');
+                var paymentSelected = false;
+        
+                for (var i = 0; i < paymentOptions.length; i++) {
+                    if (paymentOptions[i].checked) {
+                        paymentSelected = true;
+                        break;
+                    }
+                }
+        
+                if (!paymentSelected) {
+                    document.getElementById('payment_error').style.display = 'block'; // Muestra el mensaje de error
+                    return false; // Impide el envío del formulario
+                }
+        
+                // Si todo está en orden, permite que el formulario se envíe
+                return true;
+            };
+        </script>
     </body>
 </html>
+

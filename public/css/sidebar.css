@@ -457,17 +457,17 @@ form {
 }
 
 .payment_plan {
-    position: fixed;   /* Posicionamiento fijo en la pantalla */
-    top: 200;          /* Centrado verticalmente */
-    right: 400;          /* Alineado a la derecha */
-    transform: translateY(-50%); /* Centrado perfecto */
-    width: 400px;      /* Ancho del elemento */
+    position: absolute;  /* Posicionamiento absoluto respecto a su contenedor relativo */
+    top: 850px;          /* Posición vertical desde la parte superior */
+    right: 405px;            /* Alineado completamente a la derecha del contenedor */
+    width: 400px;        /* Ancho del elemento */
     background-color: #f4f4f4; /* Color de fondo */
-    padding: 10px;     /* Espaciado interno */
+    padding: 10px;       /* Espaciado interno */
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* Sombra para destacar */
-    text-align: center; /* Texto centrado */
-    z-index: 1000;     /* Asegura que esté por encima de otros elementos */
+    text-align: center;  /* Texto centrado */
+    z-index: 1000;       /* Asegura que esté por encima de otros elementos */
 }
+
 
 #refresh {
     position: relative;
@@ -568,4 +568,25 @@ input:checked + .slider:before {
 .text-content {
     width: 90%;
     font-size: 13px;
+}
+
+.payment_details {
+    position: absolute;  /* Posicionamiento absoluto respecto a su contenedor relativo */
+    top: 10px;          /* Posición vertical desde la parte superior */
+    right: 400px;            /* Alineado completamente a la derecha del contenedor */
+    width: 400px;        /* Ancho del elemento */
+    padding: 20px;
+    box-sizing: border-box;
+}
+table {
+    width: 100%; /* La tabla ocupa todo el ancho del div */
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #ddd; /* Bordes sutiles para la tabla */
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
 }
