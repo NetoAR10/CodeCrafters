@@ -458,8 +458,8 @@ form {
 
 .payment_plan {
     position: absolute;  /* Posicionamiento absoluto respecto a su contenedor relativo */
-    top: 100%;          /* Posición vertical desde la parte superior */
-    right: 10%;            /* Alineado completamente a la derecha del contenedor */
+    top: 85%;          /* Posición vertical desde la parte superior */
+    right: 50%;            /* Alineado completamente a la derecha del contenedor */
     width: 400px;        /* Ancho del elemento */
     margin: 40px 0;
     background-color: #f4f4f4; /* Color de fondo */
