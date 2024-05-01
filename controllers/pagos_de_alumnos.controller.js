@@ -77,6 +77,7 @@ exports.infoDeuda = async (request, response, next) => {
         if (deudaDetails.length > 0) {
             response.render('crearDeuda', {
                 deuda: deudaDetails[0],
+		id: Matricula,
                 titulo: 'crearDeuda',
                 id: Matricula,
 		matricula: request.session.permisos,
