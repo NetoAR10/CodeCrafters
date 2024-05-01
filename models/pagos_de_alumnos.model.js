@@ -57,10 +57,10 @@ module.exports = class ListaUsuario {
          WHERE usuario.Matricula = ?
          ORDER BY deuda.Fecha_limite;`,
          [Matricula]
-    );	
+    );
 
     }
-    
+	  
     static infoDeuda(Matricula){
     return db.execute(`
         SELECT 

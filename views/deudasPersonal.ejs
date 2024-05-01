@@ -2,22 +2,19 @@
 <body>
     <div class="page_content">
         <h1 class="title">Historial de Deudas</h1>
-        <a href="/user/admin/pagos_de_alumnos/crearDeuda/<%= id %>" class="btn">Crear Deuda</a>
         <table id="USUARIOS">
             <thead>
                 <tr>
                     <th>Nombre</th>
-                    <th>Referencia</th> 
                     <th>Total deuda</th>
                     <th>Concepto</th>
                     <th>Mes</th>
                     <th>Fecha límite</th>
-                    <th>Registrar pago</th>
-                    <th>Modificar deuda</th>
+                    <th>Pagar</th>
                 </tr>
             </thead>
             <tbody>
-                <% deuda.forEach(function(deuda) { %>
+                <% deudas.forEach(function(deuda) { %>
                     <tr>
                         <td><%= deuda.Nombre %></td>
                         <td><%= deuda.Referencia %></td> 
@@ -33,12 +30,9 @@
                             <% } %> 
                         </td>
                         <td>
-                            <a href="/user/admin/pagos_de_alumnos/registrarPago/<%= deuda.IDDeuda %>" class="btn">Registrar Pago</a>
+                            
                         </td>
-                        <td>
-                            <a href="/user/admin/pagos_de_alumnos/modificarDeuda/<%= deuda.IDDeuda %>" class="brn">Modificar Deuda</a>
-                        </td>
-                    </tr>
+                     </tr>
                 <% }); %>
             </tbody>
         </table>
