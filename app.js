@@ -33,7 +33,7 @@ const csrfProtection = csrf();
 app.use(csrfProtection);
 
 app.use((request, response, next) => {
-    response.locals.csrfToken = request.csrfToken(); // Enviar token CSRF a las vistas
+    response.locals.csrfToken = request.csrfToken(); 
     next();
 });
 
@@ -53,9 +53,6 @@ app.use((request, response, next) => {
 // })
 
 // Rutas
-const paymentRoutes = require('./routes/paymentRoutes');
-app.use('/payments', paymentRoutes);
-
 const rutasAlumno = require('./routes/alumno.routes');
 app.use('/user/alumno', rutasAlumno);
 

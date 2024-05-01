@@ -1,33 +1,7 @@
-// controllers/PaymentController.js
-
-const fs = require('fs');
-const csv = require('csv-parser');
-const Payment = require('../models/Payment');
-
-function uploadPayments(filePath, callback) {
-  const results = [];
-  fs.createReadStream(filePath)
-    .pipe(csv())
-    .on('data', (data) => results.push(data))
-    .on('end', () => {
-      Payment.insertPayment(results, (err, result) => {
-        if (err) return callback(err);
-        callback(null, result);
-      });
-    });
-}
-
-module.exports = {
-  uploadPayments
-};
-
-
-/*
-//csv.controller.js
 const fs = require('fs');
 const Papa = require('papaparse');
 const moment = require('moment');
-const Pago = require('../models/Payment');
+const Pago = require('../models/csv.model');
 const csvParser = require('csv-parser');
 
 
@@ -82,7 +56,7 @@ exports.postUpload = (request, response, next) => {
             }
         }
 
-        fs.unlinkSync(filePath); // Elimina el archivo después de procesar
+        fs.unlinkSync(filePath); 
         response.render('leads/leadUpload.ejs', {
             uploaded: true,
             canUpload: request.canUpload,
@@ -90,5 +64,42 @@ exports.postUpload = (request, response, next) => {
             canConsultUsers: request.canConsultUsers,
         });
     });
+};
+
+
+
+
+/*
+const fs = require('fs');
+const csv = require('csv-parser');
+const Payment = require('../models/csv.model');
+
+const getUpload = (req, res, next) => {
+    res.render('upload', {
+      pageTitle: 'Upload CSV',
+      path: '/upload-csv',
+      correo: req.session.correo,
+      permisos: req.session.permisos,
+      rol: req.session.roles,
+      nombre: req.session.nombre,
+    });
+  };
+
+function uploadPayments(filePath, callback) {
+  const results = [];
+  fs.createReadStream(filePath)
+    .pipe(csv())
+    .on('data', (data) => results.push(data))
+    .on('end', () => {
+      Payment.insertPayment(results, (err, result) => {
+        if (err) return callback(err);
+        callback(null, result);
+      });
+    });
+}
+
+module.exports = {
+    getUpload,
+    uploadPayments
 };
 */

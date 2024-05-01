@@ -12,9 +12,11 @@ const isActive = require('../util/is-active');
 const canViewHistorialTodos = require('../util/can-view-historial-todos');
 const historialPersonalController = require('../controllers/historialPersonal.controller');const listaCiclos = require('../controllers/lista_ciclos.controller');
 const reporteController = require('../controllers/reports.controller')
-const csvController = require('../controllers/PaymentController');
+const csvController = require('../controllers/csv.controller');
 const canUpload = require('../util/can-upload-transferenicas');
+const multer = require('multer');
 
+const upload = multer({ dest: 'uploads/' });
 
  
 //Ciclo Escolar
@@ -82,8 +84,20 @@ router.post('/usuarios/editarBeca', isAuth, isActive, listaUsuariosController.po
 router.post('/usuarios/editarBeca/:correo', isAuth, isActive, listaUsuariosController.post_editarBeca);
 
 //Ruta para Cargar CSV
-//router.get('/upload-csv', isAuth, isActive, csvController.getUpload);
-//router.post('/upload-csv', isAuth, isActive, csvController.postUpload);
+router.get('/upload-csv', isAuth, isActive, csvController.getUpload);
+router.post('/upload-csv', isAuth, isActive, csvController.postUpload);
+
+/*
+router.post('/upload-csv', isAuth, isActive, upload.single('file'), (req, res) => {
+    PaymentController.uploadPayments(req.file.path, (err, result) => {
+      if (err) {
+        res.status(500).send('Error uploading CSV: ' + err.message);
+      } else {
+        res.send('CSV Uploaded successfully!');
+      }
+    });
+  });
+*/
 
 
 module.exports = router;

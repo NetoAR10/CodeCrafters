@@ -13,7 +13,7 @@
       <div class="title_upload">
         <h1>Cargar Archivo CSV</h1>
       </div>
-      <form action="/payments/upload-csv" method="post" enctype="multipart/form-data">
+      <form action="/user/admin/upload-csv" method="post" enctype="multipart/form-data">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <div class="file_input_container">
           <label for="file" class="file_label">
