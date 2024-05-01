@@ -12,7 +12,7 @@ const isActive = require('../util/is-active');
 const canViewHistorialTodos = require('../util/can-view-historial-todos');
 const historialPersonalController = require('../controllers/historialPersonal.controller');const listaCiclos = require('../controllers/lista_ciclos.controller');
 const reporteController = require('../controllers/reports.controller')
-const csvController = require('../controllers/csv.controller');
+const csvController = require('../controllers/PaymentController');
 const canUpload = require('../util/can-upload-transferenicas');
 
 
@@ -82,7 +82,8 @@ router.post('/usuarios/editarBeca', isAuth, isActive, listaUsuariosController.po
 router.post('/usuarios/editarBeca/:correo', isAuth, isActive, listaUsuariosController.post_editarBeca);
 
 //Ruta para Cargar CSV
-router.get('/upload',  csvController.getUpload);
-router.post('/upload', csvController.postUpload);
+//router.get('/upload-csv', isAuth, isActive, csvController.getUpload);
+//router.post('/upload-csv', isAuth, isActive, csvController.postUpload);
+
 
 module.exports = router;

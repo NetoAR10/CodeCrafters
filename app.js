@@ -1,5 +1,6 @@
 const express = require('express');
 //const { decifrarAES } = require('./generarXML');
+const fileUpload = require('express-fileupload');
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -52,6 +53,9 @@ app.use((request, response, next) => {
 // })
 
 // Rutas
+const paymentRoutes = require('./routes/paymentRoutes');
+app.use('/payments', paymentRoutes);
+
 const rutasAlumno = require('./routes/alumno.routes');
 app.use('/user/alumno', rutasAlumno);
 

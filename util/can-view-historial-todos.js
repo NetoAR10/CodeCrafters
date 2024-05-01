@@ -2,7 +2,7 @@ module.exports = (request, response, next) => {
 
     let canViewHistorialTodos = false;
     for(let privilegio of request.session.permisos) {
-        if(privilegio.Actividades == 'ver historial todos') {
+        if(privilegio.actividades == 'ver historial todos') {
             canViewHistorialTodos = true;
         }
     }

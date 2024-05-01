@@ -2,7 +2,7 @@ module.exports = (request, response, next) => {
 
     let canViewMaterias = false;
     for(let privilegio of request.session.permisos) {
-        if(privilegio.Actividades == 'ver materias') {
+        if(privilegio.actividades == 'ver materias') {
             canViewMaterias = true;
         }
     }
