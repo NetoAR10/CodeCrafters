@@ -2,7 +2,7 @@ module.exports = (request, response, next) => {
 
     let canModifyPago = false;
     for(let privilegio of request.session.permisos) {
-        if(privilegio.actividades == 'modificar pago') {
+        if(privilegio.Actividades == 'modificar pago') {
             canModifyPago = true;
         }
     }

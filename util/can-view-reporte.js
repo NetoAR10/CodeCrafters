@@ -2,7 +2,7 @@ module.exports = (request, response, next) => {
 
     let canViewReporte = false;
     for(let privilegio of request.session.permisos) {
-        if(privilegio.actividades == 'ver reporte') {
+        if(privilegio.Actividades == 'ver reporte') {
             canViewReporte = true;
         }
     }
