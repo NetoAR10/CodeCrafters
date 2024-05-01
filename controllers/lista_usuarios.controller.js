@@ -171,43 +171,43 @@ exports.post_actualizar = async (request, response, next) => {
     
                 // Enviar correos a usuarios sin contraseña
     
-                // Usuario.contrasenaIsNull().then(([correosSC, fieldData])=> {
+                Usuario.contrasenaIsNull().then(([correosSC, fieldData])=> {
                     
-                //     for (let i = 0; i < correosSC.length; i++){
-                //         console.log('Longitud correo:' , correosSC.length , 'Iteración: ', i);
-                //         setTimeout(() => {
+                    for (let i = 0; i < correosSC.length; i++){
+                        console.log('Longitud correo:' , correosSC.length , 'Iteración: ', i);
+                        setTimeout(() => {
                             
-                //             const generateResetToken = () => {
+                            const generateResetToken = () => {
                                 
-                //                 return require('crypto').randomBytes(32).toString('hex');
+                                return require('crypto').randomBytes(32).toString('hex');
                                 
-                //             }
-                //             const altaToken = generateResetToken();
-                //             const email = correosSC[i].Correo_electronico;
-                //             const altaURL = `http://localhost:2050/user/dar_alta/${email}/${altaToken}`;
-                //             const mailOptions = {
-                //                 from: 'testing20242304@gmail.com',
-                //                 to: correosSC[i].Correo_electronico,
-                //                 subject: 'Registra tu cuenta',
-                //                 text: `Para darte de alta en el sistema de ViaDiseño, haz clic en el siguiente link.
+                            }
+                            const altaToken = generateResetToken();
+                            const email = correosSC[i].Correo_electronico;
+                            const altaURL = `http://localhost:2050/user/dar_alta/${email}/${altaToken}`;
+                            const mailOptions = {
+                                from: 'testing20242304@gmail.com',
+                                to: correosSC[i].Correo_electronico,
+                                subject: 'Registra tu cuenta',
+                                text: `Para darte de alta en el sistema de ViaDiseño, haz clic en el siguiente link.
                                 
-                //                 ${altaURL}`,
-                //             };
+                                ${altaURL}`,
+                            };
                             
-                //             transporter.sendMail(mailOptions, (error, info) => {
-                //                 if (error) {
-                //                     console.log(error);
+                            transporter.sendMail(mailOptions, (error, info) => {
+                                if (error) {
+                                    console.log(error);
                                     
-                //                 } else {
-                //                     console.log('Email sent: ' + info.response);
-                //                 }
-                //             }); 
+                                } else {
+                                    console.log('Email sent: ' + info.response);
+                                }
+                            }); 
     
-                //         }, 1000);
-                //     }
+                        }, 1000);
+                    }
                     
                     
-                // })
+                })
         }).catch((error) => {
             console.log(error);
         })
