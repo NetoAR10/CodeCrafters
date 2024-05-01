@@ -15,10 +15,10 @@
         <div class="header"><h3>Ingresa tu contraseña nueva</h3></div>
         <div class="texto">Tu contraseña debe contener al menos 8 caracteres, un número y una mayúscula.</div>
         <% if (passwordReset) { %>
-            <%=feedback%>
+            <%=feedbackCC%>
         <% } else { %>
 
-            <strong><%=feedback%></strong>
+            <strong><%=feedbackCC%></strong>
 
         <% } %>
         <form action="/user/change_password/" method="POST">

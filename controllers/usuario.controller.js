@@ -219,7 +219,7 @@ exports.get_cambiar = (request, response, next) => {
         resetToken: request.params.resetToken,
         correo: request.params.correo,
         passwordReset: request.session.passwordReset,
-        feedback: request.session.feedback,
+        feedbackCC: request.session.feedbackCC,
         errorConfirm: request.session.errorValueConfirm,
         errorRegex: request.session.errorValueRegex,
         csrfToken: request.csrfToken(),
@@ -241,11 +241,11 @@ exports.post_cambiar = (request, response, next) => {
     console.log('Token:' , resetToken);
 
     if (confirmar !== request.body.new_password) {
-        request.session.feedback = 'No has confirmado tu contraseña correctamente. Intenta de nuevo.';
+        request.session.feedbackCC = 'No has confirmado tu contraseña correctamente. Intenta de nuevo.';
         request.session.errorValueConfirm = true;
         return response.redirect(`/user/change_password/${correo}/${resetToken}`);
     } else if (!passwordRegex.test(request.body.new_password)) {
-        request.session.feedback = 'Tu contraseña debe contener al menos 8 caracteres, un número y una mayúscula.';
+        request.session.feedbackCC = 'Tu contraseña debe contener al menos 8 caracteres, un número y una mayúscula.';
         request.session.errorValueRegex = true;
         console.log(new_password);
         return response.redirect(`/user/change_password/${correo}/${resetToken}`);
@@ -254,7 +254,7 @@ exports.post_cambiar = (request, response, next) => {
         
         Usuario.cambiar(new_password, correo).then(()=> {
             request.session.passwordReset = true;
-            request.session.feedback = 'Has cambiado tu contraseña exitosamente.';
+            request.session.feedbackCC = 'Has cambiado tu contraseña exitosamente.';
             response.redirect(`/user/change_password/${correo}/${resetToken}`);
             
         }).catch((error)=>{console.log(error)})
