@@ -458,9 +458,10 @@ form {
 
 .payment_plan {
     position: absolute;  /* Posicionamiento absoluto respecto a su contenedor relativo */
-    top: 850px;          /* Posición vertical desde la parte superior */
-    right: 405px;            /* Alineado completamente a la derecha del contenedor */
+    top: 100%;          /* Posición vertical desde la parte superior */
+    right: 10%;            /* Alineado completamente a la derecha del contenedor */
     width: 400px;        /* Ancho del elemento */
+    margin: 40px 0;
     background-color: #f4f4f4; /* Color de fondo */
     padding: 10px;       /* Espaciado interno */
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* Sombra para destacar */
@@ -573,7 +574,7 @@ input:checked + .slider:before {
 .payment_details {
     position: absolute;  /* Posicionamiento absoluto respecto a su contenedor relativo */
     top: 10px;          /* Posición vertical desde la parte superior */
-    right: 400px;            /* Alineado completamente a la derecha del contenedor */
+    right: 10%;            /* Alineado completamente a la derecha del contenedor */
     width: 400px;        /* Ancho del elemento */
     padding: 20px;
     box-sizing: border-box;

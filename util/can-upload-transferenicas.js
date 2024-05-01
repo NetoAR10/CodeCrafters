@@ -2,7 +2,7 @@ module.exports = (request, response, next) => {
 
     let canUploadTransferencia = false;
     for(let privilegio of request.session.permisos) {
-        if(privilegio.actividades == 'subir transferencias') {
+        if(privilegio.Actividades == 'subir transferencias') {
             canUploadTransferencia = true;
         }
     }
