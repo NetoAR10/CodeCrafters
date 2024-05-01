@@ -56,10 +56,10 @@ module.exports = class ListaUsuario {
          JOIN deuda ON usuario.IDUsuario = deuda.IDUsuario
          WHERE usuario.Matricula = ?;`,
          [Matricula]
-    );	
+    );
 
     }
-    
+	  
     static infoDeuda(Matricula){
     return db.execute(`
         SELECT 
