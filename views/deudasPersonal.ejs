@@ -17,7 +17,6 @@
                 <% deudas.forEach(function(deuda) { %>
                     <tr>
                         <td><%= deuda.Nombre %></td>
-                        <td><%= deuda.Referencia %></td> 
                         <td><%= deuda.Total_deuda.toFixed(2)%></td>
                         <td><%= deuda.Concepto %></td>
                         <td><%= deuda.Mes %></td>
@@ -29,6 +28,7 @@
                                 N/A
                             <% } %> 
                         </td>
+                         
                         <td>
                             
                         </td>
