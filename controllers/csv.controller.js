@@ -1,6 +1,76 @@
 const fs = require('fs');
 const Papa = require('papaparse');
 const moment = require('moment');
+const db = require('../util/database');
+
+exports.getUpload = (req, res, next) => {
+    // Asegúrate de que esta línea termine con punto y coma
+    res.render('upload', { // Usa el nombre de la plantilla sin la extensión '.ejs'
+        uploaded: false,
+        canUpload: req.canUpload,
+        canConsultReports: req.canConsultReports,
+        canConsultUsers: req.canConsultUsers,
+        correo: req.session.correo,
+        permisos: req.session.permisos,
+        rol: req.session.rol,
+        nombre: req.session.nombre,
+    });
+};
+
+exports.postUpload = async (req, res, next) => {
+    if (!req.file) return res.status(400).send('Archivo no subido');
+    const filePath = req.file.path;
+    
+    fs.readFile(filePath, 'utf8', async function(err, data) {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        const results = Papa.parse(data, {
+            header: true,
+            skipEmptyLines: true
+        });
+
+        for (let row of results.data) {
+            const IDUsuario = parseInt(row['IDUsuario']);
+            const IDDeuda = parseInt(row['IDDeuda']);
+            const Cant_pagada = parseFloat(row['Cant_pagada']);
+            const Fecha_de_pago = moment(row['Fecha_de_pago'], 'YYYY-MM-DD').format('YYYY-MM-DD');
+            const Metodo = row['Metodo'];
+            const Banco = row['Banco'];
+            const Nota = row['Nota'];
+
+            const query = `
+              INSERT INTO pago (IDUsuario, IDDeuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota) 
+              VALUES (?, ?, ?, ?, ?, ?, ?);
+            `;
+            db.query(query, [IDUsuario, IDDeuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota], (err, result) => {
+                if (err) {
+                    console.error('Error al insertar en la base de datos:', err);
+                } else {
+                    console.log('Insertado correctamente:', result.insertId);
+                }
+            });
+        }
+        
+        fs.unlinkSync(filePath); // Asegúrate de manejar errores aquí
+        await delay(2000);
+        res.render('upload', { // Usa el nombre de la plantilla sin la extensión '.ejs'
+            uploaded: true,
+            canUpload: req.canUpload,
+            canConsultReports: req.canConsultReports,
+            canConsultUsers: req.canConsultUsers,
+        });
+    });
+};
+
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
+
+/*
+const fs = require('fs');
+const Papa = require('papaparse');
+const moment = require('moment');
 const Pago = require('../models/csv.model');
 const csvParser = require('csv-parser');
 
@@ -65,7 +135,7 @@ exports.postUpload = (request, response, next) => {
         });
     });
 };
-
+*/
 
 
 

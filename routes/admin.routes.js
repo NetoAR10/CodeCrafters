@@ -15,9 +15,6 @@ const reporteController = require('../controllers/reports.controller')
 const csvController = require('../controllers/csv.controller');
 const canUpload = require('../util/can-upload-transferenicas');
 const multer = require('multer');
-
-const upload = multer({ dest: 'uploads/' });
-
  
 //Ciclo Escolar
 router.get('/ciclo_escolar', isAuth, canResgisterCiclo, isActive, cicloEscolarController.get_nuevo_ciclo);
@@ -84,8 +81,8 @@ router.post('/usuarios/editarBeca', isAuth, isActive, listaUsuariosController.po
 router.post('/usuarios/editarBeca/:correo', isAuth, isActive, listaUsuariosController.post_editarBeca);
 
 //Ruta para Cargar CSV
-router.get('/upload-csv', isAuth, isActive, csvController.getUpload);
-router.post('/upload-csv', isAuth, isActive, csvController.postUpload);
+router.get('/upload-csv', isAuth, isActive,  csvController.getUpload);
+router.post('/upload-csv', isAuth, isActive,  csvController.postUpload);
 
 /*
 router.post('/upload-csv', isAuth, isActive, upload.single('file'), (req, res) => {

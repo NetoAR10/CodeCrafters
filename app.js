@@ -37,6 +37,12 @@ app.use((request, response, next) => {
     next();
 });
 
+app.use(fileUpload({
+  createParentPath: true,
+  safeFileNames: true,
+  preserveExtension: true,
+  limits: { fileSize: 50 * 1024 * 1024 }, // Ejemplo: limite de 50MB por archivo
+}));
 
 
 
@@ -51,6 +57,9 @@ app.use((request, response, next) => {
 
 //     res.status(200).send('Received');
 // })
+app.get('/upload-csv', (req, res) => {
+  res.render('upload', { csrfToken: req.csrfToken() });
+});
 
 // Rutas
 const rutasAlumno = require('./routes/alumno.routes');
