@@ -54,7 +54,8 @@ module.exports = class ListaUsuario {
          deuda.IDDeuda, deuda.Total_deuda, deuda.Concepto, deuda.Mes,  deuda.Fecha_limite
          From usuario
          JOIN deuda ON usuario.IDUsuario = deuda.IDUsuario
-         WHERE usuario.Matricula = ?;`,
+         WHERE usuario.Matricula = ?
+         ORDER BY deuda.Fecha_limite;`,
          [Matricula]
     );	
 
