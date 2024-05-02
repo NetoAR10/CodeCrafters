@@ -84,17 +84,7 @@ router.post('/usuarios/editarBeca/:correo', isAuth, isActive, listaUsuariosContr
 router.get('/upload-csv', isAuth, isActive,  csvController.getUpload);
 router.post('/upload-csv', isAuth, isActive,  csvController.postUpload);
 
-/*
-router.post('/upload-csv', isAuth, isActive, upload.single('file'), (req, res) => {
-    PaymentController.uploadPayments(req.file.path, (err, result) => {
-      if (err) {
-        res.status(500).send('Error uploading CSV: ' + err.message);
-      } else {
-        res.send('CSV Uploaded successfully!');
-      }
-    });
-  });
-*/
+
 
 
 module.exports = router;

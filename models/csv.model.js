@@ -1,3 +1,5 @@
+/*
+
 const db = require('../util/database');
 
 module.exports = class Pago {
@@ -5,7 +7,7 @@ module.exports = class Pago {
         this.IDUsuario = newPago.IDUsuario;
         this.IDDeuda = newPago.IDDeuda;
         this.Cant_pagada = newPago.Cant_pagada;
-        this.Fecha_de_pago = newPago.Fecha_de_pago; // Date
+        this.Fecha_de_pago = newPago.Fecha_de_pago; 
         this.Metodo = newPago.Metodo;
         this.Banco = newPago.Banco;
         this.Nota = newPago.Nota;
@@ -20,15 +22,14 @@ module.exports = class Pago {
             return result;
         } catch (error) {
             console.error(error);
-            throw error; // Es mejor manejar el error más arriba en la cadena de llamadas
+            throw error; 
         }
     }
 
-    // Aquí puedes agregar métodos adicionales para manejar la actualización, eliminación o consulta de pagos individuales, si fuera necesario.
 };
+*/
 
 
-/*
 const db = require('../util/database');
 
 module.exports = class Pago {
@@ -48,29 +49,10 @@ module.exports = class Pago {
                 'INSERT INTO pago (IDUsuario, IDDeuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota) VALUES (?, ?, ?, ?, ?, ?, ?)',
                 [this.IDUsuario, this.IDDeuda, this.Cant_pagada, this.Fecha_de_pago, this.Metodo, this.Banco, this.Nota]
             );
-            return result; // Devolver el resultado de la inserción, incluido el ID del registro insertado, si es necesario
+            return result; 
         } catch (error) {
             console.error("Error al insertar el pago:", error);
-            throw error; // Rethrowing el error permite un manejo más flexible en niveles superiores
+            throw error; 
         }
     }   
 };
-*/
-
-/*
-// models/Payment.js
-
-const db = require('../util/database.js');
-
-function insertPayment(data, callback) {
-  const sql = `INSERT INTO pagos (IDUsuario, IDDeuda, Cant_pagada, Fecha_de_pago, Metodo, Banco, Nota) VALUES ?`;
-  db.query(sql, [data.map(item => [item.IDUsuario, item.IDDeuda, item.Cant_pagada, item.Fecha_de_pago, item.Metodo, item.Banco, item.Nota])], function(err, result) {
-    if (err) return callback(err);
-    callback(null, result);
-  });
-}
-
-module.exports = {
-  insertPayment
-};
-*/

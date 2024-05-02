@@ -1,11 +1,14 @@
+
+/*
+const csvParser = require('csv-parser');
 const fs = require('fs');
 const Papa = require('papaparse');
 const moment = require('moment');
 const db = require('../util/database');
 
 exports.getUpload = (req, res, next) => {
-    // Asegúrate de que esta línea termine con punto y coma
-    res.render('upload', { // Usa el nombre de la plantilla sin la extensión '.ejs'
+    res.render('upload', { 
+        csrfToken: req.csrfToken(),
         uploaded: false,
         canUpload: req.canUpload,
         canConsultReports: req.canConsultReports,
@@ -15,11 +18,17 @@ exports.getUpload = (req, res, next) => {
         rol: req.session.rol,
         nombre: req.session.nombre,
     });
+    console.log(req.csrfToken());
 };
 
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
 exports.postUpload = async (req, res, next) => {
+    console.log('file:', req.file);
+
     if (!req.file) return res.status(400).send('Archivo no subido');
     const filePath = req.file.path;
+
     
     fs.readFile(filePath, 'utf8', async function(err, data) {
         if (err) {
@@ -53,9 +62,9 @@ exports.postUpload = async (req, res, next) => {
             });
         }
         
-        fs.unlinkSync(filePath); // Asegúrate de manejar errores aquí
+        fs.unlinkSync(filePath); 
         await delay(2000);
-        res.render('upload', { // Usa el nombre de la plantilla sin la extensión '.ejs'
+        res.render('upload', { 
             uploaded: true,
             canUpload: req.canUpload,
             canConsultReports: req.canConsultReports,
@@ -63,11 +72,10 @@ exports.postUpload = async (req, res, next) => {
         });
     });
 };
+*/
 
-const delay = ms => new Promise(res => setTimeout(res, ms));
 
 
-/*
 const fs = require('fs');
 const Papa = require('papaparse');
 const moment = require('moment');
@@ -93,7 +101,9 @@ exports.getUpload = (request, response, next) => {
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
 exports.postUpload = (request, response, next) => {
-    if (!request.file) return response.status(400).send('Archivo no subido');
+    console.log('file:', request.files.file);
+    console.log('Request body:', request.body);  
+    if (!request.file) return response.status(400).send('Archivo no se subio');
 
     const filePath = request.file.path;
     
@@ -122,12 +132,12 @@ exports.postUpload = (request, response, next) => {
             try {
                 await Pago.insert(pago);
             } catch (error) {
-                console.error("Error insertando el pago:", error);
+                console.error("Error insertando el csv:", error);
             }
         }
 
         fs.unlinkSync(filePath); 
-        response.render('leads/leadUpload.ejs', {
+        response.render('upload.ejs', {
             uploaded: true,
             canUpload: request.canUpload,
             canConsultReports: request.canConsultReports,
@@ -135,41 +145,6 @@ exports.postUpload = (request, response, next) => {
         });
     });
 };
-*/
 
 
 
-/*
-const fs = require('fs');
-const csv = require('csv-parser');
-const Payment = require('../models/csv.model');
-
-const getUpload = (req, res, next) => {
-    res.render('upload', {
-      pageTitle: 'Upload CSV',
-      path: '/upload-csv',
-      correo: req.session.correo,
-      permisos: req.session.permisos,
-      rol: req.session.roles,
-      nombre: req.session.nombre,
-    });
-  };
-
-function uploadPayments(filePath, callback) {
-  const results = [];
-  fs.createReadStream(filePath)
-    .pipe(csv())
-    .on('data', (data) => results.push(data))
-    .on('end', () => {
-      Payment.insertPayment(results, (err, result) => {
-        if (err) return callback(err);
-        callback(null, result);
-      });
-    });
-}
-
-module.exports = {
-    getUpload,
-    uploadPayments
-};
-*/

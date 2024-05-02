@@ -12,6 +12,7 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const bodyParser = require('body-parser');
 const path = require('path');
+const csvParser = require('csv-parser');
 
 // Configuración de la sesión
 app.use(session({
@@ -43,6 +44,7 @@ app.use(fileUpload({
   preserveExtension: true,
   limits: { fileSize: 50 * 1024 * 1024 }, // Ejemplo: limite de 50MB por archivo
 }));
+
 
 
 
