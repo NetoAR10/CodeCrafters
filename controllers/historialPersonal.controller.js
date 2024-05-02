@@ -23,16 +23,16 @@ exports.getHistorialPagosPersonal = async (request, response) => {
            nombre: request.session.nombre,
        });
    } catch (error) {
-       console.error('Error al obtener el historial de pagos del usuario:', error); // Muestra el error
+       console.error('Error al obtener el historial de pagos del usuario:', error); 
        response.status(500).send('Error al obtener el historial de pagos');
    }
 };
  
+
 exports.descargarFichaPagoPersonal = async (req, res) => {
     try {
         const correoUsuario = req.session.correo;
 
-        // Datos de materias y pagos
         const [materias] = await db.execute(`
             SELECT
                 m.Nombre_mat,
@@ -53,7 +53,6 @@ exports.descargarFichaPagoPersonal = async (req, res) => {
                 u.Correo_electronico = ?
         `, [correoUsuario]);
 
-        // Información de deudas
         const [pagos] = await db.execute(`
             SELECT
                 d.Fecha_limite,
@@ -66,33 +65,28 @@ exports.descargarFichaPagoPersonal = async (req, res) => {
                 u.Correo_electronico = ?
         `, [correoUsuario]);
 
-        // Crear documento PDF
         const doc = new PDFDocument({ size: 'A4', margin: 50 });
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename="ficha_pago_${correoUsuario}.pdf"`);
 
         doc.pipe(res);
 
-        // Agregar logo
         const logoPath = path.join(__dirname, '..', 'public', 'VIADISENOLOGO2.PNG');
         if (fs.existsSync(logoPath)) {
             doc.image(logoPath, { width: 60, height: 60, align: 'left' });
         }
 
-        doc.moveDown(2); // Espaciado inicial para claridad
+        doc.moveDown(2); 
 
         doc.fontSize(18).text('Materias Enero - Junio 2024', { align: 'center', underline: true });
-        doc.moveDown(2); // Espaciado adicional
+        doc.moveDown(2); 
 
-        // Línea horizontal para separar secciones
         doc.moveTo(50, 120).lineTo(550, 120).stroke();
         doc.moveDown(2);
 
-        // Sección CARGA DE MATERIAS
         doc.fontSize(12).text('CARGA DE MATERIAS', { align: 'center', underline: true });
         doc.moveDown(2);
 
-        // Tabla de carga de materias
         const tablaMaterias = [
             ['SEMESTRE', 'SELECCIÓN', 'MATERIAS', 'CRÉDITOS', 'COSTO'],
             ...materias.map((materia) => [
@@ -100,11 +94,10 @@ exports.descargarFichaPagoPersonal = async (req, res) => {
                 '1',
                 materia.Nombre_mat,
                 materia.Creditos.toString(),
-                `$ ${materia.Precio_credito.toFixed(2)}`,
+                `$ ${(materia.Precio_credito * materia.Creditos).toFixed(2)}`, 
             ]),
         ];
 
-        // Generar la tabla de carga de materias
         const tablaInicioX = 60;
         const columnaAncho = [80, 80, 140, 100, 100];
         let tablaPosY = doc.y;
@@ -120,13 +113,11 @@ exports.descargarFichaPagoPersonal = async (req, res) => {
             tablaPosY += 25;
         });
 
-        doc.moveDown(3); // Espacio antes de la sección PLAN DE PAGOS
+        doc.moveDown(3); 
 
-        // Sección PLAN DE PAGOS
         doc.fontSize(12).text('PLAN DE PAGOS', tablaInicioX, doc.y, { align: 'center', underline: true });
         doc.moveDown(2);
 
-        // Tabla de plan de pagos
         const tablaPagos = [
             ['Fecha límite', 'Monto a pagar'],
             ...pagos.map((pago) => [
@@ -135,7 +126,6 @@ exports.descargarFichaPagoPersonal = async (req, res) => {
             ]),
         ];
 
-        // Generar la tabla de plan de pagos
         tablaPosY = doc.y;
         const columnaAnchoPagos = [150, 150];
 
@@ -150,7 +140,7 @@ exports.descargarFichaPagoPersonal = async (req, res) => {
             tablaPosY += 25;
         });
 
-        doc.end(); // Termina el documento
+        doc.end(); 
     } catch (error) {
         console.error('Error al generar la ficha de pago personal:', error);
         res.status(500).send('Error al generar la ficha de pago personal');
