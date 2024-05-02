@@ -1,0 +1,6 @@
+﻿IDUsuario,IDDeuda,Cant_pagada,Fecha_de_pago,Metodo,Banco,Nota
+7,13,863.83,09/03/24,Efectivo,Banco A,Pago realizado satisfactoriamente
+28,6,782.83,09/03/24,Transferencia,Banco C,Pago realizado satisfactoriamente
+14,19,230.57,09/03/24,Efectivo,N/A,Pago realizado satisfactoriamente
+36,19,256.85,09/03/24,Efectivo,Banco A,Pago realizado satisfactoriamente
+46,25,336.57,09/03/24,Transferencia,Banco A,Pago realizado satisfactoriamente

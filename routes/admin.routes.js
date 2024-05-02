@@ -82,7 +82,23 @@ router.post('/usuarios/editarBeca/:correo', isAuth, isActive, listaUsuariosContr
 
 //Ruta para Cargar CSV
 router.get('/upload-csv', isAuth, isActive,  csvController.getUpload);
-router.post('/upload-csv', isAuth, isActive,  csvController.postUpload);
+//router.post('/upload-csv', isAuth, isActive,  csvController.postUpload);
+
+router.post('/upload-csv', isAuth, isActive, (req, res) => {
+    if (!req.files || !req.files.file) {
+        return res.status(400).send('No se subió ningún archivo');
+    }
+    const file = req.files.file;
+    const uploadPath = __dirname + '/../uploads/' + file.name; 
+
+    file.mv(uploadPath, function(err) {
+        if (err) {
+            return res.status(500).send(err);
+        }
+
+        res.redirect('/');
+    });
+});
 
 
 
