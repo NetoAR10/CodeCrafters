@@ -322,6 +322,26 @@ body {
     cursor: pointer;
 }
 
+.modifyuserg {
+    position: relative;
+    background-color: #6c0404;
+    color: #fff;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    font-size: 15px;
+    text-decoration: none;
+    padding: 4px 4px;
+}
+
+
+.modifyuserg:hover {
+    background-color: #fff;
+    color: #6c0404;
+    border: 1px solid #6c0404;
+    transition-duration: 0.3s;
+    cursor: pointer;
+}
+
 .deleteuser {
     position: relative;
     background-color: #c07021;
