@@ -1,28 +1,23 @@
-const CryptoJS = require("crypto-js");
+const CryptoJS = require('crypto-js');
+const xml2js = require('xml2js');
+const fs = require('fs');
 
-// Descifra usando AES CBC con la clave y IV
+// Función para descifrar
 function decifrarAES(cadena_cifrada, key) {
     try {
-        // Decodifica URL
         cadena_cifrada = decodeURIComponent(cadena_cifrada);
-        
-        // Decodifica Base64
         const dataBytes = CryptoJS.enc.Base64.parse(cadena_cifrada);
-
         const keyBytes = CryptoJS.enc.Hex.parse(key);
 
-        // Asume que los primeros 16 bytes son el IV
         const iv = CryptoJS.lib.WordArray.create(dataBytes.words.slice(0, 4), 16);
         const encrypted = CryptoJS.lib.WordArray.create(dataBytes.words.slice(4), dataBytes.sigBytes - 16);
 
-        // Descifra el texto cifrado
         const decrypted = CryptoJS.AES.decrypt({ ciphertext: encrypted }, keyBytes, {
             iv: iv,
             mode: CryptoJS.mode.CBC,
             padding: CryptoJS.pad.Pkcs7
         });
 
-        // Retorna el resultado descifrado como cadena UTF-8
         return decrypted.toString(CryptoJS.enc.Utf8);
 
     } catch (error) {
@@ -31,13 +26,37 @@ function decifrarAES(cadena_cifrada, key) {
     }
 }
 
-let respuestaAPI = 'otB4VyAtYh5bW4IeVhM30125kqfmzVxxDlFQRZHCUroq6e1MSISChhDstN1gKKnA%0D%0AOs%2BdgrMxpLDffJQjJ8GJyGeOaOG8LSfUg0vaxVwnTwXEzXFheI%2BbgarDW0fUXS6h%0D%0ARd1jFwMKLduhHrQ2dyE9EijwtdQv6TmI2Gp6tfQaPix0GRHcPZUCAozNyhZWaNIO%0D%0AAqfI%2FRRb8FNHbvYHEEVssRRfeF8f8k%2F8HF5oM4Ec%2BcT848llOgwETNjpGgOAaHi8%0D%0AZwjPk2YBxoqxhFLd8Kht2qnAyOht3SSLXvSG3mx1Cd1NfJGDWfjkFXv0omump%2FF1%0D%0AZEHr7MzgWCPROTfSaWaz1phQO%2BNNmba4lwS2KMMnlp76XQXhHqW3AVvSbtcZyj2i%0D%0APAL5Y3aJI%2BswMXe97IvyUW%2FM6GiBESoSOh4m5TTeEZfmwAT47H81w%2F%2FBRaEmUM92%0D%0A9Pq5kCTdizBOjf9OiZkthM3rTsWJJ9nc93UHCZ%2BTuyTsyDwxoSHJ32cRt2G9M%2Fhq%0D%0AYXNfh8Deh45Fgi8K4gj9KQJ25FUd%2F0mknDMxCva7EbW6oOADKBV3GlBN1RSyJSIt%0D%0A0LIVfVCgFtY1sPdrk8FGhsy7Z3jXb2kpYrUhbMwVGw1Jui4jdNVjsoxWy1Q8MZmP%0D%0AaLoiHGMnijnQXDw9SnyypB9nIhpMhnp2z%2FPlLU%2BJNo9NeO%2BupcQuINIeFDke1cBd%0D%0ASPGUhLMDjBPSBpz8irtRuSHo1QJSILtxKXCe5ifnFFps98dzaAYKL03fwQbWgShg%0D%0AIHfWuuUdE6sHm22lIZeNdN8PvDgJ6MPLuy26wz5dCJUc4s%2BS3XHIQ63jFAnTJ4ig%0D%0AQnvl6DquCWQnMIRejd7JCN%2FEspPLJ52ftT27xJxfg3b0sTeQLcRZflZU56Rj4j%2FP%0D%0AorxVsgze0frAA%2FFc52LJ9LrUiTv9hb27X5JqOtDZ35Qpq3bpPEghZtjOdGptKuB4%0D%0AA0c%2FcCzHwlZbJ7Aakqm2IG2gLOA%2BAqxJYOSSSMz5CjRQuHVXTv8gAK81JrPxM46t%0D%0ABUGVgAKNSbgzADaACDhxPL8GyBwb4ZhMZdCYHUanHGziS9rmhV5ynggidbF3Ssen%0D%0AvK1fvJT9%2F2d5JXQv%2B4TSv3b63nnm173yFS7cqLG3f38Mgz%2B89Vm3FHssKMkme1NH%0D%0AlWT5Q02bpDRmvhI8EIlDr5Fnj8pS6ck4i62fbdBZCaIE2jMUeonGtdqw3Ymy6Sn4%0D%0Ah2eEErVoJmDmesEpHglkFBcwze3XC6cysyx16hdDWJIbIueCbK57jgEC5%2BT4mJ1h%0D%0AsZJC2q7hzFagLcssdicr1w%3D%3D'; // Reemplaza con tu cadena cifrada completa
+// Función para analizar el XML y extraer valores
+function extraerValores(xml) {
+    return new Promise((resolve, reject) => {
+        xml2js.parseString(xml, (error, result) => {
+            if (error) {
+                console.error('Error analizando XML:', error);
+                return reject(error);
+            }
+
+            const reference = result.CENTEROFPAYMENTS.reference[0];
+            const response = result.CENTEROFPAYMENTS.response[0];
+            const date = result.CENTEROFPAYMENTS.date[0];
+            const amount = result.CENTEROFPAYMENTS.amount[0];
+
+            resolve({ reference, response, date, amount });
+        });
+    });
+}
+
+// Cadena cifrada
+let respuestaAPI = 'OXlGEp71jTWGsRg5dFiLisAOJPX65p09FZLMaPj%2F2qkB3yLgejAi4Pi9w8%2BSVOeF9Qi1tbr8y%2Bj03agN3DYTaq0OZVAMmkkxSMTO3hAHRY47CAIKlguWtFKiUnpYsCSwnocHgzjqNU15hao7%2BQ97fWtd1PLbv%2FcNBB5b8diigRObjmaicu3t4LmdBK5qUF9yCVpbyneIuOrtNncHb8bTmUMGLQhp%2BLxUSXSVQFbGGP0AA7R36KmhBbJ2zZAPO7SAMmYdvasvnkXpElP2moE40dKbyNEEUVm4IQ8FrH2DkaW%2FhYGYKQa7GUxHWYsOPXr0mtyg%2FjwIzh7alyvsgkO1eKR4yiTnvTa3%2Bjs4Imgz%2BS1FO6jfDyO8y33ixuZfBTwg9MNdHrdhUDZIntTY%2BMshOlZD%2FS4%2BQgj4QiPXAfGCeLQBs%2B74NKiHb1rsjek%2FEONguad5vHgCZAAM26sFd1ynCxgbnE9uZGCgVO232WDsn5JUnIdUif8on98i3rdvU5I4JicNAnAtHmxKogFdDH8bPWwjVs77Fl6iKIRa5JzdJw1ox3y03zigOACHdIS%2BRzNAw7fXdIATR8g9SGpacqStsarLFzzRjxIYze5%2BUbr6lnYUE8N88yGdDAPxsZ7Pn128JjVcZZ5VFhhtCEXw5NTyR1kHIzIuFZnR0pgkDmBJhw%2BcoJ4fzHD5qzSgk4tpDrQ%2FLPdQK8iIJ9rti1vz6nPoUwD4QanJy8UcSjud4aWddygabiZwPN3HmQEYpdTs5eQF1Bm%2B13ozWmChwdNv0UqmsGC7AMw8y%2FHh3isucu6lr%2Fywp5gKBxyh80bIL8593%2B8uUGpACjgQwhQZ7NdW9Uqg%2FF3SeTLFgqQ5U2%2BZ4WNhVrXrnrITzXpX14bKeV%2FwImSGG41RT1vX0S410NVum7%2FUsYAA%2BD%2Ben2q9OpAW9uikfnE78vmy%2BKgcYf%2BaSY7aS57I%2FLw4f3RaeyzHnEtzZha1toPd4cUU%2BSH416cNI%2BP8dOivSjeeKt1ntL0bJyL6loayaRSeJ39bKKSW8c%2B7W2A0xZ9jd1l%2B8C649XFNtoT5K0DKz62AeeLk26vVp9unnbkteKZp55vWcu%2BNBJf%2Bw%2FyuK4hs21bJ7BMA6Uxn1gY7t7d399FfeTGCMxko4RjXnjXt';
 let llave = '5DCC67393750523CD165F17E1EFADD21';
 
 const resultadoDescifrado = decifrarAES(respuestaAPI, llave);
-
-const fs = require('fs');
 fs.writeFileSync('resultado.xml', resultadoDescifrado, 'utf8');
 console.log('El contenido descifrado se ha guardado en resultado.xml');
 
+// Extraer valores de las etiquetas
+extraerValores(resultadoDescifrado);
 
+module.exports = {
+    decifrarAES,
+    extraerValores
+};
