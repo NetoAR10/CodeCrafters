@@ -27,8 +27,6 @@ exports.getHistorialPagosPersonal = async (request, response) => {
        response.status(500).send('Error al obtener el historial de pagos');
    }
 };
- 
-
 exports.descargarFichaPagoPersonal = async (req, res) => {
     try {
         const correoUsuario = req.session.correo;
@@ -66,6 +64,7 @@ exports.descargarFichaPagoPersonal = async (req, res) => {
         `, [correoUsuario]);
 
         const doc = new PDFDocument({ size: 'A4', margin: 50 });
+
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename="ficha_pago_${correoUsuario}.pdf"`);
 
@@ -73,50 +72,42 @@ exports.descargarFichaPagoPersonal = async (req, res) => {
 
         const logoPath = path.join(__dirname, '..', 'public', 'VIADISENOLOGO2.PNG');
         if (fs.existsSync(logoPath)) {
-            doc.image(logoPath, { width: 60, height: 60, align: 'left' });
+            // Add logo with smaller size and additional vertical spacing
+            doc.image(logoPath, 50, 25, { width: 100 }); 
         }
 
-        doc.moveDown(2); 
-
-        doc.fontSize(18).text('Materias Enero - Junio 2024', { align: 'center', underline: true });
-        doc.moveDown(2); 
-
-        doc.moveTo(50, 120).lineTo(550, 120).stroke();
+        // Move down to create space between logo and content
         doc.moveDown(2);
 
-        doc.fontSize(12).text('CARGA DE MATERIAS', { align: 'center', underline: true });
-        doc.moveDown(2);
+        doc.fontSize(18).text('Materias Enero - Junio 2024', { align: 'center' }).moveDown(0.5);
+        doc.fontSize(12).text('CARGA DE MATERIAS', { align: 'center' }).moveDown(1);
 
-        const tablaMaterias = [
-            ['SEMESTRE', 'SELECCIÓN', 'MATERIAS', 'CRÉDITOS', 'COSTO'],
-            ...materias.map((materia) => [
-                materia.Ciclo.toString(),
-                '1',
-                materia.Nombre_mat,
-                materia.Creditos.toString(),
-                `$ ${(materia.Precio_credito * materia.Creditos).toFixed(2)}`, 
-            ]),
-        ];
+        const tablaInicioY = doc.y + 30; // Adjust starting Y position
 
-        const tablaInicioX = 60;
-        const columnaAncho = [80, 80, 140, 100, 100];
-        let tablaPosY = doc.y;
+        const tablaInicioX = 50;
+        const tablaAnchos = [80, 120, 180, 80, 80]; 
 
-        tablaMaterias.forEach((fila) => {
-            fila.forEach((texto, index) => {
-                const align = index === 4 ? 'right' : 'center';
-                doc.text(texto, tablaInicioX + columnaAncho.slice(0, index).reduce((acc, width) => acc + width, 0), tablaPosY, {
-                    width: columnaAncho[index],
-                    align,
-                });
-            });
-            tablaPosY += 25;
+        doc.fontSize(10).text('SEMESTRE', tablaInicioX, tablaInicioY, { width: tablaAnchos[0], align: 'center' });
+        doc.text('SELECCIÓN', tablaInicioX + tablaAnchos[0], tablaInicioY, { width: tablaAnchos[1], align: 'center' });
+        doc.text('MATERIAS', tablaInicioX + tablaAnchos[0] + tablaAnchos[1], tablaInicioY, { width: tablaAnchos[2], align: 'center' });
+        doc.text('CRÉDITOS', tablaInicioX + tablaAnchos[0] + tablaAnchos[1] + tablaAnchos[2], tablaInicioY, { width: tablaAnchos[3], align: 'center' });
+        doc.text('COSTO', tablaInicioX + tablaAnchos[0] + tablaAnchos[1] + tablaAnchos[2] + tablaAnchos[3], tablaInicioY, { width: tablaAnchos[4], align: 'center' });
+        doc.strokeColor('#000').lineWidth(1).moveTo(tablaInicioX, tablaInicioY + 15).lineTo(550, tablaInicioY + 15).stroke();
+
+        materias.forEach(materia => {
+            let y = doc.y;
+            doc.fontSize(10);
+            doc.text(materia.Ciclo.toString(), tablaInicioX, y, { width: tablaAnchos[0], align: 'center' });
+            doc.text('1', tablaInicioX + tablaAnchos[0], y, { width: tablaAnchos[1], align: 'center' });
+            doc.text(materia.Nombre_mat, tablaInicioX + tablaAnchos[0] + tablaAnchos[1], y, { width: tablaAnchos[2], align: 'left' });
+            doc.text(materia.Creditos.toString(), tablaInicioX + tablaAnchos[0] + tablaAnchos[1] + tablaAnchos[2], y, { width: tablaAnchos[3], align: 'center' });
+            doc.text(`$ ${(materia.Precio_credito * materia.Creditos).toFixed(2)}`, tablaInicioX + tablaAnchos[0] + tablaAnchos[1] + tablaAnchos[2] + tablaAnchos[3], y, { width: tablaAnchos[4], align: 'right' });
+            doc.moveDown();
         });
 
-        doc.moveDown(3); 
+        doc.moveDown(1); // Add more space before payment plan section
 
-        doc.fontSize(12).text('PLAN DE PAGOS', tablaInicioX, doc.y, { align: 'center', underline: true });
-        doc.moveDown(2);
+        doc.fontSize(12).text('PLAN DE PAGOS', { align: 'center', underline: true }).moveDown(0.5);
 
         const tablaPagos = [
             ['Fecha límite', 'Monto a pagar'],
@@ -126,8 +117,8 @@ exports.descargarFichaPagoPersonal = async (req, res) => {
             ]),
         ];
 
-        tablaPosY = doc.y;
         const columnaAnchoPagos = [150, 150];
+        tablaPosY = doc.y;
 
         tablaPagos.forEach((fila) => {
             fila.forEach((texto, index) => {
