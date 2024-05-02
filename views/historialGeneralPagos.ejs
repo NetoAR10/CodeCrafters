@@ -36,11 +36,11 @@
                 <% pagos.forEach(function(pago) { %>
                     <tr>
                         <td><%= pago.Mes %></td>
-			<td><%= pago.PorcentajePagado %>%</td>
+			<td><%= (pago.PorcentajePagado * 100).toFixed(2) %>%</td>
                         <td><%= pago.Referencia %></td>
                         <td><%= pago.Nombre %></td>
-                        <td><%= pago.Fecha_de_pago %></td>
-                        <td><%= pago.Cant_pagada %></td>
+                        <td><%= pago.Fecha_de_pago.toISOString().slice(0,10) %></td>
+                        <td><%= pago.Cant_pagada.toFixed(2) %></td>
                         <td><%= pago.Metodo %></td>
                         <td><%= pago.Banco %></td>
                         <td><%= pago.Concepto %></td>
