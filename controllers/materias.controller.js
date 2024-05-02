@@ -282,3 +282,74 @@ exports.post_materias = async (request, response, next) => {
 exports.post_contactar_admin = async (request, response, next) => {
     response.render('contactar_admin');
 };
+
+/*
+
+exports.download_materias_pdf = async (request, response) => {
+    try {
+        const usuario = await materia.fetchInfoUsuario(request.session.correo);
+        const IDUsu = usuario[0][0].IDUsuario;
+        const beca = usuario[0][0].Beca_actual;
+        const referencia = usuario[0][0].referencia;
+
+        const ciclo = await materia.fecthCicloEscolar();
+        const IDCic = ciclo[0][0].IDCiclo;
+        const precioCredito = ciclo[0][0].Precio_credito;
+
+        const cursos = request.session.cursos;
+        const pagos = request.session.pagos;
+
+        if (!cursos || !pagos) {
+            return response.status(400).send('Course or payment data is missing from the session.');
+        }
+
+        const doc = new PDFDocument();
+        const tempDir = path.join(__dirname, 'temp');
+        if (!fs.existsSync(tempDir)) {
+            fs.mkdirSync(tempDir, { recursive: true });
+        }
+        const filePath = path.join(tempDir, `cursos_${Date.now()}.pdf`);
+        const fileStream = fs.createWriteStream(filePath);
+        doc.pipe(fileStream);
+
+        doc.fontSize(18).text('Resumen de Cursos y Pagos', {
+            align: 'center'
+        });
+        doc.moveDown(2);
+
+        cursos.forEach(curso => {
+            doc.fontSize(12).text(`Materia: ${curso.nombreMat}`, { continued: true });
+            doc.text(` (Créditos: ${curso.creditos})`, { align: 'right' });
+            doc.text(`Profesor: ${curso.nombreProfe}`);
+            doc.text(`Semestre: ${curso.semestre}`);
+            doc.text(`Costo: $${curso.creditos * precioCredito * (1 - beca / 100)}`, {
+                underline: true
+            });
+            doc.moveDown(1);
+        });
+
+        doc.fontSize(16).text('Detalles de Pagos', {
+            align: 'center'
+        });
+        doc.moveDown(1);
+
+        pagos.forEach((pago, index) => {
+            doc.fontSize(12).text(`Pago ${index + 1}: $${pago}`);
+        });
+
+        doc.end();
+
+        fileStream.on('finish', function() {
+            response.download(filePath, 'cursos_y_pagos.pdf', (err) => {
+                if (err) {
+                    response.status(500).send('Error al descargar el archivo');
+                }
+                fs.unlinkSync(filePath);
+            });
+        });
+    } catch (err) {
+        console.error('Error al generar el PDF:', err);
+        response.status(500).send('Error al generar el documento PDF');
+    }
+};
+*/

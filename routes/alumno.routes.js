@@ -19,7 +19,7 @@ router.post('/contactar_admin', isAuth, isActive, materiasController.post_contac
 router.get('/historial-pagos', isAuth, isActive, historialPersonalController.getHistorialPagosPersonal);
  
 // Descargar Ficha
-//router.get('/descargar-ficha-personal/pdf', isAuth, isActive, historialPersonalController.descargarFichaPagoPersonal);
+router.get('/descargar-ficha-personal/pdf', isAuth, isActive, historialPersonalController.descargarFichaPagoPersonal);
 
 //Deudas de alumno
 router.get('/historial-deudas/', isAuth, isActive, deudasPersonal.getHistorialDeDeudas);
