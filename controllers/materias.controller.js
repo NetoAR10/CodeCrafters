@@ -69,7 +69,6 @@ exports.get_materias = async (request, response, next) => {
 exports.post_materias = async (request, response, next) => {
     try {
         const usuario = await materia.fetchInfoUsuario(request.session.correo);
-        console.log(usuario);
         const IDUsu = usuario[0][0].IDUsuario;
         const beca = usuario[0][0].Beca_actual;
         const referencia = usuario[0][0].referencia;
