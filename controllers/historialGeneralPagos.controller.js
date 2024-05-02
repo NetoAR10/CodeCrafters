@@ -101,3 +101,4 @@ exports.editPago = async (request, response, next) => {
         response.status(500).send('Error al editar el pago');
     }
 };
+
