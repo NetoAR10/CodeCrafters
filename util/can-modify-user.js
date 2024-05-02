@@ -2,7 +2,7 @@ module.exports = (request, response, next) => {
 
     let canModifyUser = false;
     for(let privilegio of request.session.permisos) {
-        if(privilegio.actividades == 'modificar usuario') {
+        if(privilegio.Actividades == 'modificar usuario') {
             canModifyUser = true;
         }
     }
@@ -11,6 +11,6 @@ module.exports = (request, response, next) => {
         next();
 
     } else {
-        return response.redirect('user/login');
+        return response.redirect('forbidden');
     }
 }

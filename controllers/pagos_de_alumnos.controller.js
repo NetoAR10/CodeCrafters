@@ -56,6 +56,7 @@ exports.getHistorialDeDeudas = (request, response, next) => {
     .then(([data, fieldData]) => {
         response.render('historial_deudas', {
             deuda: data,
+            id: Matricula,
             nombre: request.session.nombre || '',
 	    correo: request.session.correo || '',
 	    matricula: request.session.matricula || '',
@@ -76,7 +77,9 @@ exports.infoDeuda = async (request, response, next) => {
         if (deudaDetails.length > 0) {
             response.render('crearDeuda', {
                 deuda: deudaDetails[0],
+		id: Matricula,
                 titulo: 'crearDeuda',
+                id: Matricula,
 		matricula: request.session.permisos,
 	        correo: request.session.permisos,
 		permisos: request.session.permisos,

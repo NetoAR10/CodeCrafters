@@ -21,7 +21,7 @@
                     <tr>
                         <td><%= pago.Nombre %></td>
                         <td><%= pago.Referencia %></td>
-                        <td><%= pago.Cant_pagada %></td>
+                        <td><%= pago.Cant_pagada.toFixed(2) %></td>
                         <td><%= new Date(pago.Fecha_de_pago).toLocaleDateString() %></td>
                         <td><%= pago.Metodo %></td>
                         <td><%= pago.Banco %></td>

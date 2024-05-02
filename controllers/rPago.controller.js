@@ -19,12 +19,13 @@ exports.postRegistrarPago = async (req, res, next) => {
         if (IDPago) {
             // Si IDPago, actualizar
             await nuevoPago.update(IDPago);
-            res.redirect('pagos_de_alumnos');
         } else {
             // Si no, creamos un nuevo pago
             await nuevoPago.save();
-            res.redirect('pagos_de_alumnos');
         }
+
+	const urlAnterior = req.header('Referer') || 'pagos_de_alumnos';
+        res.redirect(urlAnterior);
     } catch (err) {
         console.log(err);
         res.status(500).send('Error al procesar el pago.');

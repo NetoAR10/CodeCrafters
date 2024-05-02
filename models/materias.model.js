@@ -37,7 +37,7 @@ module.exports = class materia {
 
     static fetchInfoUsuario(correo) {
         return db.execute(
-            'SELECT matricula, IDUsuario, Beca_actual FROM usuario WHERE Correo_electronico=?',
+            'SELECT matricula, IDUsuario, Beca_actual, referencia FROM usuario WHERE Correo_electronico=?',
             [correo]
         );
     }
@@ -46,6 +46,12 @@ module.exports = class materia {
         return db.execute(
             `SELECT ciclo, IDCicloEXT, Precio_credito, IDCiclo
             FROM cicloescolar WHERE Ciclo_activo = 1 `
+        );
+    }
+
+    static fetchFechaInicioActual() {
+        return db.execute(
+            `SELECT Fecha_inicio FROM cicloescolar WHERE Ciclo_activo = 1`
         );
     }
 

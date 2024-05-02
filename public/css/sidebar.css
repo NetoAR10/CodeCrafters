@@ -322,6 +322,26 @@ body {
     cursor: pointer;
 }
 
+.modifyuserg {
+    position: relative;
+    background-color: #6c0404;
+    color: #fff;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    font-size: 15px;
+    text-decoration: none;
+    padding: 4px 4px;
+}
+
+
+.modifyuserg:hover {
+    background-color: #fff;
+    color: #6c0404;
+    border: 1px solid #6c0404;
+    transition-duration: 0.3s;
+    cursor: pointer;
+}
+
 .deleteuser {
     position: relative;
     background-color: #c07021;
@@ -457,17 +477,18 @@ form {
 }
 
 .payment_plan {
-    position: fixed;   /* Posicionamiento fijo en la pantalla */
-    top: 200;          /* Centrado verticalmente */
-    right: 400;          /* Alineado a la derecha */
-    transform: translateY(-50%); /* Centrado perfecto */
-    width: 400px;      /* Ancho del elemento */
+    position: absolute;  /* Posicionamiento absoluto respecto a su contenedor relativo */
+    top: 740px;          /* Posición vertical desde la parte superior */
+    right: 10%;            /* Alineado completamente a la derecha del contenedor */
+    width: 400px;        /* Ancho del elemento */
+    margin: 40px 0;
     background-color: #f4f4f4; /* Color de fondo */
-    padding: 10px;     /* Espaciado interno */
+    padding: 10px;       /* Espaciado interno */
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* Sombra para destacar */
-    text-align: center; /* Texto centrado */
-    z-index: 1000;     /* Asegura que esté por encima de otros elementos */
+    text-align: center;  /* Texto centrado */
+    z-index: 1000;       /* Asegura que esté por encima de otros elementos */
 }
+
 
 #refresh {
     position: relative;
@@ -568,4 +589,25 @@ input:checked + .slider:before {
 .text-content {
     width: 90%;
     font-size: 13px;
+}
+
+.payment_details {
+    position: absolute;  /* Posicionamiento absoluto respecto a su contenedor relativo */
+    top: 10px;          /* Posición vertical desde la parte superior */
+    right: 10%;            /* Alineado completamente a la derecha del contenedor */
+    width: 400px;        /* Ancho del elemento */
+    padding: 20px;
+    box-sizing: border-box;
+}
+table {
+    width: 100%; /* La tabla ocupa todo el ancho del div */
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #ddd; /* Bordes sutiles para la tabla */
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
 }
