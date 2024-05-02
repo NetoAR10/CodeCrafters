@@ -103,9 +103,9 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 exports.postUpload = (request, response, next) => {
     console.log('file:', request.files.file);
     console.log('Request body:', request.body);  
-    if (!request.file) return response.status(400).send('Archivo no se subio');
+    if (!request.files.file) return response.status(400).send('Archivo no se subio');
 
-    const filePath = request.file.path;
+    const filePath = request.files.path;
     
     fs.readFile(filePath, 'utf8', async function(err, data) {
         if (err) {
