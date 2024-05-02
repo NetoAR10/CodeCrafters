@@ -9,6 +9,7 @@
                     <th>Nombre</th>
                     <th>Referencia</th> 
                     <th>Total deuda</th>
+                    <th>Porcentaje pagado</th>
                     <th>Concepto</th>
                     <th>Mes</th>
                     <th>Fecha límite</th>
@@ -22,6 +23,7 @@
                         <td><%= deuda.Nombre %></td>
                         <td><%= deuda.Referencia %></td> 
                         <td><%= deuda.Total_deuda.toFixed(2)%></td>
+ 			<td><%= (deuda.PorcentajePagado *100).toFixed(2) %></td> 
                         <td><%= deuda.Concepto %></td>
                         <td><%= deuda.Mes %></td>
                         <td>

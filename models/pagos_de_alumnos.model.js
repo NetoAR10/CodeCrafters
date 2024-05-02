@@ -50,13 +50,16 @@ module.exports = class ListaUsuario {
    
     static historialDeDeudas(Matricula){
         return db.execute(
-        `SELECT usuario.Nombre, usuario.Referencia, usuario.Matricula, 
-         deuda.IDDeuda, deuda.Total_deuda, deuda.Concepto, deuda.Mes,  deuda.Fecha_limite
-         From usuario
-         JOIN deuda ON usuario.IDUsuario = deuda.IDUsuario
-         WHERE usuario.Matricula = ?
-         ORDER BY deuda.Fecha_limite;`,
-         [Matricula]
+        `SELECT usuario.Nombre, usuario.Referencia, usuario.Matricula, pago.Cant_pagada,
+       deuda.IDDeuda, deuda.Total_deuda, deuda.Concepto, deuda.Mes, deuda.Fecha_limite,
+       (pago.Cant_pagada / deuda.Total_deuda) AS PorcentajePagado
+       FROM usuario
+       JOIN deuda ON usuario.IDUsuario = deuda.IDUsuario
+       LEFT JOIN pago ON pago.IDDeuda = deuda.IDDeuda
+       WHERE usuario.Matricula = ?
+       AND (pago.Cant_pagada != deuda.Total_deuda OR pago.Cant_pagada IS NULL)
+       ORDER BY deuda.Fecha_limite;`,
+       [Matricula]
     );
 
     }
