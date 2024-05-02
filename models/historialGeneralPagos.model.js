@@ -69,6 +69,24 @@ module.exports = class HistorialPago {
     }
 
 
+        static fetchAllG(mes = '') {
+        let query = `
+            SELECT
+                deuda.Concepto,
+                SUM(pago.Cant_pagada) / SUM(deuda.Total_deuda) AS PorcentajePagado
+            FROM usuario
+            JOIN pago ON usuario.IDUsuario = pago.IDUsuario
+            JOIN deuda ON pago.IDDeuda = deuda.IDDeuda
+        `;
+        if (mes) {
+            query += ` WHERE deuda.Mes = ?`;
+            query += ` GROUP BY deuda.Concepto ORDER BY deuda.Concepto`;
+            return db.execute(query, [mes]);
+        } else {
+            query += ` GROUP BY deuda.Concepto ORDER BY deuda.Concepto`;
+            return db.execute(query);
+        }
+    }
     
 };
 

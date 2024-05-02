@@ -36,11 +36,11 @@
                 <% pagos.forEach(function(pago) { %>
                     <tr>
                         <td><%= pago.Mes %></td>
-			<td><%= (pago.PorcentajePagado * 100).toFixed(2) %>%</td>
+			<td><%= pago.PorcentajePagado %>%</td>
                         <td><%= pago.Referencia %></td>
                         <td><%= pago.Nombre %></td>
-                        <td><%= pago.Fecha_de_pago.toISOString().slice(0, 10) %></td>
-                        <td><%= pago.Cant_pagada.toFixed(2) %></td>
+                        <td><%= pago.Fecha_de_pago %></td>
+                        <td><%= pago.Cant_pagada %></td>
                         <td><%= pago.Metodo %></td>
                         <td><%= pago.Banco %></td>
                         <td><%= pago.Concepto %></td>
@@ -58,6 +58,11 @@
         </table>
         <a href="/user/admin/descargar-historial" class="btn btn-primary">Descargar Historial CSV</a>
 
+    </div>
+    <br><h4>Cantidad pagada por mes</h4>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <div class="chart-container" style="position: relative; height:40vh; width:80vw;">
+        <canvas id="debtPaymentChart"></canvas>
     </div>
 
 <script>
@@ -171,5 +176,52 @@ function borrarPago(IDPago) {
 
 document.getElementById('buscar').onkeyup = accion_asincrona;
 </script>
+
+<script>    
+    var datosBrutos = <%- JSON.stringify(pagos) %>;
+    var datosAgrupados = datosBrutos.reduce((acumulador, pago) => {
+   
+        if (!acumulador[pago.Mes]) {
+            acumulador[pago.Mes] = {
+                Mes: pago.Mes,
+                CantPagada: 0
+            };
+        }
+        acumulador[pago.Mes].CantPagada += pago.Cant_pagada; 
+        return acumulador;
+    }, {});
+    var meses = [];
+    var cantidadesPagadas = [];
+    Object.values(datosAgrupados).forEach(item => {
+        meses.push(item.Mes);
+        cantidadesPagadas.push(item.CantPagada); 
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('debtPaymentChart').getContext('2d');
+        const debtPaymentChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: meses,
+                datasets: [{
+                    label: 'Cantidad Pagada por Mes',
+                    data: cantidadesPagadas,
+                    backgroundColor: 'rgb(75, 192, 192)',
+                    borderColor: 'rgb(75, 192, 192)'
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+
+
 </body>
 </html>
