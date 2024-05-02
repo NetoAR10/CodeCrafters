@@ -16,7 +16,7 @@
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
                 <input type="hidden" name="IDDeuda" value="<%= deuda ? deuda.IDDeuda: '' %>" required>
                 <input type="hidden" name="Referencia" value="<%= deuda ? deuda.Referencia: '' %>" required>
-     
+                <input type="hidden" name="nombre" value="<%= deuda.Nombre %>">
                 <div class="input-box">
                     <label for="Cantidad pagada">Cantidad pagada:</label><br>
                     <input type="number" name="Cant_pagada" step="0.01" placeholder="1545" step="0.01" required>
@@ -39,7 +39,7 @@
                 </div>
                 <div class="space"></div><br>
                 <button type="submit" class="btn">Registrar</button>
-                <button type="button" onclick="window.location.href='http://localhost:2050/user/admin/pagos_de_alumnos'" class="btn">Regresar</button>
+                <button type="button" onclick="window.location.href='/user/admin/pagos_de_alumnos/'" class="btn">Regresar</button>
             </form>
         </div> 
 	</div>

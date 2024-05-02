@@ -10,9 +10,12 @@
         </div>
 
     <div class="wrapper2">
-        <form action="/user/admin/crearDeuda" method="POST">
-	<input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+        <form action="/user/admin/pagos_de_alumnos/modificarDeuda" method="POST">
+	    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
         <input type="hidden" name="Referencia" value="<%= deuda ? deuda.Referencia: '' %>" required>
+        <input type="hidden" name="id" value="<%= id %>">
+        <input type="hidden" name="nombre" value="<%= deuda.Nombre %>">
+
 
             <div class="input-box">
                 <label for="Total_deuda">Total deuda:</label>
@@ -37,7 +40,7 @@
             <div class="space"></div>
             <button type="submit" class="btn">Crear Deuda</button>
 	    
-	    <button type="button" onclick="window.location.href='http://localhost:2050/user/admin/pagos_de_alumnos'" class="btn">Regresar</button>
+	    <button type="button" onclick="window.location.href='/user/admin/pagos_de_alumnos/deudas/<%=id%>'" class="btn">Regresar</button>
 	</form>
     </div>
 </body>
