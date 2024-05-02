@@ -22,6 +22,7 @@ module.exports = class HistorialPago {
        `, [correoUsuario]);
    }
  
+   /*
    static fetchFichaPagoByCorreo(correoUsuario) {
        return db.execute(`
            SELECT
@@ -44,4 +45,6 @@ module.exports = class HistorialPago {
            ORDER BY pago.Fecha_de_pago;
        `, [correoUsuario]);
    }
+   */
 };    
+

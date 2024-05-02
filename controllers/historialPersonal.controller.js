@@ -1,9 +1,9 @@
-const PDFDocument = require('pdfkit');
+//const PDFDocument = require('pdfkit');
 const HistorialPago = require('../models/historialPersonal.model');
 const db = require('../util/database');
 const fs = require('fs');
 const path = require('path');
-const PDFTable = require('pdfkit-table');
+//const PDFTable = require('pdfkit-table');
  
 exports.getHistorialPagosPersonal = async (request, response) => {
    try {
@@ -28,6 +28,8 @@ exports.getHistorialPagosPersonal = async (request, response) => {
    }
 };
  
+
+/*
 exports.descargarHistorialPagosPDF = async (request, response) => {
    try {
        const [rows] = await HistorialPago.fetchAll();
@@ -195,4 +197,4 @@ exports.descargarFichaPagoPersonal = async (req, res) => {
    }
 };
  
- 
+ */
