@@ -71,7 +71,8 @@ exports.getHistorialDeDeudas = (request, response, next) => {
 };
 
 exports.infoDeuda = async (request, response, next) => { 
-    const Matricula = request.params.id; 
+    const Matricula = request.params.id;
+    
     try {
         const [deudaDetails] = await ListaUsuario.infoDeuda(Matricula);
         if (deudaDetails.length > 0) {
@@ -100,15 +101,18 @@ exports.getInfoPago = async (request, response, next) => {
     const IDDeuda = request.params.id;
     try {
         const [pagoDetails] = await ListaUsuario.infoPago(IDDeuda);
+        // const [matricula] = await ListaUsuario.getMatricula(request.body.nombre)
         if (pagoDetails.length > 0) {
             response.render('registrarPago', {
                 deuda: pagoDetails[0],
                 titulo: 'Crear Pago',
-	        correo: request.session.permisos,
-		permisos: request.session.permisos,
-		rol: request.session.roles,
-		nombre: request.session.nombre,	
-		csrfToken: request.csrfToken(),
+                // matricula: matricula[0],
+                correo: request.session.permisos,
+                permisos: request.session.permisos,
+                rol: request.session.roles,
+                id: request.params.id,
+                nombre: request.session.nombre,	
+                csrfToken: request.csrfToken(),
             });
         } else {
             response.status(404).send('Deuda no encontrada');
@@ -133,6 +137,7 @@ exports.getModificarDeuda = async (request, response, next) => {
 	       permisos: request.session.permisos,
 	       rol: request.session.roles,
 	       nombre: request.session.nombre,
+           matricula: request.session.matriculaPago,
 	       csrfToken: request.csrfToken(),
 	   });
         } else {
@@ -143,3 +148,16 @@ exports.getModificarDeuda = async (request, response, next) => {
 	response.status(500).send('Error al modificar la deuda');
     }
 };
+
+exports.postModificarDeuda = async (request, response, next) => {
+    const name = request.body.name;
+    console.log('nombre', name);
+
+    const [matricula_table] = await ListaUsuario.getMatricula(request.body.nombre);
+        const matricula = matricula_table[0].Matricula;
+        console.log(matricula);
+
+        request.session.matriculaPago = matricula;
+        
+    
+}
