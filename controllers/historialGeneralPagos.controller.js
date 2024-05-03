@@ -78,7 +78,7 @@ exports.deletePago = (request, response, next) => {
 }
 
 exports.editPago = async (request, response, next) => {
-    // console.log('hola')
+    console.log('hola')
     const IDPago = request.params.id; 
     console.log(IDPago)
     try {
@@ -87,12 +87,11 @@ exports.editPago = async (request, response, next) => {
             response.render('modificarPago', {
                 pago: pagoDetails[0],
                 titulo: 'Modificar Pago',
-	            correo: request.session.permisos,
-		        permisos: request.session.permisos,
-		        rol: request.session.roles,
-		        nombre: request.session.nombre,
-                id: request.params.id,
-		        csrfToken: request.csrfToken(),
+	        correo: request.session.permisos,
+		permisos: request.session.permisos,
+		rol: request.session.roles,
+		nombre: request.session.nombre,
+		csrfToken: request.csrfToken(),
             });
         } else {
             response.status(404).send('Pago no encontrado');

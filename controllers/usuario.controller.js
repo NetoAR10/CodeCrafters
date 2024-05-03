@@ -50,7 +50,7 @@ exports.post_login = (request, response, next) => {
 
                     
                 } else {
-                    request.session.error = 'El correo y/o contraseña son incorrectos.';
+                    request.session.error = 'La matrícula y/o contraseña son incorrectos.';
                     return response.redirect('/user/login')
                 }
             })
@@ -59,7 +59,7 @@ exports.post_login = (request, response, next) => {
             });
         }
         else {
-            request.session.error = 'El correo y/o contraseña son incorrectos.'
+            request.session.error = 'La matrícula y/o contraseña son incorrectos.'
             response.redirect('/user/login');
         }
     }).catch((error) => {

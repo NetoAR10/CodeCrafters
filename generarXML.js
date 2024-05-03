@@ -3,10 +3,12 @@ const fs = require('fs');
 const CryptoJS = require("crypto-js");
 const axios = require('axios');
 const crypto = require('crypto');
-const { v4: uuidv4 } = require('uuid');
-const { uid } = require('chart.js/helpers');
+const { v4: uuidv4 } = require('uuid'); 
 
-/////////////////////////////////////////////////////////////////////////////////////////
+// Definimos la variable `uniqueReference` globalmente
+let uniqueReference; 
+
+// Función para convertir un buffer de array a una cadena base64
 function _arrayBufferToBase64(buffer) {
     var binary = '';
     var bytes = new Uint8Array(buffer);
@@ -34,12 +36,9 @@ function decifrarAES(cadena_cifrada, key) {
     var second = CryptoJS.enc.Base64.parse(cadena_cifrada);
     first.words = first.words.slice(0, 4);
     second.words = second.words.slice(4, second.length);
-    //console.log(cadena_cifrada);
     first.sigBytes = 16;
     second.sigBytes = second.sigBytes - 16;
-    //console.log(second);
     second = CryptoJS.enc.Base64.stringify(second);
-    //console.log(second);
     var cipherParams = {
         iv: first,
         mode: CryptoJS.mode.CBC,
@@ -76,69 +75,67 @@ function cifrarAES(data, key) {
         return 'Tu llave es incorrecta: '+error;
     }
 }
-////////////////////////////////////////////////////////////////////////////////////////
+
 
 // PASO 1: Leer y modificar el XML
-const xml = fs.readFileSync('template.xml', 'utf8');
-xml2js.parseString(xml, function(err, result) {
-    if (err) throw err;
+async function updateXML(deuda) {
+    return new Promise((resolve, reject) => {
+        const xml = fs.readFileSync('template.xml', 'utf8');
+        xml2js.parseString(xml, function(err, result) {
+            if (err) return reject(err);
 
-    const uniqueReference = uuidv4();
-    console.log(uniqueReference);
-    result.P.url[0].reference[0] = uniqueReference;
-    result.P.url[0].amount[0] = '1000.00';
+            uniqueReference = uuidv4(); // Asigna `uniqueReference`
+            result.P.url[0].reference[0] = uniqueReference;
+            result.P.url[0].amount[0] = deuda.toString();
 
-    const builder = new xml2js.Builder();
-    const newXml = builder.buildObject(result);
-    fs.writeFileSync('template_modificado.xml', newXml);
-});
+            const builder = new xml2js.Builder();
+            const newXml = builder.buildObject(result);
+            fs.writeFileSync('template_modificado.xml', newXml);
 
-// PASO 2: Cifrar la cadena
-var originalString = fs.readFileSync('template_modificado.xml', 'utf8');
-var key  = '5DCC67393750523CD165F17E1EFADD21';
-
-var ciphertext = cifrarAES(originalString, key).toString();
-//console.log(ciphertext);
-
-// PASO 3: Enviar la cadena cifrada
-var originalString2 = "xml=<pgs><data0>SNDBX123</data0><data>"+ciphertext+"</data></pgs>";
-//console.log(originalString2);
-var data = encodeURIComponent(originalString2);
-
-axios.post('https://sandboxpo.mit.com.mx/gen', data, {
-    headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    withCredentials: true
-})
-.then(function (response) {
-    console.log("Response received");
-
-    // PASO 4: Descifrar la respuesta
-    var responseText = response.data;
-    //console.log(responseText);
-    var bytes  = decifrarAES(responseText, key, {
-        mode: CryptoJS.mode.ECB,
-        padding: CryptoJS.pad.Pkcs7
-    });
-    var originalText = bytes.toString(CryptoJS.enc.Utf8);
-
-    //console.log("Decrypted text: " + originalText);
-    const parser = new xml2js.Parser();
-
-    parser.parseString(originalText, function (err, result) {
-        if (err) {
-            console.error('Error al parsear XML: ', err);
-        } else {
-            const url = result.P_RESPONSE.nb_url[0];
-            console.log('URL: ', url);
-        }
+            encryptAndSendXML()
+                .then(url => resolve({ url, uniqueReference }))
+                .catch(error => reject(error));
+        });
     })
-})
-.catch(function (error) {
-    console.error("Error during HTTP request:", error);
-});
+}
+
+// PASO 2: Cifrar y enviar el XML
+function encryptAndSendXML() {
+    return new Promise((resolve, reject) => {
+        var originalString = fs.readFileSync('template_modificado.xml', 'utf8');
+        var key = '5DCC67393750523CD165F17E1EFADD21';
+        var ciphertext = cifrarAES(originalString, key);
+
+        // PASO 3: Enviar la cadena cifrada
+        var originalString2 = "xml=<pgs><data0>SNDBX123</data0><data>"+ciphertext+"</data></pgs>";
+        var data = encodeURIComponent(originalString2);
+
+        axios.post('https://sandboxpo.mit.com.mx/gen', data, {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            withCredentials: true
+        })
+        .then(function (response) {
+            var originalText = decifrarAES(response.data, key);
+            const parser = new xml2js.Parser();
+
+            parser.parseString(originalText, function (err, result) {
+                if (err) {
+                    console.error('Error al parsear XML: ', err);
+                    reject(err);
+                } else {
+                    const url = result.P_RESPONSE.nb_url[0];
+                    resolve(url);
+                }
+            })
+        })
+        .catch(function (error) {
+            console.error("Error during HTTP request:", error);
+            reject(error);
+        });
+    });   
+}
 
 module.exports = {
-    decifrarAES
+    updateXML,
+    getUniqueReference: () => uniqueReference // Proporciona `uniqueReference`
 };

@@ -87,12 +87,5 @@ module.exports = class ListaUsuario {
 
    );
    }
-
-   static getMatricula(Nombre){
-    return db.execute(`
-        SELECT usuario.Matricula
-        FROM usuario
-        WHERE usuario.Nombre = ?`,[Nombre]);
-   }
    
 };

@@ -60,15 +60,33 @@ module.exports = class HistorialPago {
         SELECT
 	    usuario.Referencia, usuario.Nombre,
             pago.Fecha_de_pago, pago.Cant_pagada, deuda.Total_deuda,pago.Metodo, pago.Banco, pago.Nota,
-            deuda.IDDeuda, deuda.Total_deuda, deuda.Concepto, deuda.Mes, deuda.Fecha_limite
+            deuda.IDDeuda, deuda.Total_deuda, deuda.Concepto, deuda.Mes, deuda.Fecha_limite, pago.IDPago
 	    FROM usuario
         JOIN pago ON usuario.IDUsuario = pago.IDUsuario
         JOIN deuda ON pago.IDDeuda = deuda.IDDeuda
-        WHERE pago.IDPago = ?`,
+        WHERE pago.IDPago = ?;`,
 	[IDPago]);
     }
 
 
+        static fetchAllG(mes = '') {
+        let query = `
+            SELECT
+                deuda.Concepto,
+                SUM(pago.Cant_pagada) / SUM(deuda.Total_deuda) AS PorcentajePagado
+            FROM usuario
+            JOIN pago ON usuario.IDUsuario = pago.IDUsuario
+            JOIN deuda ON pago.IDDeuda = deuda.IDDeuda
+        `;
+        if (mes) {
+            query += ` WHERE deuda.Mes = ?`;
+            query += ` GROUP BY deuda.Concepto ORDER BY deuda.Concepto`;
+            return db.execute(query, [mes]);
+        } else {
+            query += ` GROUP BY deuda.Concepto ORDER BY deuda.Concepto`;
+            return db.execute(query);
+        }
+    }
     
 };
 

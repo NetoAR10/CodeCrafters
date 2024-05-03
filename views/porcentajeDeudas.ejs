@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Porcentaje de Deudas Pagadas por Concepto</title>
+    <!-- Referencia local a Chart.js -->
+    <script src="js/Chart.min.js"></script>
+</head>
+<body>
+    <h1>Porcentaje de Deudas Pagadas por Concepto</h1>
+    <label for="meses">Seleccione un mes:</label>
+    <select id="meses" onchange="actualizarGrafico()">
+        <option value="">Todos los meses</option>
+        <!-- Opciones de meses se llenarán aquí -->
+    </select>
+    <canvas id="graficoDeudas"></canvas>
+    <script>
+        var grafico;
+        const ctx = document.getElementById('graficoDeudas').getContext('2d');
+
+        function obtenerDatos(mes) {
+            const url = `/user/admin/historial-pagos-general/graficas?mes=${mes}`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (grafico) grafico.destroy();
+                    grafico = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: data.map(d => d.Concepto),
+                            datasets: [{
+                                label: 'Porcentaje Pagado',
+                                data: data.map(d => d.PorcentajePagado * 100),
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error('Error al cargar los datos:', error));
+        }
+
+        function actualizarGrafico() {
+            const mesSeleccionado = document.getElementById('meses').value;
+            obtenerDatos(mesSeleccionado);
+        }
+
+        window.onload = function() {
+            actualizarGrafico(); // Actualizar al cargar por primera vez
+        };
+    </script>
+</body>
+</html>
+

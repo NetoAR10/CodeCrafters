@@ -7,6 +7,7 @@
                 <tr>
                     <th>Nombre</th>
                     <th>Total deuda</th>
+                    <th>Porcentaje pagado</th>
                     <th>Concepto</th>
                     <th>Mes</th>
                     <th>Fecha límite</th>
@@ -16,26 +17,80 @@
             <tbody>
                 <% deudas.forEach(function(deuda) { %>
                     <tr>
-                        <td><%= deuda.Nombre %></td>
-                        <td><%= deuda.Total_deuda.toFixed(2)%></td>
-                        <td><%= deuda.Concepto %></td>
-                        <td><%= deuda.Mes %></td>
-                        <td>
-                        <% if (deuda.Fecha_limite) { %>
-                                <% var fechaNormal = new Date(deuda.Fecha_limite); %>
-                                <%= fechaNormal.toDateString() %>
-                            <% } else { %>
-                                N/A
-                            <% } %> 
-                        </td>
-                         
-                        <td>
-                            <a href="#" class="modifyuserg">Pagar</a>
-                        </td>
-                     </tr>
+                        <form class="paymentForm" action="/user/alumno/historial-deudas" method="POST">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            <input type="hidden" name="IDDeuda" value="<%= deuda.IDDeuda %>">
+                            <td>
+                                <%= deuda.Nombre %>
+                                <input type="hidden" name="Nombre" value="<%= deuda.Nombre %>">
+                            </td>
+                            <td>
+                                <%= deuda.Total_deuda.toFixed(2) %>
+                                <input type="hidden" name="Total_deuda" value="<%= deuda.Total_deuda.toFixed(2) %>">
+                            </td>
+                            <td>
+                                <%= (deuda.PorcentajePagado * 100).toFixed(2) %>%
+                            </td>
+                            <td>
+                                <%= deuda.Concepto %>
+                                <input type="hidden" name="Concepto" value="<%= deuda.Concepto %>">
+                            </td>
+                            <td>
+                                <%= deuda.Mes %>
+                                <input type="hidden" name="Mes" value="<%= deuda.Mes %>">
+                            </td>
+                            <td>
+                                <% if (deuda.Fecha_limite) { %>
+                                    <% var fechaNormal = new Date(deuda.Fecha_limite); %>
+                                    <%= fechaNormal.toDateString() %>
+                                    <input type="hidden" name="Fecha_limite" value="<%= fechaNormal.toDateString() %>">
+                                <% } else { %>
+                                    N/A
+                                    <input type="hidden" name="Fecha_limite" value="N/A">
+                                <% } %>
+                            </td>
+                            <td>
+                                <button type="submit" class="modifyuser">Pagar</button>
+                            </td>
+                        </form>
+                    </tr>
                 <% }); %>
             </tbody>
         </table>
-      </div>
+    </div>
+    <script>
+        document.querySelectorAll('.paymentForm').forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Evitar la recarga de la página
+                const formData = new FormData(this);
+                
+                // Convertir los datos del formulario a un objeto
+                const data = {};
+                formData.forEach((value, key) => {
+                    data[key] = value;
+                });
+
+                // Realiza la solicitud POST con los datos del formulario
+                fetch(this.action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(result => {
+                    // Abre la URL en una nueva pestaña
+                    if (result.url) {
+                        window.open(result.url, '_blank');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
+

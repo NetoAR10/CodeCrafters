@@ -10,6 +10,7 @@
             <p><strong>Concepto:</strong> <%= pago.Concepto %></p>
             <p><strong>Mes:</strong> <%= pago.Mes %></p>
             <p><strong>Fecha límite:</strong> <%= pago.Fecha_limite %></p>
+                        
         </div>
         <div class="wrapper2">
             <form action="/user/admin/registrarPago" method="POST"> 
@@ -40,8 +41,8 @@
                     <input type="text" name="Nota" value="<%= pago ? pago.Nota : '' %>" placeholder="Nota" required>
                 </div>
                 <div class="space"></div>
-                <button type="button" onclick="window.location.href='/user/admin/historial-pagos-general'"class="btn">Modificar</button>
-                <button type="button" onclick="window.location.href='/user/admin/historial-pagos-general'" class="btn">Regresar</button>
+                <button type="submit" class="btn">Modificar</button>
+                <button type="button" onclick="window.location.href='http://localhost:2050/user/admin/historialGeneralPagos'" class="btn">Regresar</button>
             </form>
         </div> 
 	</div>
