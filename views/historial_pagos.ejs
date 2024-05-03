@@ -22,12 +22,26 @@
                         <td><%= pago.Nombre %></td>
                         <td><%= pago.Referencia %></td>
                         <td><%= pago.Cant_pagada.toFixed(2) %></td>
-                        <td><%= new Date(pago.Fecha_de_pago).toLocaleDateString() %></td>
+                        <td>
+                        <% if (pago.Fecha_de_pago) { %>
+                            <% var fechaNormal = new Date(pago.Fecha_de_pago); %>
+                            <%= fechaNormal.toISOString().slice(0, 10) %>
+                        <% } else { %>
+                             N/A
+                        <% } %>
+                        </td>
                         <td><%= pago.Metodo %></td>
                         <td><%= pago.Banco %></td>
                         <td><%= pago.Concepto %></td>
                         <td><%= pago.Nota %></td>
-                        <td><%= pago.Fecha_limite %></td>
+                        <td>
+                        <% if (pago.Fecha_limite) { %>
+                            <% var fechaNormal = new Date(pago.Fecha_limite); %>
+                            <%= fechaNormal.toISOString().slice(0, 10) %>
+                        <% } else { %>
+                             N/A
+                        <% } %>
+                        </td>
                     </tr>
                 <% }); %>
             </tbody>

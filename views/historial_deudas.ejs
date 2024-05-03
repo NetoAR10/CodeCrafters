@@ -28,11 +28,12 @@
                         <td><%= deuda.Mes %></td>
                         <td>
                         <% if (deuda.Fecha_limite) { %>
-                                <% var fechaNormal = new Date(deuda.Fecha_limite); %>
-                                <%= fechaNormal.toDateString() %>
-                            <% } else { %>
-                                N/A
-                            <% } %> 
+                            <% var fechaNormal = new Date(deuda.Fecha_limite); %>
+                            <%= fechaNormal.toISOString().slice(0, 10) %>
+                        <% } else { %>
+                              N/A
+                        <% } %>
+ 
                         </td>
                         <td>
                             <a href="/user/admin/pagos_de_alumnos/registrarPago/<%= deuda.IDDeuda %>" class="btn">Registrar Pago</a>
