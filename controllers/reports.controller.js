@@ -9,7 +9,8 @@ exports.getReport = async (request, response) => {
     const deudaPorConcepto = await ReportsModel.getDeudaPorConcepto();
     const pagosPorMetodo = await ReportsModel.getPagosPorMetodo();
     const materiasPorCiclo = await ReportsModel.getMateriasPorCiclo();
-    const pagosPorMesYMetodo = await ReportsModel.getPagosPorMesYMetodo(); // Asegúrate de tener esta función definida en tu modelo
+    const pagosPorMesYMetodo = await ReportsModel.getPagosPorMesYMetodo(); 
+    const pagosPorMes = await ReportsModel.getPagosPorMes(); 
 
     response.render('reporte', {
       totalDeudas: totalDeudas[0][0]?.totalDeudas || 0,
@@ -19,7 +20,7 @@ exports.getReport = async (request, response) => {
       materiasPorCiclo: materiasPorCiclo[0] || [],
       deudaPorConcepto: deudaPorConcepto[0] || [],
       pagosPorMetodo: pagosPorMetodo[0] || [],
-      pagosPorMesYMetodo: pagosPorMesYMetodo[0] || [], // Envía los datos a la vista
+      pagosPorMesYMetodo: pagosPorMesYMetodo[0] || [], 
       isLoggedIn: request.session.isLoggedIn || false,
       privileges: request.session.privileges || [],
       nombre: request.session.nombre || '',

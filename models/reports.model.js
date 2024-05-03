@@ -50,7 +50,15 @@ module.exports = {
        ORDER BY DATE_FORMAT(Fecha_de_pago, '%Y-%m')`
     );
   },
+  getPagosPorMes: () => {
+    return db.execute(
+      `SELECT DATE_FORMAT(Fecha_de_pago, '%Y-%m') AS Mes, SUM(Cant_pagada) AS Total
+       FROM pago
+       WHERE Fecha_de_pago IS NOT NULL
+       GROUP BY DATE_FORMAT(Fecha_de_pago, '%Y-%m')
+       ORDER BY DATE_FORMAT(Fecha_de_pago, '%Y-%m')`
+    );
+  },
   
   
 };
-

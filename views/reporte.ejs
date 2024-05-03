@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <title>Reporte de Finanzas</title>
+  
   <link rel="stylesheet" type="text/css" href="/public/style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -22,30 +23,30 @@
     <!-- Cuadrícula para acomodar las gráficas -->
     <div class="chart-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 80px; padding: 80px;">
       <!-- Gráfico 1: Total de Deudas y Pagos -->
-<div class="chart-container" style="width: 350px; height: 250px;">
-  <h3>Total Anual: Deudas vs. Pagos</h3>
-  <canvas id="deudasPagosChart"></canvas>
-</div>
+      <div class="chart-container" style="width: 350px; height: 250px;">
+        <h3>Total Anual: Deudas vs. Pagos</h3>
+        <canvas id="deudasPagosChart"></canvas>
+      </div>
 
-<!-- Gráfico 2: Deuda por Concepto -->
-<div class="chart-container" style="width: 350px; height: 250px;">
-  <h3>Distribución de Deudas por Concepto</h3>
-  <canvas id="deudaPorConceptoChart"></canvas>
-</div>
+      <!-- Gráfico 2: Deuda por Concepto -->
+      <div class="chart-container" style="width: 350px; height: 250px;">
+        <h3>Distribución de Deudas por Concepto</h3>
+        <canvas id="deudaPorConceptoChart"></canvas>
+      </div>
 
-<!-- Gráfico 3: Pagos por Método -->
-<div class="chart-container" style="width: 350px; height: 250px;">
-  <h3>Métodos de Pago Utilizados</h3>
-  <canvas id="pagosPorMetodoChart"></canvas>
-</div>
+      <!-- Gráfico 3: Pagos por Método -->
+      <div class="chart-container" style="width: 350px; height: 250px;">
+        <h3>Métodos de Pago Utilizados</h3>
+        <canvas id="pagosPorMetodoChart"></canvas>
+      </div>
 
-<!-- Gráfico 5: Pagos por Mes y Método -->
-<div class="chart-container" style="width: 350px; height: 250px;">
-  <h3>Tendencias de Pagos Mensuales</h3>
-  <canvas id="pagosPorMesYMetodoChart"></canvas>
-</div>
-    </div>
-  </div>
+      <!-- Gráfico 5: Pagos por Mes y Método -->
+      <div class="chart-container" style="width: 350px; height: 250px;">
+        <h3>Tendencias de Pagos Mensuales</h3>
+        <canvas id="pagosPorMesYMetodoChart"></canvas>
+      </div>
+
+      
 
   <!-- Configuración de Chart.js -->
   <script>
@@ -58,94 +59,75 @@
     const pagosPorMetodo = <%- JSON.stringify(pagosPorMetodo) %>;
     const pagosPorMesYMetodo = <%- JSON.stringify(pagosPorMesYMetodo) %>;
 
-    // Gráfico 1: Total de Deudas y Pagos
-    const ctx1 = document.getElementById('deudasPagosChart').getContext('2d');
-    new Chart(ctx1, {
-      type: 'bar',
-      data: {
-        labels: ['Deudas', 'Pagos'],
-        datasets: [{
-          label: 'Total',
-          data: [totalDeuda, totalPago],
-          backgroundColor: ['#FF6384', '#36A2EB']
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
+    function setupTotalDeudasPagos() {
+      const ctx1 = document.getElementById('deudasPagosChart').getContext('2d');
+      new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: ['Deudas', 'Pagos'],
+          datasets: [{
+            label: 'Total',
+            data: [totalDeuda, totalPago],
+            backgroundColor: ['#FF6384', '#36A2EB']
+          }]
+        },
+        options: { scales: { y: { beginAtZero: true } } }
+      });
+    }
 
-    // Gráfico 2: Deuda por Concepto
-    const ctx2 = document.getElementById('deudaPorConceptoChart').getContext('2d');
-    const deudaPorConceptoLabels = deudaPorConcepto.map(item => item.Concepto);
-    const deudaPorConceptoData = deudaPorConcepto.map(item => item.totalDeuda);
-    new Chart(ctx2, {
-      type: 'pie',
-      data: {
-        labels: deudaPorConceptoLabels,
-        datasets: [{
-          label: 'Deuda por Concepto',
-          data: deudaPorConceptoData,
-          backgroundColor: ['#FFCE56', '#FF6384', '#36A2EB', '#FF9F40']
-        }]
-      }
-    });
+    function setupDeudaPorConcepto() {
+      const ctx2 = document.getElementById('deudaPorConceptoChart').getContext('2d');
+      const labels = deudaPorConcepto.map(item => item.Concepto);
+      const data = deudaPorConcepto.map(item => item.totalDeuda);
+      new Chart(ctx2, {
+        type: 'bar',
+        data: { labels, datasets: [{ label: 'Deuda por Concepto', data, backgroundColor: ['#FFCE56', '#FF6384', '#36A2EB', '#FF9F40'] }] }
+      });
+    }
 
-    // Gráfico 3: Pagos por Método
-    const ctx3 = document.getElementById('pagosPorMetodoChart').getContext('2d');
-    const pagosPorMetodoLabels = pagosPorMetodo.map(item => item.Metodo);
-    const pagosPorMetodoData = pagosPorMetodo.map(item => item.totalPagos);
-    new Chart(ctx3, {
-      type: 'doughnut',
+    function setupPagosPorMetodo() {
+      const ctx3 = document.getElementById('pagosPorMetodoChart').getContext('2d');
+      const labels = pagosPorMetodo.map(item => item.Metodo);
+      const data = pagosPorMetodo.map(item => item.totalPagos);
+      new Chart(ctx3, {
+        type: 'bar',
+        data: { labels, datasets: [{ label: 'Pagos por Método', data, backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'] }] }
+      });
+    }
+
+    function setupPagosPorMesYMetodo() {
+      const ctx5 = document.getElementById('pagosPorMesYMetodoChart').getContext('2d');
+      const meses = [...new Set(pagosPorMesYMetodo.map(dato => dato.Mes))];
+      const datasets = ['Efectivo', 'Transferencia', 'Tarjeta de crédito'].map(metodo => ({
+        label: metodo,
+        data: meses.map(mes => {
+          const dato = pagosPorMesYMetodo.find(dato => dato.Mes === mes && dato.Metodo === metodo);
+          return dato ? dato.Total : 0;
+        }),
+        backgroundColor: metodo === 'Efectivo' ? 'rgba(255, 99, 132, 0.2)' : metodo === 'Transferencia' ? 'rgba(54, 162, 235, 0.2)' : 'rgba(255, 206, 86, 0.2)',
+        borderColor: metodo === 'Efectivo' ? 'rgba(255, 99, 132, 1)' : metodo === 'Transferencia' ? 'rgba(54, 162, 235, 1)' : 'rgba(255, 206, 86, 1)',
+        borderWidth: 1
+      }));
+      new Chart(ctx5, {
+        type: 'bar',
+        data: { labels: meses, datasets },
+        options: { scales: { y: { beginAtZero: true } } }
+      });
+    }
+
+    function setupPagosPorMes() {
+    const ctx = document.getElementById('pagosPorMesChart').getContext('2d');
+    const labels = pagosPorMes.map(dato => dato.Mes);
+    const data = pagosPorMes.map(dato => dato.Total);
+    new Chart(ctx, {
+      type: 'line',
       data: {
-        labels: pagosPorMetodoLabels,
+        labels: labels,
         datasets: [{
-          label: 'Pagos por Método',
-          data: pagosPorMetodoData,
-          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
-        }]
-      }
-    });
-    // Gráfico 5: Pagos por Mes y Método
-    const ctx5 = document.getElementById('pagosPorMesYMetodoChart').getContext('2d');
-    const meses = [...new Set(pagosPorMesYMetodo.map(dato => dato.Mes))];
-    const efectivo = meses.map(mes => {
-      const dato = pagosPorMesYMetodo.find(dato => dato.Mes === mes && dato.Metodo === 'Efectivo');
-      return dato ? dato.Total : 0;
-    });
-    const transferencia = meses.map(mes => {
-      const dato = pagosPorMesYMetodo.find(dato => dato.Mes === mes && dato.Metodo === 'Transferencia');
-      return dato ? dato.Total : 0;
-    });
-    const tarjeta = meses.map(mes => {
-      const dato = pagosPorMesYMetodo.find(dato => dato.Mes === mes && dato.Metodo === 'Tarjeta de crédito');
-      return dato ? dato.Total : 0;
-    });
-    new Chart(ctx5, {
-      type: 'bar',
-      data: {
-        labels: meses,
-        datasets: [{
-          label: 'Efectivo',
-          data: efectivo,
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          borderWidth: 1
-        }, {
-          label: 'Transferencia',
-          data: transferencia,
-          backgroundColor: 'rgba(54, 162, 235, 0.2)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 1
-        }, {
-          label: 'Tarjeta de crédito',
-          data: tarjeta,
-          backgroundColor: 'rgba(255, 206, 86, 0.2)',
-          borderColor: 'rgba(255, 206, 86, 1)',
+          label: 'Total Pagado',
+          data: data,
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
           borderWidth: 1
         }]
       },
@@ -157,7 +139,13 @@
         }
       }
     });
-    
+  }
+
+    setupTotalDeudasPagos();
+    setupDeudaPorConcepto();
+    setupPagosPorMetodo();
+    setupPagosPorMesYMetodo();
+    setupPagosPorMes();
   </script>
 </body>
 </html>

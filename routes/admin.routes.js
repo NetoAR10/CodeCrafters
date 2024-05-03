@@ -96,7 +96,7 @@ router.post('/upload-csv', isAuth, isActive, (req, res) => {
             return res.status(500).send(err);
         }
 
-        res.redirect('/');
+        res.redirect('/user/admin/reportes');
     });
 });
 
