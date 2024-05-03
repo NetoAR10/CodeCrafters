@@ -28,29 +28,40 @@
                     <th>Nota</th>
                     <th>Fecha límite</th>
                     <th>Modificar pago</th> 
-                    <th>Borrar Pago</th>
 
                 </tr>
             </thead>
             <tbody>
                 <% pagos.forEach(function(pago) { %>
                     <tr>
+                        
                         <td><%= pago.Mes %></td>
 			<td><%= (pago.PorcentajePagado * 100).toFixed(2) %>%</td>
                         <td><%= pago.Referencia %></td>
                         <td><%= pago.Nombre %></td>
-                        <td><%= pago.Fecha_de_pago.toISOString().slice(0,10) %></td>
+                        <td>
+                        <% if (pago.Fecha_de_pago) { %>
+                             <% var fechaNormal = new Date(pago.Fecha_de_pago); %>
+                             <%= fechaNormal.toISOString().slice(0, 10) %>
+                        <% } else { %>
+                               N/A
+                        <% } %>
+                        </td>
                         <td><%= pago.Cant_pagada.toFixed(2) %></td>
                         <td><%= pago.Metodo %></td>
                         <td><%= pago.Banco %></td>
                         <td><%= pago.Concepto %></td>
                         <td><%= pago.Nota %></td>
-                        <td><%= pago.Fecha_limite %></td>
                         <td>
-                            <button onclick="window.location.href='/user/admin/historial-pagos-general/editar-pago/<%= pago.IDPago %>'">Modificar</button>
+                        <% if (pago.Fecha_limite) { %>
+                             <% var fechaNormal = new Date(pago.Fecha_limite); %>
+                             <%= fechaNormal.toISOString().slice(0, 10) %>
+                        <% } else { %>
+                               N/A
+                        <% } %>
                         </td>
                         <td>
-                            <button onclick="borrarPago('<%= pago.IDPago %>')">Borrar</button>
+                            <a href="/user/admin/historial-pagos-general/editar-pago/<%= pago.IDPago %>" class="modifyuser">Modificar</a>
                         </td>
                     </tr>
                 <% }); %>
@@ -59,6 +70,7 @@
         <a href="/user/admin/descargar-historial" class="btn btn-primary">Descargar Historial CSV</a>
 
     </div>
+     <div>
     <br><h4>Cantidad pagada por mes</h4>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <div class="chart-container" style="position: relative; height:40vh; width:80vw;">
@@ -109,13 +121,13 @@ const accion_asincrona = () => {
                 <th>Nota</th>
                 <th>Fecha Límite</th>
                 <th>Modificar Pago</th>
-                <th>Borrar Pago</th>
             </tr>
         `;
 
         for (let pago of data) {
             html += `
             <tr>
+                <input type="hidden" name="IDPago" value="${ pago ? pago.IDPago}" required>
                 <td>${pago.Mes}</td>
                 <td>${(pago.PorcentajePagado * 100).toFixed(2)}%</td>
                 <td>${pago.Referencia}</td>
@@ -126,12 +138,9 @@ const accion_asincrona = () => {
                 <td>${pago.Banco}</td>
                 <td>${pago.Concepto}</td>
                 <td>${pago.Nota}</td>
-                <td>${pago.Fecha_limite ? pago.Fecha_limite.toISOString().slice(0, 10) : ''}</td>
+                <td>${pago.Fecha_limite ? new Date(pago.Fecha_limite).toISOString().slice(0, 10) : 'N/A'}</td>  
                 <td>
-                    <button onclick="window.location.href='/user/admin/historial-pagos-general/editar-pago/${pago.IDPago})">Modificar</button>
-                </td>
-                <td>
-                    <button onclick="borrarPago(${pago.IDPago})">Borrar</button>
+                    <a href="/user/admin/historial-pagos-general/editar-pago/${pago.IDPago}" class="modifyuser">Modificar</a>
                 </td>
             </tr>
             `;
@@ -220,8 +229,5 @@ document.getElementById('buscar').onkeyup = accion_asincrona;
         });
     });
 </script>
-
-
-
 </body>
 </html>
