@@ -7,6 +7,7 @@ const canViewMaterias = require('../util/can-view-materias');
 const historialPersonalController = require('../controllers/historialPersonal.controller');
 const canViewHistorial = require('../util/can-view-historial');
 const deudasPersonal = require('../controllers/deudasPersonal.controller.js');
+const respuestaPagos = require('../controllers/respuestaPago.controller.js');
  
 // Materias
 router.get('/materias', isAuth, isActive, canViewMaterias, materiasController.get_materias);
@@ -22,7 +23,11 @@ router.get('/historial-pagos', isAuth, isActive, historialPersonalController.get
 router.get('/descargar-ficha-personal/pdf', isAuth, isActive, historialPersonalController.descargarFichaPagoPersonal);
 
 //Deudas de alumno
-router.get('/historial-deudas/', isAuth, isActive, deudasPersonal.getHistorialDeDeudas);
+router.get('/historial-deudas', isAuth, isActive, deudasPersonal.getHistorialDeDeudas);
+router.post('/historial-deudas', isAuth, isActive, deudasPersonal.postHistorialDeDeudas);
+
+//recibir datos de pago
+router.post('/pago/respuesta', isAuth , isActive, respuestaPagos.postRespuestaPago);
 
 
  
