@@ -79,8 +79,7 @@ exports.infoDeuda = async (request, response, next) => {
             response.render('crearDeuda', {
                 deuda: deudaDetails[0],
 		id: Matricula,
-                titulo: 'crearDeuda',
-                id: Matricula,
+                titulo: 'crearDeuda', 
 		matricula: request.session.permisos,
 	        correo: request.session.permisos,
 		permisos: request.session.permisos,
@@ -106,7 +105,7 @@ exports.getInfoPago = async (request, response, next) => {
             response.render('registrarPago', {
                 deuda: pagoDetails[0],
                 titulo: 'Crear Pago',
-                // matricula: matricula[0],
+               
                 correo: request.session.permisos,
                 permisos: request.session.permisos,
                 rol: request.session.roles,
@@ -148,16 +147,4 @@ exports.getModificarDeuda = async (request, response, next) => {
 	response.status(500).send('Error al modificar la deuda');
     }
 };
-
-exports.postModificarDeuda = async (request, response, next) => {
-    const name = request.body.name;
-    console.log('nombre', name);
-
-    const [matricula_table] = await ListaUsuario.getMatricula(request.body.nombre);
-        const matricula = matricula_table[0].Matricula;
-        console.log(matricula);
-
-        request.session.matriculaPago = matricula;
-        
-    
-}
+ 
