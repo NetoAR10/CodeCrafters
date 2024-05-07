@@ -44,7 +44,7 @@ exports.postRespuestaPago = async (request, response, next) => {
 
         const fecha = convertDate(date);
 
-        const test = "65b19942-5deb-4140-99b9-7040ec727be6"
+        const test = "f31ccbf6-7aac-43eb-b833-4a89175434ac"
         const llaveDeuda = await deuda.fetchByReference(test) //deberia de ser reference en produccion
         const IDDeuda = llaveDeuda[0][0].IDDeuda
 
